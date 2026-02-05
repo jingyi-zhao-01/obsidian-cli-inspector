@@ -1,6 +1,7 @@
 mod cli;
 mod config;
 mod db;
+mod logger;
 mod parser;
 mod scanner;
 
@@ -9,6 +10,7 @@ use clap::Parser;
 use cli::{Cli, Commands};
 use config::Config;
 use db::Database;
+use logger::Logger;
 use parser::MarkdownParser;
 use scanner::VaultScanner;
 use std::fs;
@@ -17,14 +19,30 @@ use std::path::PathBuf;
 fn main() -> Result<()> {
     let cli = Cli::parse();
 
-    match cli.command {
+    let config = load_config(cli.config.clone()).ok();
+    let logger = if let Some(ref cfg) = config {
+        match Logger::new(cfg.log_dir()) {
+            Ok(log) => Some(log),
+            Err(_) => None,
+        }
+    } else {
+        None
+    };
+
+    let result = match cli.command {
         Commands::Init { force } => {
             let config = load_config(cli.config)?;
-            initialize_database(&config, force)?;
+            if let Some(ref log) = logger {
+                let _ = log.log_section("init", "Starting Init Command");
+            }
+            initialize_database(&config, force, logger.as_ref())
         }
         Commands::Stats => {
             let config = load_config(cli.config)?;
-            show_stats(&config)?;
+            if let Some(ref log) = logger {
+                let _ = log.log_section("stats", "Starting Stats Command");
+            }
+            show_stats(&config, logger.as_ref())
         }
         Commands::Index {
             dry_run,
@@ -32,52 +50,110 @@ fn main() -> Result<()> {
             verbose,
         } => {
             let config = load_config(cli.config)?;
-            index_vault(&config, dry_run, force, verbose)?;
-            println!("  force: {}", force);
-            println!("  verbose: {}", verbose);
+            if let Some(ref log) = logger {
+                let _ = log.log_section("index", "Starting Index Command");
+            }
+            index_vault(&config, dry_run, force, verbose, logger.as_ref())
         }
         Commands::Search { query, limit } => {
-            println!("Search command not yet implemented");
-            println!("  query: {}", query);
-            println!("  limit: {}", limit);
+            if let Some(ref log) = logger {
+                let _ = log.print_and_log("search", "Search command not yet implemented");
+                let _ = log.print_and_log("search", &format!("  query: {}", query));
+                let _ = log.print_and_log("search", &format!("  limit: {}", limit));
+            } else {
+                println!("Search command not yet implemented");
+                println!("  query: {}", query);
+                println!("  limit: {}", limit);
+            }
+            Ok(())
         }
         Commands::Backlinks { note } => {
-            println!("Backlinks command not yet implemented");
-            println!("  note: {}", note);
+            if let Some(ref log) = logger {
+                let _ = log.print_and_log("backlinks", "Backlinks command not yet implemented");
+                let _ = log.print_and_log("backlinks", &format!("  note: {}", note));
+            } else {
+                println!("Backlinks command not yet implemented");
+                println!("  note: {}", note);
+            }
+            Ok(())
         }
         Commands::Links { note } => {
-            println!("Links command not yet implemented");
-            println!("  note: {}", note);
+            if let Some(ref log) = logger {
+                let _ = log.print_and_log("links", "Links command not yet implemented");
+                let _ = log.print_and_log("links", &format!("  note: {}", note));
+            } else {
+                println!("Links command not yet implemented");
+                println!("  note: {}", note);
+            }
+            Ok(())
         }
         Commands::UnresolvedLinks => {
-            println!("UnresolvedLinks command not yet implemented");
+            if let Some(ref log) = logger {
+                let _ = log.print_and_log("unresolved-links", "UnresolvedLinks command not yet implemented");
+            } else {
+                println!("UnresolvedLinks command not yet implemented");
+            }
+            Ok(())
         }
         Commands::Tags { tag, all } => {
-            println!("Tags command not yet implemented");
-            println!("  tag: {:?}", tag);
-            println!("  all: {}", all);
+            if let Some(ref log) = logger {
+                let _ = log.print_and_log("tags", "Tags command not yet implemented");
+                let _ = log.print_and_log("tags", &format!("  tag: {:?}", tag));
+                let _ = log.print_and_log("tags", &format!("  all: {}", all));
+            } else {
+                println!("Tags command not yet implemented");
+                println!("  tag: {:?}", tag);
+                println!("  all: {}", all);
+            }
+            Ok(())
         }
         Commands::Suggest { note, limit } => {
-            println!("Suggest command not yet implemented");
-            println!("  note: {}", note);
-            println!("  limit: {}", limit);
+            if let Some(ref log) = logger {
+                let _ = log.print_and_log("suggest", "Suggest command not yet implemented");
+                let _ = log.print_and_log("suggest", &format!("  note: {}", note));
+                let _ = log.print_and_log("suggest", &format!("  limit: {}", limit));
+            } else {
+                println!("Suggest command not yet implemented");
+                println!("  note: {}", note);
+                println!("  limit: {}", limit);
+            }
+            Ok(())
         }
         Commands::Bloat { threshold, limit } => {
-            println!("Bloat command not yet implemented");
-            println!("  threshold: {}", threshold);
-            println!("  limit: {}", limit);
+            if let Some(ref log) = logger {
+                let _ = log.print_and_log("bloat", "Bloat command not yet implemented");
+                let _ = log.print_and_log("bloat", &format!("  threshold: {}", threshold));
+                let _ = log.print_and_log("bloat", &format!("  limit: {}", limit));
+            } else {
+                println!("Bloat command not yet implemented");
+                println!("  threshold: {}", threshold);
+                println!("  limit: {}", limit);
+            }
+            Ok(())
         }
         Commands::Tui => {
-            println!("TUI not yet implemented");
+            if let Some(ref log) = logger {
+                let _ = log.print_and_log("tui", "TUI not yet implemented");
+            } else {
+                println!("TUI not yet implemented");
+            }
+            Ok(())
         }
         Commands::Graph { note, depth } => {
-            println!("Graph command not yet implemented");
-            println!("  note: {:?}", note);
-            println!("  depth: {}", depth);
+            if let Some(ref log) = logger {
+                let _ = log.print_and_log("graph", "Graph command not yet implemented");
+                let _ = log.print_and_log("graph", &format!("  note: {:?}", note));
+                let _ = log.print_and_log("graph", &format!("  depth: {}", depth));
+            } else {
+                println!("Graph command not yet implemented");
+                println!("  note: {:?}", note);
+                println!("  depth: {}", depth);
+            }
+            Ok(())
         }
-    }
+    };
 
-    Ok(())
+    result
 }
 
 fn load_config(config_path: Option<PathBuf>) -> Result<Config> {
@@ -98,7 +174,7 @@ fn load_config(config_path: Option<PathBuf>) -> Result<Config> {
     Config::from_file(&path).context("Failed to load config file")
 }
 
-fn initialize_database(config: &Config, force: bool) -> Result<()> {
+fn initialize_database(config: &Config, force: bool, logger: Option<&Logger>) -> Result<()> {
     let db_path = config.database_path();
 
     if let Some(parent) = db_path.parent() {
@@ -106,7 +182,12 @@ fn initialize_database(config: &Config, force: bool) -> Result<()> {
             .with_context(|| format!("Failed to create database directory: {}", parent.display()))?;
     }
 
-    println!("Initializing database at: {}", db_path.display());
+    let msg = format!("Initializing database at: {}", db_path.display());
+    if let Some(log) = logger {
+        let _ = log.print_and_log("init", &msg);
+    } else {
+        println!("{}", msg);
+    }
 
     let db = Database::open(&db_path)
         .with_context(|| format!("Failed to open database: {}", db_path.display()))?;
@@ -115,12 +196,17 @@ fn initialize_database(config: &Config, force: bool) -> Result<()> {
         .context("Failed to initialize database schema")?;
 
     let version = db.get_version()?.unwrap_or(0);
-    println!("Database initialized successfully (schema version: {})", version);
+    let msg = format!("Database initialized successfully (schema version: {})", version);
+    if let Some(log) = logger {
+        let _ = log.print_and_log("init", &msg);
+    } else {
+        println!("{}", msg);
+    }
 
     Ok(())
 }
 
-fn show_stats(config: &Config) -> Result<()> {
+fn show_stats(config: &Config, logger: Option<&Logger>) -> Result<()> {
     let db_path = config.database_path();
 
     if !db_path.exists() {
@@ -135,18 +221,28 @@ fn show_stats(config: &Config) -> Result<()> {
 
     let stats = db.get_stats().context("Failed to get database stats")?;
 
-    println!("Vault Statistics");
-    println!("================");
-    println!("Notes:            {}", stats.note_count);
-    println!("Links:            {}", stats.link_count);
-    println!("Tags:             {}", stats.tag_count);
-    println!("Chunks:           {}", stats.chunk_count);
-    println!("Unresolved links: {}", stats.unresolved_links);
+    let messages = vec![
+        "Vault Statistics".to_string(),
+        "================".to_string(),
+        format!("Notes:            {}", stats.note_count),
+        format!("Links:            {}", stats.link_count),
+        format!("Tags:             {}", stats.tag_count),
+        format!("Chunks:           {}", stats.chunk_count),
+        format!("Unresolved links: {}", stats.unresolved_links),
+    ];
+
+    for msg in messages {
+        if let Some(log) = logger {
+            let _ = log.print_and_log("stats", &msg);
+        } else {
+            println!("{}", msg);
+        }
+    }
 
     Ok(())
 }
 
-fn index_vault(config: &Config, dry_run: bool, force: bool, verbose: bool) -> Result<()> {
+fn index_vault(config: &Config, dry_run: bool, _force: bool, verbose: bool, logger: Option<&Logger>) -> Result<()> {
     let db_path = config.database_path();
 
     if !db_path.exists() {
@@ -160,8 +256,18 @@ fn index_vault(config: &Config, dry_run: bool, force: bool, verbose: bool) -> Re
         .with_context(|| format!("Failed to open database: {}", db_path.display()))?;
 
     if verbose {
-        println!("Starting vault indexing...");
-        println!("Vault path: {}", config.vault_path.display());
+        let msg = "Starting vault indexing...";
+        if let Some(log) = logger {
+            let _ = log.print_and_log("index", msg);
+        } else {
+            println!("{}", msg);
+        }
+        let msg = format!("Vault path: {}", config.vault_path.display());
+        if let Some(log) = logger {
+            let _ = log.print_and_log("index", &msg);
+        } else {
+            println!("{}", msg);
+        }
     }
 
     // Scan the vault
@@ -169,11 +275,21 @@ fn index_vault(config: &Config, dry_run: bool, force: bool, verbose: bool) -> Re
     let files = scanner.scan().context("Failed to scan vault")?;
 
     if verbose {
-        println!("Found {} markdown files", files.len());
+        let msg = format!("Found {} markdown files", files.len());
+        if let Some(log) = logger {
+            let _ = log.print_and_log("index", &msg);
+        } else {
+            println!("{}", msg);
+        }
     }
 
     if dry_run {
-        println!("[DRY RUN] Would index {} files", files.len());
+        let msg = format!("[DRY RUN] Would index {} files", files.len());
+        if let Some(log) = logger {
+            let _ = log.print_and_log("index", &msg);
+        } else {
+            println!("{}", msg);
+        }
         return Ok(());
     }
 
@@ -181,7 +297,12 @@ fn index_vault(config: &Config, dry_run: bool, force: bool, verbose: bool) -> Re
     let mut indexed_count = 0;
     for file in files {
         if verbose {
-            println!("Indexing: {}", file.relative_path);
+            let msg = format!("Indexing: {}", file.relative_path);
+            if let Some(log) = logger {
+                let _ = log.print_and_log("index", &msg);
+            } else {
+                println!("{}", msg);
+            }
         }
 
         // Read file content
@@ -200,7 +321,12 @@ fn index_vault(config: &Config, dry_run: bool, force: bool, verbose: bool) -> Re
             .context("Failed to insert note")?;
 
         if verbose {
-            println!("  → Note: {} (id: {})", parsed.title, note_id);
+            let msg = format!("  → Note: {} (id: {})", parsed.title, note_id);
+            if let Some(log) = logger {
+                let _ = log.print_and_log("index", &msg);
+            } else {
+                println!("{}", msg);
+            }
         }
 
         // Insert tags
@@ -208,7 +334,12 @@ fn index_vault(config: &Config, dry_run: bool, force: bool, verbose: bool) -> Re
             db.insert_tag(note_id, tag)
                 .context("Failed to insert tag")?;
             if verbose {
-                println!("    • Tag: {}", tag);
+                let msg = format!("    • Tag: {}", tag);
+                if let Some(log) = logger {
+                    let _ = log.print_and_log("index", &msg);
+                } else {
+                    println!("{}", msg);
+                }
             }
         }
 
@@ -226,7 +357,12 @@ fn index_vault(config: &Config, dry_run: bool, force: bool, verbose: bool) -> Re
             .context("Failed to insert link")?;
             if verbose {
                 let link_type = if link.is_embed { "Embed" } else { "Link" };
-                println!("    • {}: [[{}]]", link_type, link.text);
+                let msg = format!("    • {}: [[{}]]", link_type, link.text);
+                if let Some(log) = logger {
+                    let _ = log.print_and_log("index", &msg);
+                } else {
+                    println!("{}", msg);
+                }
             }
         }
 
@@ -234,12 +370,22 @@ fn index_vault(config: &Config, dry_run: bool, force: bool, verbose: bool) -> Re
         db.insert_chunk(note_id, None, &parsed.text)
             .context("Failed to insert chunk")?;
         if verbose {
-            println!("    • Chunk: {} chars", parsed.text.len());
+            let msg = format!("    • Chunk: {} chars", parsed.text.len());
+            if let Some(log) = logger {
+                let _ = log.print_and_log("index", &msg);
+            } else {
+                println!("{}", msg);
+            }
         }
         indexed_count += 1;
     }
 
-    println!("Indexed {} notes successfully", indexed_count);
+    let msg = format!("Indexed {} notes successfully", indexed_count);
+    if let Some(log) = logger {
+        let _ = log.print_and_log("index", &msg);
+    } else {
+        println!("{}", msg);
+    }
 
     Ok(())
 }

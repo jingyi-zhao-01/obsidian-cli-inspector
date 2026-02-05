@@ -7,6 +7,8 @@ pub struct Config {
     #[serde(default)]
     pub database_path: Option<PathBuf>,
     #[serde(default)]
+    pub log_path: Option<PathBuf>,
+    #[serde(default)]
     pub exclude: ExcludeConfig,
     #[serde(default)]
     pub search: SearchConfig,
@@ -91,6 +93,18 @@ impl Config {
             path.push("obsidian-cli");
             path.push("index.db");
             path
+        })
+    }
+
+    pub fn config_dir(&self) -> PathBuf {
+        dirs::config_dir()
+            .unwrap_or_else(|| PathBuf::from("."))
+            .join("obsidian-cli")
+    }
+
+    pub fn log_dir(&self) -> PathBuf {
+        self.log_path.clone().unwrap_or_else(|| {
+            self.config_dir().join("logs")
         })
     }
 }

@@ -6,6 +6,9 @@ vault_path = "/path/to/your/vault"
 # Database location (default: ~/.local/share/obsidian-cli/index.db)
 # database_path = "~/.local/share/obsidian-cli/index.db"
 
+# Log directory location (default: ~/.config/obsidian-cli/logs)
+# log_path = "/path/to/logs"
+
 # Directories and patterns to exclude from scanning
 [exclude]
 patterns = [
