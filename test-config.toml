@@ -1,0 +1,19 @@
+# Obsidian CLI Test Vault Configuration
+
+vault_path = "/home/jingyi/RustroverProjects/obsidian-cli/test-vault"
+
+# Database will be created in project directory for testing
+database_path = "/home/jingyi/RustroverProjects/obsidian-cli/test.db"
+
+[exclude]
+patterns = [
+    ".obsidian/",
+    ".git/",
+    ".trash/",
+]
+
+[search]
+default_limit = 20
+
+[graph]
+max_depth = 3
