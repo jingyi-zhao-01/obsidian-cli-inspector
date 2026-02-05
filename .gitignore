@@ -1,1 +1,10 @@
 /target
+
+# SQLite databases
+*.db
+*.db-shm
+*.db-wal
+
+# TODO files
+TODO*
+TODOs*

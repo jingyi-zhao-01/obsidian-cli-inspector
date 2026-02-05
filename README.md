@@ -4,32 +4,32 @@ A **local-first CLI/TUI tool** for indexing and querying Obsidian vaults. Built 
 
 ## Features
 
-- 🔍 **Fast full-text search** using SQLite FTS5
-- 🔗 **Link analysis** - Find backlinks, forward links, and unresolved references
-- 🏷️ **Tag management** - Query notes by tags with AND/OR operations
-- 📊 **Graph navigation** - Explore connections between notes
-- 💡 **Smart suggestions** - Find related notes without explicit links
-- 🧹 **Vault hygiene** - Detect bloated notes and suggest refactoring
-- ⚡ **Incremental indexing** - Fast re-indexing by tracking changes
-- 🖥️ **CLI + TUI** - Scriptable commands and interactive interface
+- **Fast full-text search** using SQLite FTS5
+- **Link analysis** - Find backlinks, forward links, and unresolved references
+- **Tag management** - Query notes by tags with AND/OR operations
+- **Graph navigation** - Explore connections between notes
+- **Smart suggestions** - Find related notes without explicit links
+- **Vault hygiene** - Detect bloated notes and suggest refactoring
+- **Incremental indexing** - Fast re-indexing by tracking changes
+- **CLI + TUI** - Scriptable commands and interactive interface
 
 ## Status
 
-**Phase 0 (Foundations) - ✅ Complete**
-- ✅ Project builds as a single Rust binary
-- ✅ SQLite database with FTS5 support
-- ✅ Configuration via `config.toml`
-- ✅ CLI command structure defined
+**Phase 0 (Foundations) - Complete**
+- Project builds as a single Rust binary
+- SQLite database with FTS5 support
+- Configuration via `config.toml`
+- CLI command structure defined
 
 **Upcoming Phases:**
-- 📝 Phase 1: Vault scanning and change detection
-- 📄 Phase 2: Obsidian markdown parsing (wikilinks, frontmatter, tags)
-- ✂️ Phase 3: Document chunking for retrieval
-- 🗄️ Phase 4: Full database schema implementation
-- 🔄 Phase 5: Incremental indexing
-- 🔎 Phase 6: Query layer (search, links, tags)
-- 🧠 Phase 7: Relevance suggestions
-- 🎯 Phase 8: Bloat detection and refactoring
+- Phase 1: Vault scanning and change detection
+- Phase 2: Obsidian markdown parsing (wikilinks, frontmatter, tags)
+- Phase 3: Document chunking for retrieval
+- Phase 4: Full database schema implementation
+- Phase 5: Incremental indexing
+- Phase 6: Query layer (search, links, tags)
+- Phase 7: Relevance suggestions
+- Phase 8: Bloat detection and refactoring
 
 ## Installation
 
