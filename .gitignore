@@ -1,0 +1,19 @@
+/target
+
+# SQLite databases
+*.db
+*.db-shm
+*.db-wal
+
+TODO*
+TODOs*
+# Log files
+logs/
+# Code coverage
+/coverage/
+*.profraw
+*.profdata
+cobertura.xml
+lcov.info
+tarpaulin-report.html
+cobertura-coverage.xml
