@@ -2,8 +2,8 @@ name: Test
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - main
 
 env:
   CARGO_TERM_COLOR: always
@@ -120,12 +120,28 @@ jobs:
         with:
           path: ./artifacts
 
+      - name: Create next version tag
+        id: create_tag
+        run: |
+          git fetch --tags --force
+          LATEST_TAG=$(git describe --abbrev=0 --tags 2>/dev/null || echo "v0.0.0")
+          VERSION=${LATEST_TAG#v}
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+          MAJOR=${MAJOR:-0}
+          MINOR=${MINOR:-0}
+          PATCH=${PATCH:-0}
+          PATCH=$((PATCH + 1))
+          NEW_TAG="v${MAJOR}.${MINOR}.${PATCH}"
+          git tag "$NEW_TAG"
+          git push origin "$NEW_TAG"
+          echo "TAG=${NEW_TAG}" >> $GITHUB_OUTPUT
+          echo "VERSION=${NEW_TAG#v}" >> $GITHUB_OUTPUT
+
       - name: Extract version from tag
         id: get_version
         run: |
-          TAG=$(git tag --points-at HEAD | head -n 1)
-          echo "TAG=${TAG}" >> $GITHUB_OUTPUT
-          echo "VERSION=${TAG#v}" >> $GITHUB_OUTPUT
+          echo "TAG=${{ steps.create_tag.outputs.TAG }}" >> $GITHUB_OUTPUT
+          echo "VERSION=${{ steps.create_tag.outputs.VERSION }}" >> $GITHUB_OUTPUT
 
       - name: Generate release notes
         id: release_notes
