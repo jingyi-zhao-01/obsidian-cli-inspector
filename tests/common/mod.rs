@@ -1,5 +1,5 @@
 use anyhow::Result;
-use obsidian_cli::config::Config;
+use obsidian_cli_inspector::config::Config;
 use std::fs;
 use tempfile::TempDir;
 

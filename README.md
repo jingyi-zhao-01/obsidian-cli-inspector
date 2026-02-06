@@ -1,6 +1,6 @@
-# Obsidian CLI
+# Obsidian CLI Inspector
 
-A **local-first CLI/TUI tool** for indexing and querying Obsidian vaults. Built with Rust for speed and reliability.
+A **local-first, read-only CLI/TUI tool** for vault hygiene and querying Obsidian vaults. Built with Rust for speed and reliability.
 
 ## Features
 
@@ -172,14 +172,26 @@ See [config.toml.example](config.toml.example) for details.
 cargo build
 
 # Run tests
-cargo test
+# Check formatting (CI parity)
+rustfmt --edition 2021 --check $(git ls-files '*.rs')
 
-# Check code
-cargo clippy
+# Lint (CI parity)
+cargo clippy --all-targets --all-features -- -D warnings
 
-# Format code
-cargo fmt
+# Convenience aliases (same as CI)
+cargo fmt-check
+cargo lint
 ```
+
+### Git hooks (format/lint/tests)
+
+Enable the repo hooks (pre-commit: format + lint, pre-push: tests):
+
+```bash
+git config core.hooksPath .githooks
+```
+
+If you clone to a new machine, re-run the command above.
 
 ### Project Structure
 

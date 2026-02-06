@@ -90,7 +90,7 @@ impl Config {
     pub fn database_path(&self) -> PathBuf {
         self.database_path.clone().unwrap_or_else(|| {
             let mut path = dirs::data_local_dir().unwrap_or_else(|| PathBuf::from("."));
-            path.push("obsidian-cli");
+            path.push("obsidian-cli-inspector");
             path.push("index.db");
             path
         })
@@ -99,7 +99,7 @@ impl Config {
     pub fn config_dir(&self) -> PathBuf {
         dirs::config_dir()
             .unwrap_or_else(|| PathBuf::from("."))
-            .join("obsidian-cli")
+            .join("obsidian-cli-inspector")
     }
 
     pub fn log_dir(&self) -> PathBuf {

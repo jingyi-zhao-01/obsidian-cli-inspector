@@ -1,12 +1,12 @@
-# Obsidian CLI Configuration
+# Obsidian CLI Inspector Configuration
 
 # Path to your Obsidian vault (required)
 vault_path = "/path/to/your/vault"
 
-# Database location (default: ~/.local/share/obsidian-cli/index.db)
-# database_path = "~/.local/share/obsidian-cli/index.db"
+# Database location (default: ~/.local/share/obsidian-cli-inspector/index.db)
+# database_path = "~/.local/share/obsidian-cli-inspector/index.db"
 
-# Log directory location (default: ~/.config/obsidian-cli/logs)
+# Log directory location (default: ~/.config/obsidian-cli-inspector/logs)
 # log_path = "/path/to/logs"
 
 # Directories and patterns to exclude from scanning
