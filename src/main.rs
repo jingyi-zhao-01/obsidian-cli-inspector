@@ -1,6 +1,6 @@
 use anyhow::{Context, Result};
 use clap::Parser;
-use obsidian_cli::{
+use obsidian_cli_inspector::{
     cli::{Cli, Commands},
     config::Config,
     logger::Logger,
@@ -106,7 +106,7 @@ fn main() -> Result<()> {
 fn load_config(config_path: Option<PathBuf>) -> Result<Config> {
     let path = config_path.unwrap_or_else(|| {
         let mut p = dirs::config_dir().unwrap_or_else(|| PathBuf::from("."));
-        p.push("obsidian-cli");
+        p.push("obsidian-cli-inspector");
         p.push("config.toml");
         p
     });

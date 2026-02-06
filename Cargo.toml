@@ -1,5 +1,5 @@
 [package]
-name = "obsidian-cli"
+name = "obsidian-cli-inspector"
 version = "0.1.0"
 edition = "2021"
 authors = ["obsidian-cli contributors"]

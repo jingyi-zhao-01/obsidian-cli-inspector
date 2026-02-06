@@ -1,7 +1,7 @@
 mod common;
 
 use anyhow::Result;
-use obsidian_cli::commands::*;
+use obsidian_cli_inspector::commands::*;
 
 #[test]
 fn test_index_vault() -> Result<()> {

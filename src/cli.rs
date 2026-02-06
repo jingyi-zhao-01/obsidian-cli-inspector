@@ -2,7 +2,7 @@ use clap::{Parser, Subcommand};
 use std::path::PathBuf;
 
 #[derive(Parser)]
-#[command(name = "obsidian-cli")]
+#[command(name = "obsidian-cli-inspector")]
 #[command(author, version, about = "Local-first CLI/TUI for indexing and querying Obsidian vaults", long_about = None)]
 pub struct Cli {
     /// Path to config file

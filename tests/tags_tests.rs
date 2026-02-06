@@ -1,7 +1,7 @@
 mod common;
 
 use anyhow::Result;
-use obsidian_cli::commands::*;
+use obsidian_cli_inspector::commands::*;
 
 // CLI equivalent: cargo run -- --config test-config.toml tags learning
 // CLI equivalent: cargo run -- --config test-config.toml tags productivity
