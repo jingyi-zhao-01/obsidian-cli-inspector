@@ -1,21 +1,13 @@
-pub mod init;
-pub mod stats;
 pub mod index;
-pub mod search;
+pub mod init;
 pub mod other;
+pub mod search;
+pub mod stats;
 
-pub use init::initialize_database;
-pub use stats::show_stats;
 pub use index::index_vault;
+pub use init::initialize_database;
 pub use other::{
-    search_vault,
-    get_backlinks,
-    get_forward_links,
-    list_unresolved_links,
-    list_notes_by_tag,
-    show_unimplemented,
-    show_suggest,
-    show_bloat,
-    show_tui,
-    show_graph
+    get_backlinks, get_forward_links, list_notes_by_tag, list_unresolved_links, search_vault,
+    show_bloat, show_graph, show_suggest, show_tui, show_unimplemented,
 };
+pub use stats::show_stats;

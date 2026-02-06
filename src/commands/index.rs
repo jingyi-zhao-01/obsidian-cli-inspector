@@ -1,11 +1,11 @@
 use anyhow::{Context, Result};
 use std::fs;
 
+use crate::chunker::MarkdownChunker;
 use crate::config::Config;
 use crate::db::Database;
 use crate::logger::Logger;
 use crate::parser::MarkdownParser;
-use crate::chunker::MarkdownChunker;
 use crate::scanner::VaultScanner;
 
 pub fn index_vault(
@@ -141,7 +141,7 @@ pub fn index_vault(
         // Create chunker and split content into chunks
         let chunker = MarkdownChunker::default();
         let chunks = chunker.chunk(&content);
-        
+
         if verbose {
             let msg = format!("    • Created {} chunk(s)", chunks.len());
             if let Some(log) = logger {
@@ -161,9 +161,10 @@ pub fn index_vault(
                 chunk.byte_length as i32,
             )
             .context("Failed to insert chunk")?;
-            
+
             if verbose {
-                let heading_info = chunk.heading_path
+                let heading_info = chunk
+                    .heading_path
                     .as_ref()
                     .map(|h| format!(" [{}]", h))
                     .unwrap_or_default();
@@ -180,7 +181,7 @@ pub fn index_vault(
                 }
             }
         }
-        
+
         indexed_count += 1;
     }
 

@@ -1,6 +1,6 @@
+use anyhow::Result;
 use std::fs;
 use std::path::{Path, PathBuf};
-use anyhow::Result;
 
 #[derive(Debug, Clone)]
 pub struct FileEntry {

@@ -1,10 +1,10 @@
 use std::collections::HashMap;
 
-mod wikilink;
 mod markdown;
+mod wikilink;
 
+pub use markdown::{build_markdown_link, extract_markdown_links};
 pub use wikilink::{extract_wikilinks, parse_wikilink};
-pub use markdown::{extract_markdown_links, build_markdown_link};
 
 #[derive(Debug, Clone)]
 pub struct ParsedNote {
@@ -45,9 +45,9 @@ pub struct MarkdownParser;
 impl MarkdownParser {
     pub fn parse(content: &str) -> ParsedNote {
         let (frontmatter, rest) = Self::extract_frontmatter(content);
-        let tags = Self::extract_tags(&frontmatter, &rest);
-        let links = Self::extract_links(&rest);
-        let title = Self::extract_title(&frontmatter, &rest);
+        let tags = Self::extract_tags(&frontmatter, rest);
+        let links = Self::extract_links(rest);
+        let title = Self::extract_title(&frontmatter, rest);
 
         ParsedNote {
             title,
@@ -86,10 +86,7 @@ impl MarkdownParser {
                         for tag in tags_str.split(',') {
                             let clean_tag = tag.trim().trim_matches('"').trim_matches('\'');
                             if !clean_tag.is_empty() {
-                                map.insert(
-                                    format!("tag_{}", clean_tag),
-                                    clean_tag.to_string(),
-                                );
+                                map.insert(format!("tag_{}", clean_tag), clean_tag.to_string());
                             }
                         }
                     } else {
@@ -113,8 +110,8 @@ impl MarkdownParser {
         // Try to extract from first heading
         for line in content.lines() {
             let trimmed = line.trim();
-            if trimmed.starts_with("# ") {
-                return trimmed[2..].trim().to_string();
+            if let Some(stripped) = trimmed.strip_prefix("# ") {
+                return stripped.trim().to_string();
             }
         }
 
@@ -135,7 +132,8 @@ impl MarkdownParser {
         // From inline tags in content
         for word in content.split_whitespace() {
             if word.starts_with('#') && word.len() > 1 {
-                let tag = word.trim_matches(|c: char| !c.is_alphanumeric() && c != '/' && c != '_')
+                let tag = word
+                    .trim_matches(|c: char| !c.is_alphanumeric() && c != '/' && c != '_')
                     .trim_start_matches('#');
                 if !tag.is_empty() && !tags.contains(&tag.to_string()) {
                     tags.push(tag.to_string());

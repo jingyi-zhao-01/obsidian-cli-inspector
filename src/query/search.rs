@@ -12,11 +12,7 @@ pub struct SearchResult {
 }
 
 /// Search chunks using FTS5 full-text search with BM25 ranking
-pub fn search_chunks(
-    conn: &Connection,
-    query: &str,
-    limit: usize,
-) -> Result<Vec<SearchResult>> {
+pub fn search_chunks(conn: &Connection, query: &str, limit: usize) -> Result<Vec<SearchResult>> {
     let mut stmt = conn.prepare(
         "SELECT 
             c.id,
@@ -31,7 +27,7 @@ pub fn search_chunks(
          JOIN notes n ON c.note_id = n.id
          WHERE fts_chunks MATCH ?1
          ORDER BY rank
-         LIMIT ?2"
+         LIMIT ?2",
     )?;
 
     let results = stmt.query_map([query, &limit.to_string()], |row| {

@@ -2,9 +2,9 @@ use anyhow::{Context, Result};
 use clap::Parser;
 use obsidian_cli_inspector::{
     cli::{Cli, Commands},
+    commands::*,
     config::Config,
     logger::Logger,
-    commands::*,
 };
 use std::path::PathBuf;
 
@@ -13,10 +13,7 @@ fn main() -> Result<()> {
 
     let config = load_config(cli.config.clone()).ok();
     let logger = if let Some(ref cfg) = config {
-        match Logger::new(cfg.log_dir()) {
-            Ok(log) => Some(log),
-            Err(_) => None,
-        }
+        Logger::new(cfg.log_dir()).ok()
     } else {
         None
     };

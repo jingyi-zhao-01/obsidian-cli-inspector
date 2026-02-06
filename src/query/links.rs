@@ -1,4 +1,4 @@
-use rusqlite::{Connection, Result, OptionalExtension};
+use rusqlite::{Connection, OptionalExtension, Result};
 
 #[derive(Debug, Clone)]
 pub struct LinkResult {
@@ -12,17 +12,12 @@ pub struct LinkResult {
 }
 
 /// Get all notes that link to a given note (backlinks)
-pub fn get_backlinks(
-    conn: &Connection,
-    note_path: &str,
-) -> Result<Vec<LinkResult>> {
+pub fn get_backlinks(conn: &Connection, note_path: &str) -> Result<Vec<LinkResult>> {
     // First find the target note
     let target_note_id: Option<i64> = conn
-        .query_row(
-            "SELECT id FROM notes WHERE path = ?1",
-            [note_path],
-            |row| row.get(0),
-        )
+        .query_row("SELECT id FROM notes WHERE path = ?1", [note_path], |row| {
+            row.get(0)
+        })
         .optional()?;
 
     if target_note_id.is_none() {
@@ -44,7 +39,7 @@ pub fn get_backlinks(
          FROM links l
          JOIN notes src ON l.src_note_id = src.id
          WHERE l.dst_note_id = ?1
-         ORDER BY src.path"
+         ORDER BY src.path",
     )?;
 
     let results = stmt.query_map([target_note_id], |row| {
@@ -68,17 +63,12 @@ pub fn get_backlinks(
 }
 
 /// Get all notes that a given note links to (forward links)
-pub fn get_forward_links(
-    conn: &Connection,
-    note_path: &str,
-) -> Result<Vec<LinkResult>> {
+pub fn get_forward_links(conn: &Connection, note_path: &str) -> Result<Vec<LinkResult>> {
     // First find the source note
     let src_note_id: Option<i64> = conn
-        .query_row(
-            "SELECT id FROM notes WHERE path = ?1",
-            [note_path],
-            |row| row.get(0),
-        )
+        .query_row("SELECT id FROM notes WHERE path = ?1", [note_path], |row| {
+            row.get(0)
+        })
         .optional()?;
 
     if src_note_id.is_none() {
@@ -100,7 +90,7 @@ pub fn get_forward_links(
          FROM links l
          LEFT JOIN notes dst ON l.dst_note_id = dst.id
          WHERE l.src_note_id = ?1
-         ORDER BY l.dst_text"
+         ORDER BY l.dst_text",
     )?;
 
     let results = stmt.query_map([src_note_id], |row| {
@@ -138,7 +128,7 @@ pub fn get_unresolved_links(conn: &Connection) -> Result<Vec<LinkResult>> {
          FROM links l
          JOIN notes src ON l.src_note_id = src.id
          WHERE l.dst_note_id IS NULL
-         ORDER BY l.dst_text, src.path"
+         ORDER BY l.dst_text, src.path",
     )?;
 
     let results = stmt.query_map([], |row| {

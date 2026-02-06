@@ -10,20 +10,14 @@ pub struct DatabaseStats {
 }
 
 pub fn get_stats(conn: &Connection) -> rusqlite::Result<DatabaseStats> {
-    let note_count: i32 = conn
-        .query_row("SELECT COUNT(*) FROM notes", [], |row| row.get(0))?;
+    let note_count: i32 = conn.query_row("SELECT COUNT(*) FROM notes", [], |row| row.get(0))?;
 
-    let link_count: i32 = conn
-        .query_row("SELECT COUNT(*) FROM links", [], |row| row.get(0))?;
+    let link_count: i32 = conn.query_row("SELECT COUNT(*) FROM links", [], |row| row.get(0))?;
 
-    let tag_count: i32 = conn.query_row(
-        "SELECT COUNT(DISTINCT tag) FROM tags",
-        [],
-        |row| row.get(0),
-    )?;
+    let tag_count: i32 =
+        conn.query_row("SELECT COUNT(DISTINCT tag) FROM tags", [], |row| row.get(0))?;
 
-    let chunk_count: i32 = conn
-        .query_row("SELECT COUNT(*) FROM chunks", [], |row| row.get(0))?;
+    let chunk_count: i32 = conn.query_row("SELECT COUNT(*) FROM chunks", [], |row| row.get(0))?;
 
     let unresolved_links: i32 = conn.query_row(
         "SELECT COUNT(*) FROM links WHERE dst_note_id IS NULL",

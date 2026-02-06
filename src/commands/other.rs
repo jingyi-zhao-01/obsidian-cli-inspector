@@ -1,8 +1,8 @@
-use anyhow::{Context, Result};
 use crate::config::Config;
 use crate::db::Database;
 use crate::logger::Logger;
 use crate::query;
+use anyhow::{Context, Result};
 
 /// Search vault using full-text search
 pub fn search_vault(
@@ -32,7 +32,8 @@ pub fn search_vault(
         return Ok(());
     }
 
-    let results = db.conn()
+    let results = db
+        .conn()
         .execute_query(|conn| query::search_chunks(conn, query_str, limit))
         .context("Failed to execute search")?;
 
@@ -46,7 +47,11 @@ pub fn search_vault(
         return Ok(());
     }
 
-    let msg = format!("Search Results for '{}' ({} results):", query_str, results.len());
+    let msg = format!(
+        "Search Results for '{}' ({} results):",
+        query_str,
+        results.len()
+    );
     if let Some(log) = logger {
         let _ = log.print_and_log("search", &msg);
     } else {
@@ -54,7 +59,8 @@ pub fn search_vault(
     }
 
     for (idx, result) in results.iter().enumerate() {
-        let heading_info = result.heading_path
+        let heading_info = result
+            .heading_path
             .as_ref()
             .map(|h| format!(" [{}]", h))
             .unwrap_or_default();
@@ -64,7 +70,14 @@ pub fn search_vault(
             result.note_title,
             result.note_path,
             heading_info,
-            result.chunk_text.lines().next().unwrap_or("").chars().take(80).collect::<String>()
+            result
+                .chunk_text
+                .lines()
+                .next()
+                .unwrap_or("")
+                .chars()
+                .take(80)
+                .collect::<String>()
         );
         if let Some(log) = logger {
             let _ = log.print_and_log("search", &msg);
@@ -77,11 +90,7 @@ pub fn search_vault(
 }
 
 /// Get all notes that link to a specific note (backlinks)
-pub fn get_backlinks(
-    config: &Config,
-    note: &str,
-    logger: Option<&Logger>,
-) -> Result<()> {
+pub fn get_backlinks(config: &Config, note: &str, logger: Option<&Logger>) -> Result<()> {
     let db_path = config.database_path();
 
     if !db_path.exists() {
@@ -94,7 +103,8 @@ pub fn get_backlinks(
     let db = Database::open(&db_path)
         .with_context(|| format!("Failed to open database: {}", db_path.display()))?;
 
-    let backlinks = db.conn()
+    let backlinks = db
+        .conn()
         .execute_query(|conn| query::get_backlinks(conn, note))
         .context("Failed to get backlinks")?;
 
@@ -123,7 +133,10 @@ pub fn get_backlinks(
             link.note_title,
             link.note_path,
             link_type,
-            link.alias.as_ref().map(|a| format!("(alias: {})", a)).unwrap_or_default()
+            link.alias
+                .as_ref()
+                .map(|a| format!("(alias: {})", a))
+                .unwrap_or_default()
         );
         if let Some(log) = logger {
             let _ = log.print_and_log("backlinks", &msg);
@@ -136,11 +149,7 @@ pub fn get_backlinks(
 }
 
 /// Get all notes that a specific note links to (forward links)
-pub fn get_forward_links(
-    config: &Config,
-    note: &str,
-    logger: Option<&Logger>,
-) -> Result<()> {
+pub fn get_forward_links(config: &Config, note: &str, logger: Option<&Logger>) -> Result<()> {
     let db_path = config.database_path();
 
     if !db_path.exists() {
@@ -153,7 +162,8 @@ pub fn get_forward_links(
     let db = Database::open(&db_path)
         .with_context(|| format!("Failed to open database: {}", db_path.display()))?;
 
-    let forward_links = db.conn()
+    let forward_links = db
+        .conn()
         .execute_query(|conn| query::get_forward_links(conn, note))
         .context("Failed to get forward links")?;
 
@@ -167,7 +177,11 @@ pub fn get_forward_links(
         return Ok(());
     }
 
-    let msg = format!("Forward links from '{}' ({} found):", note, forward_links.len());
+    let msg = format!(
+        "Forward links from '{}' ({} found):",
+        note,
+        forward_links.len()
+    );
     if let Some(log) = logger {
         let _ = log.print_and_log("links", &msg);
     } else {
@@ -175,7 +189,11 @@ pub fn get_forward_links(
     }
 
     for (idx, link) in forward_links.iter().enumerate() {
-        let status = if link.note_id < 0 { "[unresolved]" } else { "[resolved]" };
+        let status = if link.note_id < 0 {
+            "[unresolved]"
+        } else {
+            "[resolved]"
+        };
         let msg = format!(
             "{}. {} ({})\n   {}",
             idx + 1,
@@ -194,10 +212,7 @@ pub fn get_forward_links(
 }
 
 /// List all unresolved links in the vault
-pub fn list_unresolved_links(
-    config: &Config,
-    logger: Option<&Logger>,
-) -> Result<()> {
+pub fn list_unresolved_links(config: &Config, logger: Option<&Logger>) -> Result<()> {
     let db_path = config.database_path();
 
     if !db_path.exists() {
@@ -210,8 +225,9 @@ pub fn list_unresolved_links(
     let db = Database::open(&db_path)
         .with_context(|| format!("Failed to open database: {}", db_path.display()))?;
 
-    let unresolved = db.conn()
-        .execute_query(|conn| query::get_unresolved_links(conn))
+    let unresolved = db
+        .conn()
+        .execute_query(query::get_unresolved_links)
         .context("Failed to get unresolved links")?;
 
     if unresolved.is_empty() {
@@ -270,8 +286,9 @@ pub fn list_notes_by_tag(
 
     if all || tag.is_none() {
         // List all tags
-        let all_tags = db.conn()
-            .execute_query(|conn| query::list_tags(conn))
+        let all_tags = db
+            .conn()
+            .execute_query(query::list_tags)
             .context("Failed to list tags")?;
 
         if all_tags.is_empty() {
@@ -301,7 +318,8 @@ pub fn list_notes_by_tag(
         }
     } else if let Some(tag_name) = tag {
         // List notes with specific tag
-        let notes = db.conn()
+        let notes = db
+            .conn()
             .execute_query(|conn| query::get_notes_by_tag(conn, tag_name))
             .context("Failed to get notes by tag")?;
 
