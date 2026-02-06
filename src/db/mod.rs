@@ -1,8 +1,8 @@
-use rusqlite::{Connection, Result, OptionalExtension};
+use rusqlite::{Connection, OptionalExtension, Result};
 use std::path::Path;
 
-mod schema;
 mod operations;
+mod schema;
 mod stats;
 
 pub use stats::DatabaseStats;
@@ -76,14 +76,7 @@ impl Database {
         hash: &str,
         frontmatter_json: Option<&str>,
     ) -> Result<i64> {
-        operations::insert_note(
-            &self.conn,
-            path,
-            title,
-            mtime,
-            hash,
-            frontmatter_json,
-        )
+        operations::insert_note(&self.conn, path, title, mtime, hash, frontmatter_json)
     }
 
     pub fn get_note_by_path(&self, path: &str) -> Result<Option<i64>> {
@@ -94,6 +87,7 @@ impl Database {
         operations::insert_tag(&self.conn, note_id, tag)
     }
 
+    #[allow(clippy::too_many_arguments)]
     pub fn insert_link(
         &self,
         src_note_id: i64,
@@ -144,9 +138,7 @@ impl Database {
 
     /// Execute a query function with access to the database connection
     pub fn conn(&self) -> DatabaseQueryExecutor {
-        DatabaseQueryExecutor {
-            conn: &self.conn,
-        }
+        DatabaseQueryExecutor { conn: &self.conn }
     }
 }
 
@@ -154,7 +146,7 @@ pub struct DatabaseQueryExecutor<'a> {
     conn: &'a Connection,
 }
 
-impl<'a> DatabaseQueryExecutor<'a> {
+impl DatabaseQueryExecutor<'_> {
     pub fn execute_query<T, F>(&self, f: F) -> Result<T>
     where
         F: FnOnce(&Connection) -> Result<T>,

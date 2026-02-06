@@ -1,4 +1,4 @@
-use super::{Link, LinkType, normalize_note_identifier};
+use super::{normalize_note_identifier, Link, LinkType};
 
 pub fn extract_wikilinks(content: &str) -> Vec<Link> {
     let mut links = Vec::new();
@@ -82,8 +82,8 @@ fn parse_link_content(content: &str) -> (String, Option<String>, Option<String>,
         let heading = text[hash_pos + 1..].trim().to_string();
         let t = text[..hash_pos].trim().to_string();
 
-        if heading.starts_with('^') {
-            block_ref = Some(heading[1..].to_string());
+        if let Some(stripped) = heading.strip_prefix('^') {
+            block_ref = Some(stripped.to_string());
         } else {
             heading_ref = Some(heading);
         }

@@ -1,5 +1,5 @@
-use super::Chunk;
 use super::overlap::get_overlap_text;
+use super::Chunk;
 
 pub fn chunk_by_paragraphs(
     content: &str,
@@ -10,7 +10,7 @@ pub fn chunk_by_paragraphs(
 ) -> Vec<Chunk> {
     let mut chunks = Vec::new();
     let paragraphs = split_into_paragraphs(content);
-    
+
     if paragraphs.is_empty() {
         return chunks;
     }
@@ -63,7 +63,7 @@ pub fn split_into_paragraphs(content: &str) -> Vec<(String, usize)> {
 
     for line in content.lines() {
         let line_with_newline = format!("{}\n", line);
-        
+
         if line.trim().is_empty() {
             // Blank line - end of paragraph
             if !current_para.trim().is_empty() {
@@ -94,7 +94,7 @@ fn estimate_tokens(text: &str) -> usize {
     // Also count whitespace-separated words for better accuracy
     let char_estimate = text.len() / 4;
     let word_count = text.split_whitespace().count();
-    
+
     // Use average of both estimates
     (char_estimate + word_count) / 2
 }

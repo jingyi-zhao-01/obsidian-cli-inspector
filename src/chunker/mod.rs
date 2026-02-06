@@ -1,12 +1,11 @@
 /// Chunking module for splitting markdown notes into retrieval-ready text units
-/// 
+///
 /// This module implements heading-based chunking with paragraph fallback,
 /// preserving document structure and maintaining stable heading paths.
-
 mod chunk;
 mod heading;
-mod paragraph;
 mod overlap;
+mod paragraph;
 
 pub use chunk::Chunk;
 
@@ -40,7 +39,7 @@ impl MarkdownChunker {
     pub fn chunk(&self, content: &str) -> Vec<Chunk> {
         // First, try to split by headings
         let heading_sections = self.split_by_headings(content);
-        
+
         if heading_sections.is_empty() {
             // No headings found, fall back to paragraph-based chunking
             return paragraph::chunk_by_paragraphs(
@@ -53,7 +52,7 @@ impl MarkdownChunker {
         }
 
         let mut chunks = Vec::new();
-        
+
         for section in heading_sections {
             // If section is small enough, create a single chunk
             if section.text.len() <= self.max_chunk_size {
@@ -90,7 +89,7 @@ impl MarkdownChunker {
 
         for line in content.lines() {
             let line_with_newline = format!("{}\n", line);
-            
+
             if let Some(heading) = heading::parse_heading(line) {
                 // Save previous section if it has content
                 if !current_text.trim().is_empty() {
@@ -129,9 +128,14 @@ impl MarkdownChunker {
     }
 
     /// Update the heading stack based on the new heading level
-    fn update_heading_stack(&self, stack: &mut Vec<HeadingInfo>, mut new_heading: HeadingInfo, offset: usize) {
+    fn update_heading_stack(
+        &self,
+        stack: &mut Vec<HeadingInfo>,
+        mut new_heading: HeadingInfo,
+        offset: usize,
+    ) {
         new_heading.byte_offset = offset;
-        
+
         // Pop headings at same or lower level
         while let Some(top) = stack.last() {
             if top.level >= new_heading.level {
@@ -140,7 +144,7 @@ impl MarkdownChunker {
                 break;
             }
         }
-        
+
         stack.push(new_heading);
     }
 
@@ -164,7 +168,7 @@ impl MarkdownChunker {
         // Also count whitespace-separated words for better accuracy
         let char_estimate = text.len() / 4;
         let word_count = text.split_whitespace().count();
-        
+
         // Use average of both estimates
         (char_estimate + word_count) / 2
     }
@@ -226,7 +230,8 @@ More detailed information.
     #[test]
     fn test_chunk_no_headings() {
         let chunker = MarkdownChunker::new(100, 20);
-        let content = "This is a simple paragraph without any headings. It should still be chunked properly.";
+        let content =
+            "This is a simple paragraph without any headings. It should still be chunked properly.";
 
         let chunks = chunker.chunk(content);
         assert_eq!(chunks.len(), 1);
@@ -236,12 +241,12 @@ More detailed information.
     #[test]
     fn test_estimate_tokens() {
         let chunker = MarkdownChunker::default();
-        
+
         let text = "This is a test sentence.";
         let tokens = chunker.estimate_tokens(text);
-        
+
         // Should be roughly 5-6 tokens (within reasonable range)
-        assert!(tokens >= 4 && tokens <= 8);
+        assert!((4..=8).contains(&tokens));
     }
 
     #[test]
@@ -268,11 +273,11 @@ Details here.
 "#;
 
         let chunks = chunker.chunk(content);
-        
+
         // Should have a chunk with nested heading path
-        let nested_chunk = chunks.iter().find(|c| {
-            c.heading_path.as_ref().map_or(false, |p| p.contains(" > "))
-        });
+        let nested_chunk = chunks
+            .iter()
+            .find(|c| c.heading_path.as_ref().is_some_and(|p| p.contains(" > ")));
         assert!(nested_chunk.is_some());
     }
 }

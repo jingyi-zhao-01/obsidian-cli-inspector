@@ -103,8 +103,8 @@ impl Config {
     }
 
     pub fn log_dir(&self) -> PathBuf {
-        self.log_path.clone().unwrap_or_else(|| {
-            self.config_dir().join("logs")
-        })
+        self.log_path
+            .clone()
+            .unwrap_or_else(|| self.config_dir().join("logs"))
     }
 }

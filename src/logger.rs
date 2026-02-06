@@ -11,9 +11,7 @@ impl Logger {
     pub fn new(log_dir: PathBuf) -> Result<Self> {
         fs::create_dir_all(&log_dir)?;
 
-        Ok(Logger {
-            log_path: log_dir,
-        })
+        Ok(Logger { log_path: log_dir })
     }
 
     pub fn get_log_file(&self, command: &str) -> PathBuf {

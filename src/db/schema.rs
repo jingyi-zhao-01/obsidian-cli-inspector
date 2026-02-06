@@ -128,10 +128,7 @@ pub fn create_schema(conn: &Connection) -> rusqlite::Result<()> {
         [],
     )?;
 
-    conn.execute(
-        "CREATE INDEX IF NOT EXISTS idx_tags_tag ON tags(tag)",
-        [],
-    )?;
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_tags_tag ON tags(tag)", [])?;
 
     conn.execute(
         "CREATE INDEX IF NOT EXISTS idx_chunks_note ON chunks(note_id)",

@@ -1,4 +1,4 @@
-use super::{Link, LinkType, normalize_note_identifier};
+use super::{normalize_note_identifier, Link, LinkType};
 
 pub fn extract_markdown_links(content: &str) -> Vec<Link> {
     let mut links = Vec::new();
@@ -96,10 +96,7 @@ fn parse_bracket_section(
 
 fn clean_markdown_link_destination(dest: &str) -> String {
     let trimmed = dest.trim();
-    let trimmed = trimmed
-        .trim_start_matches('<')
-        .trim_end_matches('>')
-        .trim();
+    let trimmed = trimmed.trim_start_matches('<').trim_end_matches('>').trim();
     let mut parts = trimmed.split_whitespace();
     parts.next().unwrap_or("").to_string()
 }

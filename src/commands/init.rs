@@ -8,8 +8,9 @@ pub fn initialize_database(config: &Config, force: bool, logger: Option<&Logger>
     let db_path = config.database_path();
 
     if let Some(parent) = db_path.parent() {
-        std::fs::create_dir_all(parent)
-            .with_context(|| format!("Failed to create database directory: {}", parent.display()))?;
+        std::fs::create_dir_all(parent).with_context(|| {
+            format!("Failed to create database directory: {}", parent.display())
+        })?;
     }
 
     let msg = format!("Initializing database at: {}", db_path.display());
@@ -26,7 +27,10 @@ pub fn initialize_database(config: &Config, force: bool, logger: Option<&Logger>
         .context("Failed to initialize database schema")?;
 
     let version = db.get_version()?.unwrap_or(0);
-    let msg = format!("Database initialized successfully (schema version: {})", version);
+    let msg = format!(
+        "Database initialized successfully (schema version: {})",
+        version
+    );
     if let Some(log) = logger {
         let _ = log.print_and_log("init", &msg);
     } else {

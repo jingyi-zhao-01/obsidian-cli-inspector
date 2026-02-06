@@ -1,4 +1,4 @@
-use rusqlite::{Connection, Result, OptionalExtension};
+use rusqlite::{Connection, OptionalExtension, Result};
 
 pub fn insert_note(
     conn: &Connection,
@@ -14,11 +14,9 @@ pub fn insert_note(
         rusqlite::params![path, title, mtime as i64, hash, frontmatter_json],
     )?;
 
-    let note_id: i64 = conn.query_row(
-        "SELECT id FROM notes WHERE path = ?1",
-        [path],
-        |row| row.get(0),
-    )?;
+    let note_id: i64 = conn.query_row("SELECT id FROM notes WHERE path = ?1", [path], |row| {
+        row.get(0)
+    })?;
 
     Ok(note_id)
 }
@@ -38,6 +36,7 @@ pub fn insert_tag(conn: &Connection, note_id: i64, tag: &str) -> Result<()> {
     Ok(())
 }
 
+#[allow(clippy::too_many_arguments)]
 pub fn insert_link(
     conn: &Connection,
     src_note_id: i64,
@@ -64,7 +63,12 @@ pub fn insert_link(
     Ok(())
 }
 
-pub fn insert_chunk(conn: &Connection, note_id: i64, heading_path: Option<&str>, text: &str) -> Result<()> {
+pub fn insert_chunk(
+    conn: &Connection,
+    note_id: i64,
+    heading_path: Option<&str>,
+    text: &str,
+) -> Result<()> {
     let text_len = text.len() as i32;
     conn.execute(
         "INSERT INTO chunks (note_id, heading_path, text, byte_offset, byte_length)
@@ -91,17 +95,8 @@ pub fn insert_chunk_with_offset(
 }
 
 pub fn clear_note_data(conn: &Connection, note_id: i64) -> Result<()> {
-    conn.execute(
-        "DELETE FROM links WHERE src_note_id = ?1",
-        [note_id],
-    )?;
-    conn.execute(
-        "DELETE FROM tags WHERE note_id = ?1",
-        [note_id],
-    )?;
-    conn.execute(
-        "DELETE FROM chunks WHERE note_id = ?1",
-        [note_id],
-    )?;
+    conn.execute("DELETE FROM links WHERE src_note_id = ?1", [note_id])?;
+    conn.execute("DELETE FROM tags WHERE note_id = ?1", [note_id])?;
+    conn.execute("DELETE FROM chunks WHERE note_id = ?1", [note_id])?;
     Ok(())
 }
