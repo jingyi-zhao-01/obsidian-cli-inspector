@@ -18,7 +18,7 @@ jobs:
       - name: Setup Rust
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: stable
+          toolchain: 1.86
           components: rustfmt, clippy
           override: true
       
@@ -38,7 +38,7 @@ jobs:
       - name: Setup Rust
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: stable
+          toolchain: 1.86
           override: true
 
       - name: Cache cargo registry
