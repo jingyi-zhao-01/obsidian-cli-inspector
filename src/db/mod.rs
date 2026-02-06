@@ -137,7 +137,7 @@ impl Database {
     }
 
     /// Execute a query function with access to the database connection
-    pub fn conn(&self) -> DatabaseQueryExecutor {
+    pub fn conn(&self) -> DatabaseQueryExecutor<'_> {
         DatabaseQueryExecutor { conn: &self.conn }
     }
 }
