@@ -143,6 +143,17 @@ jobs:
         with:
           path: ./artifacts
 
+      - name: List and prepare artifacts
+        run: |
+          echo "Downloaded artifacts:"
+          ls -R ./artifacts
+          # Flatten the artifact directory structure
+          find ./artifacts -type f -exec mv {} ./artifacts/ \;
+          # Remove empty subdirectories
+          find ./artifacts -type d -empty -delete
+          echo "Flattened artifacts:"
+          ls -lh ./artifacts
+
       - name: Create next version tag
         id: create_tag
         run: |
@@ -207,8 +218,7 @@ jobs:
         with:
           tag_name: ${{ steps.get_version.outputs.TAG }}
           body_path: release_notes.md
-          files: |
-            artifacts/**/*
+          files: ./artifacts/*
           draft: false
           prerelease: false
         env:
