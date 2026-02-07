@@ -22,7 +22,7 @@ fi
 # Create coverage directory
 mkdir -p coverage
 
-echo -e "${YELLOW}Generating coverage report...${NC}"
+echo -e "Generating coverage report"
 
 # Run tests with coverage
 # Generate both LCOV and Cobertura XML formats for maximum compatibility with SonarQube
