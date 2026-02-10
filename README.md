@@ -1,216 +1,97 @@
 # Obsidian CLI Inspector
 
-A **local-first, read-only CLI/TUI tool** for vault hygiene and querying Obsidian vaults. Built with Rust for speed and reliability.
+[![GitHub](https://img.shields.io/badge/GitHub-obsidian--cli-black?logo=github)](https://github.com/jingyi-zhao-01/obsidian-cli)
+[![Crates.io](https://img.shields.io/crates/v/obsidian-cli-inspector.svg)](https://crates.io/crates/obsidian-cli-inspector)
+[![Build](https://github.com/jingyi-zhao-01/obsidian-cli/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/jingyi-zhao-01/obsidian-cli/actions/workflows/build.yml)
 
-## Features
+A local-first, read-only CLI/TUI for inspecting and querying Obsidian vaults. It helps developers quickly find notes, links, and tags without leaving the terminal.
 
-- **Fast full-text search** using SQLite FTS5
-- **Link analysis** - Find backlinks, forward links, and unresolved references
-- **Tag management** - Query notes by tags with AND/OR operations
-- **Graph navigation** - Explore connections between notes
-- **Smart suggestions** - Find related notes without explicit links
-- **Vault hygiene** - Detect bloated notes and suggest refactoring
-- **Incremental indexing** - Fast re-indexing by tracking changes
-- **CLI + TUI** - Scriptable commands and interactive interface
+## What you can do
 
-## Status
+- Search your vault with fast full‑text queries
+- Navigate backlinks, forward links, and unresolved links
+- Filter notes by tags (AND/OR)
+- Explore note relationships via graph view
+- Get suggestions for related notes
+- Surface large/bloated notes for cleanup
+- Use CLI for scripting or TUI for interactive browsing
 
-**Phase 0 (Foundations) - Complete**
-- Project builds as a single Rust binary
-- SQLite database with FTS5 support
-- Configuration via `config.toml`
-- CLI command structure defined
+## Install
 
-**Upcoming Phases:**
-- Phase 1: Vault scanning and change detection
-- Phase 2: Obsidian markdown parsing (wikilinks, frontmatter, tags)
-- Phase 3: Document chunking for retrieval
-- Phase 4: Full database schema implementation
-- Phase 5: Incremental indexing
-- Phase 6: Query layer (search, links, tags)
-- Phase 7: Relevance suggestions
-- Phase 8: Bloat detection and refactoring
-
-## Installation
-
-### Prerequisites
-
-- Rust 1.70+ (install via [rustup](https://rustup.rs/))
-
-### Build from source
+### From crates.io
 
 ```bash
-git clone https://github.com/yourusername/obsidian-cli.git
+cargo install obsidian-cli-inspector
+```
+
+### From source
+
+```bash
+git clone https://github.com/jingyi-zhao-01/obsidian-cli.git
 cd obsidian-cli
 cargo build --release
 ```
 
-The binary will be at `target/release/obsidian-cli`.
+The binary will be at `target/release/obsidian-cli-inspector`.
 
-## Quick Start
+## Quick start
 
-### 1. Create configuration
-
-Copy the example config and customize it:
+1) Create a config file and set your vault path:
 
 ```bash
 mkdir -p ~/.config/obsidian-cli
 cp config.toml.example ~/.config/obsidian-cli/config.toml
 ```
 
-Edit `~/.config/obsidian-cli/config.toml` and set your vault path:
-
 ```toml
 vault_path = "/path/to/your/obsidian/vault"
 ```
 
-### 2. Initialize database
+2) Initialize and index your vault:
 
 ```bash
-obsidian-cli init
+obsidian-cli-inspector init
+obsidian-cli-inspector index
 ```
 
-### 3. Index your vault
+3) Explore your notes:
 
 ```bash
-obsidian-cli index
+obsidian-cli-inspector search "your query"
+obsidian-cli-inspector backlinks "Note Name"
+obsidian-cli-inspector tags productivity
+obsidian-cli-inspector stats
 ```
 
-### 4. Start exploring
+## Common commands
 
 ```bash
-# Search notes
-obsidian-cli search "your query"
-
-# Find backlinks
-obsidian-cli backlinks "Note Name"
-
-# List notes by tag
-obsidian-cli tags productivity
-
-# Show vault statistics
-obsidian-cli stats
-```
-
-## Usage
-
-```bash
-# Initialize or reinitialize database
-obsidian-cli init [--force]
-
-# Index vault (scan and parse all files)
-obsidian-cli index [--dry-run] [--force] [--verbose]
-
-# Full-text search
-obsidian-cli search "query" [--limit 20]
-
-# Find backlinks to a note
-obsidian-cli backlinks "Note Name"
-
-# Find forward links from a note
-obsidian-cli links "Note Name"
-
-# List unresolved links
-obsidian-cli unresolved-links
-
-# List notes by tag
-obsidian-cli tags [tag-name] [--all]
-
-# Suggest related notes
-obsidian-cli suggest "Note Name" [--limit 10]
-
-# Detect bloated notes
-obsidian-cli bloat [--threshold 50000] [--limit 10]
-
-# Show statistics
-obsidian-cli stats
-
-# Launch interactive TUI
-obsidian-cli tui
-
-# Explore graph
-obsidian-cli graph ["Note Name"] [--depth 2]
+obsidian-cli-inspector init [--force]
+obsidian-cli-inspector index [--dry-run] [--force] [--verbose]
+obsidian-cli-inspector search "query" [--limit 20]
+obsidian-cli-inspector backlinks "Note Name"
+obsidian-cli-inspector links "Note Name"
+obsidian-cli-inspector unresolved-links
+obsidian-cli-inspector tags [tag-name] [--all]
+obsidian-cli-inspector suggest "Note Name" [--limit 10]
+obsidian-cli-inspector bloat [--threshold 50000] [--limit 10]
+obsidian-cli-inspector stats
+obsidian-cli-inspector tui
+obsidian-cli-inspector graph ["Note Name"] [--depth 2]
 ```
 
 ## Configuration
 
-The configuration file (`config.toml`) supports:
+The minimum required setting is `vault_path`. Optional settings include database location, exclusions, and defaults. See [config.toml.example](config.toml.example) for a complete list.
 
-- **vault_path**: Path to your Obsidian vault (required)
-- **database_path**: Where to store the index (default: `~/.local/share/obsidian-cli/index.db`)
-- **exclude.patterns**: Directories/patterns to skip (default: `.obsidian/`, `.git/`, `.trash/`)
-- **search.default_limit**: Default search result limit
-- **graph.max_depth**: Maximum graph traversal depth
-- **llm**: Optional LLM configuration for Q&A features
+## Status
 
-See [config.toml.example](config.toml.example) for details.
-
-## Architecture
-
-### Tech Stack
-
-- **Rust** - Performance and reliability
-- **SQLite** - Local storage with FTS5 for full-text search
-- **rusqlite** - SQLite bindings
-- **clap** - CLI argument parsing
-- **toml** - Configuration
-
-### Data Model
-
-- **Notes** - File metadata, content hash, frontmatter
-- **Links** - Wikilinks, embeds, markdown links with resolution status
-- **Tags** - Inline and frontmatter tags
-- **Chunks** - Text segments for retrieval and search
-- **FTS Index** - Full-text search over chunks
-
-## Development
-
-### Build and test
-
-```bash
-# Build
-cargo build
-
-# Run tests
-# Check formatting (CI parity)
-rustfmt --edition 2021 --check $(git ls-files '*.rs')
-
-# Lint (CI parity)
-cargo clippy --all-targets --all-features -- -D warnings
-
-# Convenience aliases (same as CI)
-cargo fmt-check
-cargo lint
-```
-
-### Git hooks (format/lint/tests)
-
-Enable the repo hooks (pre-commit: format + lint, pre-push: tests):
-
-```bash
-git config core.hooksPath .githooks
-```
-
-If you clone to a new machine, re-run the command above.
-
-### Project Structure
-
-```
-src/
-├── main.rs       # Entry point
-├── cli.rs        # Command definitions
-├── config.rs     # Configuration loading
-└── db.rs         # Database schema and operations
-```
-
-## Roadmap
-
-See [TODOs.md](TODOs.md) for detailed roadmap and implementation checklist.
+The core indexing, parsing, chunking, and query features are in place. Advanced recommendations and hygiene features are evolving. See [docs/TODOs.md](docs/TODOs.md) for a user‑focused roadmap.
 
 ## License
 
-MIT OR Apache-2.0
+Apache-2.0
 
 ## Contributing
 
-Contributions welcome! Please open an issue first to discuss major changes.
+Contributions are welcome. Please open an issue to discuss larger changes.
