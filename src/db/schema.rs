@@ -98,42 +98,20 @@ pub fn create_schema(conn: &Connection) -> rusqlite::Result<()> {
     )?;
 
     // Create indexes
-    conn.execute(
+    let index_statements = [
         "CREATE INDEX IF NOT EXISTS idx_notes_path ON notes(path)",
-        [],
-    )?;
-
-    conn.execute(
         "CREATE INDEX IF NOT EXISTS idx_notes_mtime ON notes(mtime)",
-        [],
-    )?;
-
-    conn.execute(
         "CREATE INDEX IF NOT EXISTS idx_links_src ON links(src_note_id)",
-        [],
-    )?;
-
-    conn.execute(
         "CREATE INDEX IF NOT EXISTS idx_links_dst ON links(dst_note_id)",
-        [],
-    )?;
-
-    conn.execute(
         "CREATE INDEX IF NOT EXISTS idx_links_dst_text ON links(dst_text)",
-        [],
-    )?;
-
-    conn.execute(
         "CREATE INDEX IF NOT EXISTS idx_tags_note ON tags(note_id)",
-        [],
-    )?;
-
-    conn.execute("CREATE INDEX IF NOT EXISTS idx_tags_tag ON tags(tag)", [])?;
-
-    conn.execute(
+        "CREATE INDEX IF NOT EXISTS idx_tags_tag ON tags(tag)",
         "CREATE INDEX IF NOT EXISTS idx_chunks_note ON chunks(note_id)",
-        [],
-    )?;
+    ];
+
+    for stmt in index_statements {
+        conn.execute(stmt, [])?;
+    }
 
     Ok(())
 }
