@@ -1,9 +1,10 @@
 [package]
 name = "obsidian-cli-inspector"
-version = "0.0.4"
+version = "0.0.5"
 edition = "2021"
 authors = ["jingyi zhao"]
 description = "Local-first CLI/TUI for indexing and querying Obsidian vaults"
+repository = "https://github.com/jingyi-zhao-01/obsidian-cli"
 license = "Apache-2.0"
 
 [dependencies]

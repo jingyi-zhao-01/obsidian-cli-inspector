@@ -18,3 +18,7 @@ lcov.info
 tarpaulin-report.html
 cobertura-coverage.xml
 .env
+
+_bmad
+_bmad-output
+.github/agents
