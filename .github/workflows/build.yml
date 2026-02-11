@@ -12,6 +12,8 @@ env:
 jobs:
   build:
     name: Build Release Binaries
+    permissions:
+      contents: read
     strategy:
       matrix:
         include:
