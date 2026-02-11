@@ -63,14 +63,41 @@ jobs:
       - name: Rust Cache
         uses: Swatinem/rust-cache@v2
 
-      - name: Generate coverage report
-        run: ./coverage.sh
+      - name: Install kcov dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcurl4-openssl-dev libelf-dev libdw-dev cmake gcc binutils-dev libiberty-dev
+
+      - name: Build and install kcov
+        run: |
+          wget https://github.com/SimonKagstrom/kcov/archive/master.tar.gz
+          tar xzf master.tar.gz
+          cd kcov-master
+          mkdir build
+          cd build
+          cmake ..
+          make
+          sudo make install
+          cd ../..
+          rm -rf kcov-master master.tar.gz
+
+      - name: Build tests
+        run: cargo test --no-run
+
+      - name: Generate coverage with kcov
+        run: |
+          for file in target/debug/deps/obsidian_cli_inspector-*; do
+            [ -x "${file}" ] || continue
+            [[ "${file}" == *.d ]] && continue
+            mkdir -p "target/cov/$(basename $file)"
+            kcov --exclude-pattern=/.cargo,/usr/lib --verify "target/cov/$(basename $file)" "$file"
+          done
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          directory: coverage/
+          directory: target/cov/
           fail_ci_if_error: true
         
   
