@@ -1,4 +1,4 @@
-.PHONY: build check test fmt lint clippy run clean sanity build-release
+.PHONY: build check test fmt lint clippy run clean sanity build-release coverage
 
 build:
 	cargo build
@@ -22,6 +22,10 @@ clippy:
 
 run:
 	cargo run
+
+coverage:
+	mkdir -p target/cov
+	kcov --exclude-pattern=/.cargo,/usr/lib target/cov cargo test
 
 clean:
 	cargo clean
