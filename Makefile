@@ -23,6 +23,8 @@ clippy:
 run:
 	cargo run
 
+
+
 coverage:
 	cargo test --no-run
 	mkdir -p target/cov
@@ -35,6 +37,9 @@ coverage:
 
 clean:
 	cargo clean
+
+	 
+
 
 init-sanity: build-release
 	./target/release/obsidian-cli-inspector --config test-config.toml init
@@ -62,6 +67,15 @@ tags-sanity: build-release
 	./target/release/obsidian-cli-inspector --config test-config.toml tags learning
 	./target/release/obsidian-cli-inspector --config test-config.toml tags --all
 
+
+
+
+index:
+	cargo run -- --config test-config.toml index
+
+
+search: 
+    cargo run -- --config test-config.toml search "$(QUERY)"
 
 
 
