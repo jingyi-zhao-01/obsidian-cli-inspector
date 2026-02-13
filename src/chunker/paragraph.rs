@@ -37,8 +37,7 @@ pub fn chunk_by_paragraphs(
         }
 
         current_chunk.push_str(&para_text);
-        current_chunk.push_str("\n\n");
-        current_offset = para_offset + para_text.len();
+        current_offset = base_offset + para_offset + para_text.len();
     }
 
     // Save the last chunk
@@ -60,29 +59,33 @@ pub fn split_into_paragraphs(content: &str) -> Vec<(String, usize)> {
     let mut current_para = String::new();
     let mut para_start_offset = 0;
     let mut current_offset = 0;
+    let mut in_trailing_blanks = false;
 
     for line in content.lines() {
         let line_with_newline = format!("{}\n", line);
 
         if line.trim().is_empty() {
-            // Blank line - end of paragraph
-            if !current_para.trim().is_empty() {
-                paragraphs.push((current_para.clone(), para_start_offset));
-                current_para.clear();
+            if !current_para.is_empty() {
+                current_para.push_str(&line_with_newline);
+                in_trailing_blanks = true;
             }
         } else {
-            // Continue paragraph
             if current_para.is_empty() {
                 para_start_offset = current_offset;
+            } else if in_trailing_blanks {
+                paragraphs.push((current_para.clone(), para_start_offset));
+                current_para.clear();
+                para_start_offset = current_offset;
+                in_trailing_blanks = false;
             }
+
             current_para.push_str(&line_with_newline);
         }
 
         current_offset += line_with_newline.len();
     }
 
-    // Don't forget the last paragraph
-    if !current_para.trim().is_empty() {
+    if !current_para.is_empty() {
         paragraphs.push((current_para, para_start_offset));
     }
 
@@ -97,4 +100,17 @@ fn estimate_tokens(text: &str) -> usize {
 
     // Use average of both estimates
     (char_estimate + word_count) / 2
+}
+
+#[cfg(test)]
+mod tests {
+    use super::chunk_by_paragraphs;
+
+    #[test]
+    fn chunk_by_paragraphs_with_base_offset_does_not_underflow() {
+        let content = "First paragraph.\n\nSecond paragraph.\n";
+        let chunks = chunk_by_paragraphs(content, None, 100, 10, 5);
+        assert!(chunks.len() >= 2);
+        assert!(chunks.iter().all(|chunk| chunk.byte_offset >= 100));
+    }
 }
