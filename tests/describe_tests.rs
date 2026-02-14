@@ -564,6 +564,37 @@ fn test_show_suggest_with_limit() {
     show_suggest("test", 5, None);
 }
 
+
+// Test forward links for non-existent note
+#[test]
+fn test_forward_links_nonexistent() -> Result<()> {
+    let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
+
+    // Setup
+    initialize_database(&config, false, None)?;
+    index_vault(&config, false, false, false, None)?;
+
+    // Get forward links for non-existent note
+    get_forward_links(&config, "NonExistentNote", None)?;
+
+    Ok(())
+}
+
+// Test describe note not found
+#[test]
+fn test_describe_not_found() -> Result<()> {
+    let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
+
+    // Setup
+    initialize_database(&config, false, None)?;
+    index_vault(&config, false, false, false, None)?;
+
+    // Describe non-existent note
+    get_note_describe(&config, "NonExistentNote", None)?;
+
+    Ok(())
+}
+
 mod common;
 
 use anyhow::Result;
