@@ -167,3 +167,48 @@ fn test_list_all_tags_command() -> Result<()> {
 
     Ok(())
 }
+
+// Test search vault - empty query
+#[test]
+fn test_search_vault_empty_query() -> Result<()> {
+    let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
+
+    // Setup
+    initialize_database(&config, false, None)?;
+    index_vault(&config, false, false, false, None)?;
+
+    // Test search with empty query
+    search_vault(&config, "", 10, None)?;
+
+    Ok(())
+}
+
+// Test search vault - no results
+#[test]
+fn test_search_vault_no_results() -> Result<()> {
+    let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
+
+    // Setup
+    initialize_database(&config, false, None)?;
+    index_vault(&config, false, false, false, None)?;
+
+    // Test search with no matches
+    search_vault(&config, "nonexistentxyz", 10, None)?;
+
+    Ok(())
+}
+
+// Test search vault - with results
+#[test]
+fn test_search_vault_with_results() -> Result<()> {
+    let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
+
+    // Setup
+    initialize_database(&config, false, None)?;
+    index_vault(&config, false, false, false, None)?;
+
+    // Test search with results
+    search_vault(&config, "productivity", 10, None)?;
+
+    Ok(())
+}
