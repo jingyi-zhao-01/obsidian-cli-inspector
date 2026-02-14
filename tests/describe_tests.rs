@@ -162,6 +162,37 @@ fn test_describe_with_logger() -> Result<()> {
     Ok(())
 }
 
+
+// Test index vault with verbose to test skip message
+#[test]
+fn test_index_vault_with_skip() -> Result<()> {
+    let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
+
+    // Setup
+    initialize_database(&config, false, None)?;
+    index_vault(&config, false, false, true, None)?;
+
+    // Index again - should skip unchanged files (verbose shows skip message)
+    index_vault(&config, false, false, true, None)?;
+
+    Ok(())
+}
+
+// Test index vault with verbose and force
+#[test]
+fn test_index_vault_verbose_force() -> Result<()> {
+    let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
+
+    // Setup
+    initialize_database(&config, false, None)?;
+    index_vault(&config, false, false, false, None)?;
+
+    // Force reindex with verbose
+    index_vault(&config, false, true, true, None)?;
+
+    Ok(())
+}
+
 mod common;
 
 use anyhow::Result;
