@@ -595,6 +595,237 @@ fn test_describe_not_found() -> Result<()> {
     Ok(())
 }
 
+
+// Test list_notes_by_tag with empty result
+#[test]
+fn test_list_notes_by_tag_empty() -> Result<()> {
+    let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
+
+    // Setup
+    initialize_database(&config, false, None)?;
+    index_vault(&config, false, false, false, None)?;
+
+    // List tags with specific tag that doesn't exist
+    list_notes_by_tag(&config, &Some("nonexistent_tag_xyz".to_string()), false, None)?;
+
+    Ok(())
+}
+
+// Test list_notes_by_tag all with empty result
+#[test]
+fn test_list_notes_by_tag_all_empty() -> Result<()> {
+    let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
+
+    // Setup - just init, don't index any notes
+    initialize_database(&config, false, None)?;
+
+    // List all tags when there are none
+    list_notes_by_tag(&config, &None, true, None)?;
+
+    Ok(())
+}
+
+// Test show_tags with empty tags
+#[test]
+fn test_show_tags_empty() {
+    use obsidian_cli_inspector::commands::other::show_tags;
+    
+    // Empty tags
+    show_tags(&None, true, None);
+}
+
+// Test show_bloat with empty result
+#[test]
+fn test_show_bloat_empty() {
+    use obsidian_cli_inspector::commands::other::show_bloat;
+    
+    show_bloat(1000, 10, None);
+}
+
+
+// Test show_graph with note
+#[test]
+fn test_show_graph_with_note() {
+    use obsidian_cli_inspector::commands::other::show_graph;
+    
+    show_graph(&Some("Home".to_string()), 2, None);
+}
+
+
+// Test show_graph without note
+#[test]
+fn test_show_graph_without_note() {
+    use obsidian_cli_inspector::commands::other::show_graph;
+    
+    show_graph(&None, 1, None);
+}
+
+
+// Test show_links with logger
+#[test]
+fn test_show_links_with_logger() {
+    use obsidian_cli_inspector::commands::other::show_links;
+    
+    let logger = obsidian_cli_inspector::logger::Logger::new(
+        std::path::PathBuf::from("/tmp/test_logger_links")
+    ).ok();
+    
+    show_links("Home", logger.as_ref());
+}
+
+// Test show_backlinks with logger
+#[test]
+fn test_show_backlinks_with_logger() {
+    use obsidian_cli_inspector::commands::other::show_backlinks;
+    
+    let logger = obsidian_cli_inspector::logger::Logger::new(
+        std::path::PathBuf::from("/tmp/test_logger_backlinks")
+    ).ok();
+    
+    show_backlinks("Home", logger.as_ref());
+}
+
+// Test show_search with results and logger
+#[test]
+fn test_show_search_with_results_and_logger() {
+    use obsidian_cli_inspector::commands::other::show_search;
+    
+    let logger = obsidian_cli_inspector::logger::Logger::new(
+        std::path::PathBuf::from("/tmp/test_logger_search")
+    ).ok();
+    
+    show_search("test query", 5, logger.as_ref());
+}
+
+// Test search_vault with custom limit
+#[test]
+fn test_search_vault_custom_limit() -> Result<()> {
+    let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
+
+    // Setup
+    initialize_database(&config, false, None)?;
+    index_vault(&config, false, false, false, None)?;
+
+    // Search with custom limit
+    search_vault(&config, "test", 5, None)?;
+
+    Ok(())
+}
+
+
+// Test get_note_describe with partial match
+#[test]
+fn test_describe_partial_match_v2() -> Result<()> {
+    let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
+
+    // Setup
+    initialize_database(&config, false, None)?;
+    index_vault(&config, false, false, false, None)?;
+
+    // Describe with partial match
+    get_note_describe(&config, "Home", None)?;
+
+    Ok(())
+}
+
+// Test get_note_describe with exact path
+#[test]
+fn test_describe_exact_path_new() -> Result<()> {
+    let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
+
+    // Setup
+    initialize_database(&config, false, None)?;
+    index_vault(&config, false, false, false, None)?;
+
+    // Describe with exact path
+    get_note_describe(&config, "Home.md", None)?;
+
+    Ok(())
+}
+
+// Test get_note_describe with logger
+#[test]
+fn test_describe_logger_new() -> Result<()> {
+    let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
+
+    // Setup
+    initialize_database(&config, false, None)?;
+    index_vault(&config, false, false, false, None)?;
+
+    // Create logger
+    let logger = obsidian_cli_inspector::logger::Logger::new(
+        std::path::PathBuf::from("/tmp/test_logger_describe")
+    ).ok();
+
+    // Describe with logger
+    get_note_describe(&config, "Home.md", logger.as_ref())?;
+
+    Ok(())
+}
+
+// Test list_unresolved_links with logger
+#[test]
+fn test_unresolved_links_with_logger() -> Result<()> {
+    let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
+
+    // Setup
+    initialize_database(&config, false, None)?;
+    index_vault(&config, false, false, false, None)?;
+
+    // Create logger
+    let logger = obsidian_cli_inspector::logger::Logger::new(
+        std::path::PathBuf::from("/tmp/test_logger_unresolved")
+    ).ok();
+
+    // Get unresolved links with logger
+    list_unresolved_links(&config, logger.as_ref())?;
+
+    Ok(())
+}
+
+
+// Test index_vault with verbose
+#[test]
+fn test_index_vault_verbose() -> Result<()> {
+    let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
+
+    // Setup
+    initialize_database(&config, false, None)?;
+
+    // Index with verbose
+    index_vault(&config, false, false, true, None)?;
+
+    Ok(())
+}
+
+// Test index_vault with force
+#[test]
+fn test_index_vault_force() -> Result<()> {
+    let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
+
+    // Setup
+    initialize_database(&config, false, None)?;
+
+    // Index with force
+    index_vault(&config, false, true, false, None)?;
+
+    Ok(())
+}
+
+// Test index_vault with dry run and verbose
+#[test]
+fn test_index_vault_dry_run_verbose() -> Result<()> {
+    let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
+
+    // Setup
+    initialize_database(&config, false, None)?;
+
+    // Index with dry run and verbose
+    index_vault(&config, true, false, true, None)?;
+
+    Ok(())
+}
+
 mod common;
 
 use anyhow::Result;
