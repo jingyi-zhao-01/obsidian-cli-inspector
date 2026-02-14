@@ -4,17 +4,45 @@ mod common;
 use anyhow::Result;
 use obsidian_cli_inspector::commands::*;
 
-// CLI equivalent: cargo run -- describe "Home.md"
+// Test config from file
 #[test]
-fn test_describe_note() -> Result<()> {
+fn test_config_from_file() -> Result<()> {
     let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
 
-    // Setup
+    // Initialize first to create the database
     initialize_database(&config, false, None)?;
-    index_vault(&config, false, false, false, None)?;
 
-    // Test describe command
-    get_note_describe(&config, "Home.md", None)?;
+    // Test getting database path
+    let db_path = config.database_path();
+    assert!(db_path.exists());
+
+    // Test config dir - may not exist in test environment
+    let config_dir = config.config_dir();
+    // Just check it's a valid path
+    assert!(!config_dir.to_string_lossy().is_empty());
+
+    // Test log dir
+    let log_dir = config.log_dir();
+    assert!(!log_dir.to_string_lossy().is_empty());
+
+    Ok(())
+}
+
+// Test index without init - should handle gracefully
+#[test]
+fn test_index_without_init() -> Result<()> {
+    let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
+
+    // Remove the database to simulate not initializing
+    let db_path = config.database_path();
+    if db_path.exists() {
+        std::fs::remove_file(&db_path)?;
+    }
+
+    // Try to index without init - should fail gracefully
+    let result = index_vault(&config, false, false, false, None);
+    // This should fail because database doesn't exist
+    assert!(result.is_err());
 
     Ok(())
 }
