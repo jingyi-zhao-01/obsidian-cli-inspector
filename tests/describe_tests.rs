@@ -288,6 +288,69 @@ fn test_unresolved_with_logger() -> Result<()> {
     Ok(())
 }
 
+
+// Test show functions with logger
+#[test]
+fn test_show_unimplemented_with_logger() {
+    use obsidian_cli_inspector::logger::Logger;
+    
+    let temp_dir = tempfile::tempdir().unwrap();
+    let logger = Logger::new(temp_dir.path().to_path_buf()).ok();
+    
+    use obsidian_cli_inspector::commands::other::show_unimplemented;
+    show_unimplemented("test", logger.as_ref());
+}
+
+// Test show_search with logger
+#[test]
+fn test_show_search_with_logger() {
+    use obsidian_cli_inspector::logger::Logger;
+    
+    let temp_dir = tempfile::tempdir().unwrap();
+    let logger = Logger::new(temp_dir.path().to_path_buf()).ok();
+    
+    use obsidian_cli_inspector::commands::other::show_search;
+    show_search("query", 10, logger.as_ref());
+}
+
+// Test show_tags with logger
+#[test]
+fn test_show_tags_with_logger() {
+    use obsidian_cli_inspector::logger::Logger;
+    
+    let temp_dir = tempfile::tempdir().unwrap();
+    let logger = Logger::new(temp_dir.path().to_path_buf()).ok();
+    
+    use obsidian_cli_inspector::commands::other::show_tags;
+    show_tags(&Some("tag".to_string()), false, logger.as_ref());
+    show_tags(&None, true, logger.as_ref());
+}
+
+// Test show_graph with logger
+#[test]
+fn test_show_graph_with_logger() {
+    use obsidian_cli_inspector::logger::Logger;
+    
+    let temp_dir = tempfile::tempdir().unwrap();
+    let logger = Logger::new(temp_dir.path().to_path_buf()).ok();
+    
+    use obsidian_cli_inspector::commands::other::show_graph;
+    show_graph(&Some("note".to_string()), 2, logger.as_ref());
+    show_graph(&None, 1, logger.as_ref());
+}
+
+// Test show_tui with logger
+#[test]
+fn test_show_tui_with_logger() {
+    use obsidian_cli_inspector::logger::Logger;
+    
+    let temp_dir = tempfile::tempdir().unwrap();
+    let logger = Logger::new(temp_dir.path().to_path_buf()).ok();
+    
+    use obsidian_cli_inspector::commands::other::show_tui;
+    show_tui(logger.as_ref());
+}
+
 mod common;
 
 use anyhow::Result;
