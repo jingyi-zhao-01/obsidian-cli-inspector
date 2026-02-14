@@ -351,6 +351,38 @@ fn test_show_tui_with_logger() {
     show_tui(logger.as_ref());
 }
 
+
+// Test db transaction
+#[test]
+fn test_db_transaction() -> Result<()> {
+    let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
+
+    // Setup
+    initialize_database(&config, false, None)?;
+    
+    // Open database and get transaction
+    let mut db = obsidian_cli_inspector::db::Database::open(config.database_path())?;
+    let _tx = db.transaction()?;
+    
+    Ok(())
+}
+
+// Test db version
+#[test]
+fn test_db_version() -> Result<()> {
+    let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
+
+    // Setup
+    initialize_database(&config, false, None)?;
+    
+    // Open database and get version
+    let db = obsidian_cli_inspector::db::Database::open(config.database_path())?;
+    let version = db.get_version()?;
+    assert!(version.is_some());
+    
+    Ok(())
+}
+
 mod common;
 
 use anyhow::Result;
