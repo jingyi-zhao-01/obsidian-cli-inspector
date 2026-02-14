@@ -116,4 +116,90 @@ mod tests {
 
         assert!(note.frontmatter.is_none());
     }
+
+    #[test]
+    fn test_get_note_by_filename_exact_path() {
+        let conn = Connection::open_in_memory().unwrap();
+        
+        // Create table
+        conn.execute(
+            "CREATE TABLE notes (id INTEGER PRIMARY KEY, path TEXT, title TEXT, mtime INTEGER, hash TEXT, created_at TEXT, updated_at TEXT, frontmatter_json TEXT)",
+            [],
+        ).unwrap();
+        
+        // Insert test data using params
+        conn.execute(
+            "INSERT INTO notes (path, title, mtime, hash, created_at, updated_at) VALUES (?1, ?2, ?3, ?4, ?5, ?6)",
+            rusqlite::params!["test.md", "Test Note", 1234567890_i64, "hash123", "2024-01-01", "2024-01-02"],
+        ).unwrap();
+        
+        // Test exact path match
+        let result = get_note_by_filename(&conn, "test.md").unwrap();
+        assert!(result.is_some());
+        assert_eq!(result.unwrap().title, "Test Note");
+    }
+
+    #[test]
+    fn test_get_note_by_filename_exact_title() {
+        let conn = Connection::open_in_memory().unwrap();
+        
+        // Create table
+        conn.execute(
+            "CREATE TABLE notes (id INTEGER PRIMARY KEY, path TEXT, title TEXT, mtime INTEGER, hash TEXT, created_at TEXT, updated_at TEXT, frontmatter_json TEXT)",
+            [],
+        ).unwrap();
+        
+        // Insert test data
+        conn.execute(
+            "INSERT INTO notes (path, title, mtime, hash, created_at, updated_at) VALUES (?1, ?2, ?3, ?4, ?5, ?6)",
+            rusqlite::params!["test.md", "Test Note", 1234567890_i64, "hash123", "2024-01-01", "2024-01-02"],
+        ).unwrap();
+        
+        // Test exact title match
+        let result = get_note_by_filename(&conn, "Test Note").unwrap();
+        assert!(result.is_some());
+        assert_eq!(result.unwrap().title, "Test Note");
+    }
+
+    #[test]
+    fn test_get_note_by_filename_partial_match() {
+        let conn = Connection::open_in_memory().unwrap();
+        
+        // Create table
+        conn.execute(
+            "CREATE TABLE notes (id INTEGER PRIMARY KEY, path TEXT, title TEXT, mtime INTEGER, hash TEXT, created_at TEXT, updated_at TEXT, frontmatter_json TEXT)",
+            [],
+        ).unwrap();
+        
+        // Insert test data
+        conn.execute(
+            "INSERT INTO notes (path, title, mtime, hash, created_at, updated_at) VALUES (?1, ?2, ?3, ?4, ?5, ?6)",
+            rusqlite::params!["test.md", "Test Note", 1234567890_i64, "hash123", "2024-01-01", "2024-01-02"],
+        ).unwrap();
+        
+        // Test partial match
+        let result = get_note_by_filename(&conn, "Test").unwrap();
+        assert!(result.is_some());
+    }
+
+    #[test]
+    fn test_get_note_by_filename_not_found() {
+        let conn = Connection::open_in_memory().unwrap();
+        
+        // Create table
+        conn.execute(
+            "CREATE TABLE notes (id INTEGER PRIMARY KEY, path TEXT, title TEXT, mtime INTEGER, hash TEXT, created_at TEXT, updated_at TEXT, frontmatter_json TEXT)",
+            [],
+        ).unwrap();
+        
+        // Insert test data
+        conn.execute(
+            "INSERT INTO notes (path, title, mtime, hash, created_at, updated_at) VALUES (?1, ?2, ?3, ?4, ?5, ?6)",
+            rusqlite::params!["test.md", "Test Note", 1234567890_i64, "hash123", "2024-01-01", "2024-01-02"],
+        ).unwrap();
+        
+        // Test not found
+        let result = get_note_by_filename(&conn, "nonexistent.md").unwrap();
+        assert!(result.is_none());
+    }
 }
