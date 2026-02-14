@@ -486,6 +486,52 @@ fn test_config_from_file_not_found() {
 }
 
 
+
+// Test list_notes_by_tag with specific tag
+#[test]
+fn test_list_notes_by_tag_specific() -> Result<()> {
+    let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
+
+    // Setup
+    initialize_database(&config, false, None)?;
+    index_vault(&config, false, false, false, None)?;
+
+    // List tags
+    list_notes_by_tag(&config, &Some("productivity".to_string()), false, None)?;
+
+    Ok(())
+}
+
+// Test list_notes_by_tag all
+#[test]
+fn test_list_notes_by_tag_all() -> Result<()> {
+    let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
+
+    // Setup
+    initialize_database(&config, false, None)?;
+    index_vault(&config, false, false, false, None)?;
+
+    // List all tags
+    list_notes_by_tag(&config, &None, true, None)?;
+
+    Ok(())
+}
+
+// Test get_backlinks with note that has no backlinks
+#[test]
+fn test_backlinks_none() -> Result<()> {
+    let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
+
+    // Setup
+    initialize_database(&config, false, None)?;
+    index_vault(&config, false, false, false, None)?;
+
+    // Get backlinks for a note that doesn't exist or has no backlinks
+    get_backlinks(&config, "NonExistentNote", None)?;
+
+    Ok(())
+}
+
 mod common;
 
 use anyhow::Result;
