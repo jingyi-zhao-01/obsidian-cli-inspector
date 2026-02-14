@@ -4,6 +4,51 @@ mod common;
 use anyhow::Result;
 use obsidian_cli_inspector::commands::*;
 
+// Test initialize_database with logger
+#[test]
+fn test_init_with_logger() -> Result<()> {
+    use obsidian_cli_inspector::logger::Logger;
+    
+    let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
+
+    // Create logger
+    let logger = Logger::new(config.log_dir()).ok();
+    
+    // Initialize with logger
+    initialize_database(&config, false, logger.as_ref())?;
+
+    Ok(())
+}
+
+// Test initialize_database twice with force
+#[test]
+fn test_init_force_twice() -> Result<()> {
+    let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
+
+    // Initialize once
+    initialize_database(&config, false, None)?;
+    
+    // Force reinitialize
+    initialize_database(&config, true, None)?;
+
+    Ok(())
+}
+
+// Test initialize with new database dir
+#[test]
+fn test_init_new_directory() -> Result<()> {
+    let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
+
+    // Test init creates database
+    initialize_database(&config, false, None)?;
+    
+    // Check that db file exists
+    let db_path = config.database_path();
+    assert!(db_path.exists());
+
+    Ok(())
+}
+
 // Test config from file
 #[test]
 fn test_config_from_file() -> Result<()> {
