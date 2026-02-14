@@ -147,7 +147,7 @@ mod tests {
             graph: GraphConfig::default(),
             llm: None,
         };
-        
+
         assert_eq!(config.vault_path, PathBuf::from("/test/vault"));
         assert!(config.database_path.is_some());
         assert!(config.log_path.is_some());

@@ -158,7 +158,8 @@ mod tests {
     #[test]
     fn test_chunk_by_paragraphs_large_para() {
         // Create a paragraph larger than max_chunk_size
-        let content = "This is a very long paragraph that should exceed the maximum chunk size. ".repeat(10);
+        let content =
+            "This is a very long paragraph that should exceed the maximum chunk size. ".repeat(10);
         let chunks = chunk_by_paragraphs(content.as_str(), None, 0, 50, 10);
         // Should produce at least one chunk
         assert!(!chunks.is_empty());

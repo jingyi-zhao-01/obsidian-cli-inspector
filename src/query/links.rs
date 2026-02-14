@@ -166,7 +166,7 @@ mod tests {
             heading_ref: Some("heading".to_string()),
             block_ref: Some("block".to_string()),
         };
-        
+
         assert_eq!(link.note_id, 1);
         assert!(!link.is_embed);
         assert!(link.alias.is_some());
@@ -183,7 +183,7 @@ mod tests {
             heading_ref: None,
             block_ref: None,
         };
-        
+
         assert!(link.is_embed);
         assert!(link.alias.is_none());
     }

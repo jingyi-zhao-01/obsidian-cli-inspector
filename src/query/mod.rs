@@ -95,7 +95,7 @@ mod tests {
             updated_at: "2024-01-02".to_string(),
             frontmatter: Some("{}".to_string()),
         };
-        
+
         assert_eq!(note.id, 1);
         assert_eq!(note.path, "test.md");
         assert!(note.frontmatter.is_some());
@@ -113,7 +113,7 @@ mod tests {
             updated_at: "2024-01-02".to_string(),
             frontmatter: None,
         };
-        
+
         assert!(note.frontmatter.is_none());
     }
 }

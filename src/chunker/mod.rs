@@ -342,7 +342,7 @@ Another paragraph here.
     fn test_update_heading_stack_new_level() {
         let chunker = MarkdownChunker::default();
         let mut stack: Vec<HeadingInfo> = Vec::new();
-        
+
         let h1 = HeadingInfo {
             level: 1,
             text: "Main".to_string(),
@@ -350,7 +350,7 @@ Another paragraph here.
         };
         chunker.update_heading_stack(&mut stack, h1, 0);
         assert_eq!(stack.len(), 1);
-        
+
         let h2 = HeadingInfo {
             level: 2,
             text: "Sub".to_string(),
@@ -364,14 +364,14 @@ Another paragraph here.
     fn test_update_heading_stack_same_level() {
         let chunker = MarkdownChunker::default();
         let mut stack: Vec<HeadingInfo> = Vec::new();
-        
+
         let h1 = HeadingInfo {
             level: 1,
             text: "Main".to_string(),
             byte_offset: 0,
         };
         chunker.update_heading_stack(&mut stack, h1, 0);
-        
+
         let h2 = HeadingInfo {
             level: 1,
             text: "Another".to_string(),
@@ -386,14 +386,14 @@ Another paragraph here.
     fn test_update_heading_stack_skip_level() {
         let chunker = MarkdownChunker::default();
         let mut stack: Vec<HeadingInfo> = Vec::new();
-        
+
         let h1 = HeadingInfo {
             level: 1,
             text: "Main".to_string(),
             byte_offset: 0,
         };
         chunker.update_heading_stack(&mut stack, h1, 0);
-        
+
         let h3 = HeadingInfo {
             level: 3,
             text: "Detail".to_string(),
@@ -433,6 +433,6 @@ Another paragraph here.
         let chunker = MarkdownChunker::default();
         let content = "# H1\n\nContent 1\n\n## H2\n\nContent 2\n";
         let sections = chunker.split_by_headings(content);
-        assert!(sections.len() >= 1);
+        assert!(!sections.is_empty());
     }
 }

@@ -255,8 +255,8 @@ mod tests {
     fn test_database_open() {
         let temp_dir = TempDir::new().unwrap();
         let db_path = temp_dir.path().join("test.db");
-        
-        let db = Database::open(&db_path).unwrap();
+
+        let _db = Database::open(&db_path).unwrap();
         assert!(db_path.exists());
     }
 
@@ -264,10 +264,10 @@ mod tests {
     fn test_database_initialize() {
         let temp_dir = TempDir::new().unwrap();
         let db_path = temp_dir.path().join("test.db");
-        
+
         let db = Database::open(&db_path).unwrap();
         db.initialize(false).unwrap();
-        
+
         let version = db.get_version().unwrap();
         assert_eq!(version, Some(1));
     }
@@ -276,15 +276,15 @@ mod tests {
     fn test_database_initialize_force() {
         let temp_dir = TempDir::new().unwrap();
         let db_path = temp_dir.path().join("test.db");
-        
+
         let db = Database::open(&db_path).unwrap();
         db.initialize(false).unwrap();
         let version1 = db.get_version().unwrap();
-        
+
         // Force reinitialize
         db.initialize(true).unwrap();
         let version2 = db.get_version().unwrap();
-        
+
         assert_eq!(version1, version2);
     }
 
@@ -292,10 +292,10 @@ mod tests {
     fn test_database_transaction() {
         let temp_dir = TempDir::new().unwrap();
         let db_path = temp_dir.path().join("test.db");
-        
+
         let mut db = Database::open(&db_path).unwrap();
         db.initialize(false).unwrap();
-        
+
         let tx = db.transaction().unwrap();
         tx.commit().unwrap();
     }
@@ -307,7 +307,7 @@ mod tests {
             mtime: 1234567890,
             hash: "abc123".to_string(),
         };
-        
+
         assert_eq!(metadata.id, 1);
         assert_eq!(metadata.mtime, 1234567890);
         assert_eq!(metadata.hash, "abc123");
@@ -322,7 +322,7 @@ mod tests {
             chunk_count: 100,
             unresolved_links: 2,
         };
-        
+
         assert_eq!(stats.note_count, 10);
         assert_eq!(stats.link_count, 20);
         assert_eq!(stats.tag_count, 5);

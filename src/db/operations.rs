@@ -132,7 +132,7 @@ mod tests {
     fn create_test_db() -> (TempDir, Connection) {
         let temp_dir = TempDir::new().unwrap();
         let conn = Connection::open(temp_dir.path().join("test.db")).unwrap();
-        
+
         // Create minimal schema for testing
         conn.execute(
             "CREATE TABLE IF NOT EXISTS notes (
@@ -146,8 +146,9 @@ mod tests {
                 updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
             )",
             [],
-        ).unwrap();
-        
+        )
+        .unwrap();
+
         conn.execute(
             "CREATE TABLE IF NOT EXISTS tags (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -156,8 +157,9 @@ mod tests {
                 UNIQUE(note_id, tag)
             )",
             [],
-        ).unwrap();
-        
+        )
+        .unwrap();
+
         conn.execute(
             "CREATE TABLE IF NOT EXISTS links (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -171,8 +173,9 @@ mod tests {
                 block_ref TEXT
             )",
             [],
-        ).unwrap();
-        
+        )
+        .unwrap();
+
         conn.execute(
             "CREATE TABLE IF NOT EXISTS chunks (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -183,15 +186,16 @@ mod tests {
                 byte_length INTEGER NOT NULL DEFAULT 0
             )",
             [],
-        ).unwrap();
-        
+        )
+        .unwrap();
+
         (temp_dir, conn)
     }
 
     #[test]
     fn test_insert_note() {
         let (_temp_dir, conn) = create_test_db();
-        
+
         let note_id = insert_note(
             &conn,
             "test.md",
@@ -199,24 +203,19 @@ mod tests {
             1234567890,
             "hash123",
             Some("{}"),
-        ).unwrap();
-        
+        )
+        .unwrap();
+
         assert!(note_id > 0);
     }
 
     #[test]
     fn test_insert_note_duplicate() {
         let (_temp_dir, conn) = create_test_db();
-        
-        let note_id1 = insert_note(
-            &conn,
-            "test.md",
-            "Test Note",
-            1234567890,
-            "hash123",
-            None,
-        ).unwrap();
-        
+
+        let note_id1 =
+            insert_note(&conn, "test.md", "Test Note", 1234567890, "hash123", None).unwrap();
+
         let note_id2 = insert_note(
             &conn,
             "test.md",
@@ -224,8 +223,9 @@ mod tests {
             1234567891,
             "hash456",
             None,
-        ).unwrap();
-        
+        )
+        .unwrap();
+
         // Should update existing note
         assert_eq!(note_id1, note_id2);
     }
@@ -233,16 +233,10 @@ mod tests {
     #[test]
     fn test_get_note_by_path() {
         let (_temp_dir, conn) = create_test_db();
-        
-        let note_id = insert_note(
-            &conn,
-            "test.md",
-            "Test Note",
-            1234567890,
-            "hash123",
-            None,
-        ).unwrap();
-        
+
+        let note_id =
+            insert_note(&conn, "test.md", "Test Note", 1234567890, "hash123", None).unwrap();
+
         let found_id = get_note_by_path(&conn, "test.md").unwrap();
         assert_eq!(found_id, Some(note_id));
     }
@@ -250,7 +244,7 @@ mod tests {
     #[test]
     fn test_get_note_by_path_not_found() {
         let (_temp_dir, conn) = create_test_db();
-        
+
         let found_id = get_note_by_path(&conn, "nonexistent.md").unwrap();
         assert!(found_id.is_none());
     }
@@ -258,16 +252,9 @@ mod tests {
     #[test]
     fn test_get_note_metadata_by_path() {
         let (_temp_dir, conn) = create_test_db();
-        
-        insert_note(
-            &conn,
-            "test.md",
-            "Test Note",
-            1234567890,
-            "hash123",
-            None,
-        ).unwrap();
-        
+
+        insert_note(&conn, "test.md", "Test Note", 1234567890, "hash123", None).unwrap();
+
         let metadata = get_note_metadata_by_path(&conn, "test.md").unwrap();
         assert!(metadata.is_some());
         assert_eq!(metadata.unwrap().hash, "hash123");
@@ -276,16 +263,10 @@ mod tests {
     #[test]
     fn test_insert_tag() {
         let (_temp_dir, conn) = create_test_db();
-        
-        let note_id = insert_note(
-            &conn,
-            "test.md",
-            "Test Note",
-            1234567890,
-            "hash123",
-            None,
-        ).unwrap();
-        
+
+        let note_id =
+            insert_note(&conn, "test.md", "Test Note", 1234567890, "hash123", None).unwrap();
+
         let result = insert_tag(&conn, note_id, "rust");
         assert!(result.is_ok());
     }
@@ -293,25 +274,12 @@ mod tests {
     #[test]
     fn test_insert_link() {
         let (_temp_dir, conn) = create_test_db();
-        
-        let note_id = insert_note(
-            &conn,
-            "test.md",
-            "Test Note",
-            1234567890,
-            "hash123",
-            None,
-        ).unwrap();
-        
+
+        let note_id =
+            insert_note(&conn, "test.md", "Test Note", 1234567890, "hash123", None).unwrap();
+
         let result = insert_link(
-            &conn,
-            note_id,
-            "other.md",
-            "wikilink",
-            false,
-            None,
-            None,
-            None,
+            &conn, note_id, "other.md", "wikilink", false, None, None, None,
         );
         assert!(result.is_ok());
     }
@@ -319,22 +287,16 @@ mod tests {
     #[test]
     fn test_insert_link_with_embed() {
         let (_temp_dir, conn) = create_test_db();
-        
-        let note_id = insert_note(
-            &conn,
-            "test.md",
-            "Test Note",
-            1234567890,
-            "hash123",
-            None,
-        ).unwrap();
-        
+
+        let note_id =
+            insert_note(&conn, "test.md", "Test Note", 1234567890, "hash123", None).unwrap();
+
         let result = insert_link(
             &conn,
             note_id,
             "other.md",
             "wikilink",
-            true,  // is_embed
+            true, // is_embed
             Some("alias"),
             Some("heading"),
             Some("block"),
@@ -345,38 +307,21 @@ mod tests {
     #[test]
     fn test_insert_chunk() {
         let (_temp_dir, conn) = create_test_db();
-        
-        let note_id = insert_note(
-            &conn,
-            "test.md",
-            "Test Note",
-            1234567890,
-            "hash123",
-            None,
-        ).unwrap();
-        
-        let result = insert_chunk(
-            &conn,
-            note_id,
-            Some("# Heading"),
-            "Some chunk text",
-        );
+
+        let note_id =
+            insert_note(&conn, "test.md", "Test Note", 1234567890, "hash123", None).unwrap();
+
+        let result = insert_chunk(&conn, note_id, Some("# Heading"), "Some chunk text");
         assert!(result.is_ok());
     }
 
     #[test]
     fn test_insert_chunk_with_offset() {
         let (_temp_dir, conn) = create_test_db();
-        
-        let note_id = insert_note(
-            &conn,
-            "test.md",
-            "Test Note",
-            1234567890,
-            "hash123",
-            None,
-        ).unwrap();
-        
+
+        let note_id =
+            insert_note(&conn, "test.md", "Test Note", 1234567890, "hash123", None).unwrap();
+
         let result = insert_chunk_with_offset(
             &conn,
             note_id,
@@ -391,21 +336,18 @@ mod tests {
     #[test]
     fn test_clear_note_data() {
         let (_temp_dir, conn) = create_test_db();
-        
-        let note_id = insert_note(
-            &conn,
-            "test.md",
-            "Test Note",
-            1234567890,
-            "hash123",
-            None,
-        ).unwrap();
-        
+
+        let note_id =
+            insert_note(&conn, "test.md", "Test Note", 1234567890, "hash123", None).unwrap();
+
         // Insert some tags and links
         insert_tag(&conn, note_id, "tag1").unwrap();
-        insert_link(&conn, note_id, "other.md", "wikilink", false, None, None, None).unwrap();
+        insert_link(
+            &conn, note_id, "other.md", "wikilink", false, None, None, None,
+        )
+        .unwrap();
         insert_chunk(&conn, note_id, None, "chunk text").unwrap();
-        
+
         // Clear the data
         let result = clear_note_data(&conn, note_id);
         assert!(result.is_ok());

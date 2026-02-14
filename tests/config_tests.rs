@@ -44,13 +44,13 @@ fn test_config_from_file_not_found() {
 fn test_config_from_invalid_toml() -> Result<(), Box<dyn std::error::Error>> {
     let temp_dir = TempDir::new()?;
     let config_path = temp_dir.path().join("config.toml");
-    
+
     // Invalid TOML content
     fs::write(&config_path, "invalid toml [[[")?;
-    
+
     let result = Config::from_file(&config_path);
     assert!(result.is_err());
-    
+
     Ok(())
 }
 
