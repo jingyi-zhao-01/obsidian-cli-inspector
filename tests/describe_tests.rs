@@ -65,6 +65,22 @@ fn test_show_graph() {
     show_graph(&None, 1, None);
 }
 
+
+// Test show_stats
+#[test]
+fn test_show_stats() -> Result<()> {
+    let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
+
+    // Setup
+    initialize_database(&config, false, None)?;
+    index_vault(&config, false, false, false, None)?;
+
+    // Test stats
+    show_stats(&config, None)?;
+
+    Ok(())
+}
+
 mod common;
 
 use anyhow::Result;
