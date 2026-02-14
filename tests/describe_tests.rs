@@ -532,6 +532,38 @@ fn test_backlinks_none() -> Result<()> {
     Ok(())
 }
 
+
+// Test search with empty query
+#[test]
+fn test_search_empty_query() -> Result<()> {
+    let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
+
+    // Setup
+    initialize_database(&config, false, None)?;
+    index_vault(&config, false, false, false, None)?;
+
+    // Search with empty query - should handle gracefully
+    search_vault(&config, "", 10, None)?;
+
+    Ok(())
+}
+
+// Test show_bloat with default threshold
+#[test]
+fn test_show_bloat_default() {
+    use obsidian_cli_inspector::commands::other::show_bloat;
+    
+    show_bloat(1000, 10, None);
+}
+
+// Test show_suggest with limit
+#[test]
+fn test_show_suggest_with_limit() {
+    use obsidian_cli_inspector::commands::other::show_suggest;
+    
+    show_suggest("test", 5, None);
+}
+
 mod common;
 
 use anyhow::Result;
