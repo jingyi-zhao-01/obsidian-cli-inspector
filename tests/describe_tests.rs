@@ -439,6 +439,52 @@ Content here.
     assert!(true);
 }
 
+
+// Test logger log_section
+#[test]
+fn test_logger_section() {
+    use obsidian_cli_inspector::logger::Logger;
+    
+    let temp_dir = tempfile::tempdir().unwrap();
+    let logger = Logger::new(temp_dir.path().to_path_buf()).unwrap();
+    
+    let result = logger.log_section("test", "Test Section");
+    assert!(result.is_ok());
+}
+
+// Test logger log
+#[test]
+fn test_logger_log() {
+    use obsidian_cli_inspector::logger::Logger;
+    
+    let temp_dir = tempfile::tempdir().unwrap();
+    let logger = Logger::new(temp_dir.path().to_path_buf()).unwrap();
+    
+    let result = logger.log("test", "Test message");
+    assert!(result.is_ok());
+}
+
+// Test logger print_and_log
+#[test]
+fn test_logger_print_and_log() {
+    use obsidian_cli_inspector::logger::Logger;
+    
+    let temp_dir = tempfile::tempdir().unwrap();
+    let logger = Logger::new(temp_dir.path().to_path_buf()).unwrap();
+    
+    let result = logger.print_and_log("test", "Test message");
+    assert!(result.is_ok());
+}
+
+// Test config from_file - negative test
+#[test]
+fn test_config_from_file_not_found() {
+    use obsidian_cli_inspector::config::Config;
+    
+    let result = Config::from_file(&std::path::PathBuf::from("/nonexistent/path.toml"));
+    assert!(result.is_err());
+}
+
 mod common;
 
 use anyhow::Result;
