@@ -1,7 +1,7 @@
-use crate::config::Config;
-use crate::db::Database;
-use crate::logger::Logger;
-use crate::query;
+use obsidian_cli_core::config::Config;
+use obsidian_cli_core::db::Database;
+use obsidian_cli_core::logger::Logger;
+use obsidian_cli_core::query;
 use anyhow::{Context, Result};
 use chrono;
 

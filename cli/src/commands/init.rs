@@ -1,8 +1,8 @@
 use anyhow::{Context, Result};
 
-use crate::config::Config;
-use crate::db::Database;
-use crate::logger::Logger;
+use obsidian_cli_core::config::Config;
+use obsidian_cli_core::db::Database;
+use obsidian_cli_core::logger::Logger;
 
 pub fn initialize_database(config: &Config, force: bool, logger: Option<&Logger>) -> Result<()> {
     let db_path = config.database_path();

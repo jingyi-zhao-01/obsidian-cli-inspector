@@ -1,0 +1,23 @@
+
+[package]
+name = "obsidian-cli"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+description.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "obsidian-cli-inspector"
+path = "src/main.rs"
+
+[dependencies]
+obsidian-cli-core = { path = "../core" }
+clap = { version = "4.5", features = ["derive", "cargo"] }
+anyhow = "1.0"
+dirs = "5.0"
+chrono = "0.4"
+
+[dev-dependencies]
+tempfile = "3.10"

@@ -1,12 +1,12 @@
 use anyhow::{Context, Result};
 use std::fs;
 
-use crate::chunker::MarkdownChunker;
-use crate::config::Config;
-use crate::db::Database;
-use crate::logger::Logger;
-use crate::parser::MarkdownParser;
-use crate::scanner::VaultScanner;
+use obsidian_cli_core::chunker::MarkdownChunker;
+use obsidian_cli_core::config::Config;
+use obsidian_cli_core::db::Database;
+use obsidian_cli_core::logger::Logger;
+use obsidian_cli_core::parser::MarkdownParser;
+use obsidian_cli_core::scanner::VaultScanner;
 
 pub fn index_vault(
     config: &Config,
