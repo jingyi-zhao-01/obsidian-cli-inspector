@@ -34,18 +34,16 @@ jobs:
           PREV_TAG="$(git describe --tags --abbrev=0 2>/dev/null || true)"
           echo "PREV_TAG=${PREV_TAG}" >> $GITHUB_OUTPUT
 
-      - name: Create next version tag (creates + pushes)
-        id: create_tag
+      - name: Calculate next version
+        id: next_version
         run: |
-          TAG_LINE="$(./cicd/generate_tag.sh)"
-          TAG="${TAG_LINE#TAG=}"
-          VERSION="${TAG#v}"
+          source ./cicd/calculate_next_version.sh
           echo "TAG=${TAG}" >> $GITHUB_OUTPUT
           echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
 
       - name: Update Cargo.toml version to match tag
         run: |
-          VERSION="${{ steps.create_tag.outputs.VERSION }}"
+          VERSION="${{ steps.next_version.outputs.VERSION }}"
           make set-version VERSION=$VERSION
           
           git config user.name "github-actions[bot]"
@@ -53,6 +51,14 @@ jobs:
           git add Cargo.toml Cargo.lock
           git commit -m "chore: bump version to $VERSION"
           git push
+
+      - name: Create and push git tag
+        id: create_tag
+        run: |
+          TAG="${{ steps.next_version.outputs.TAG }}"
+          git tag "$TAG"
+          git push origin "$TAG"
+          echo "TAG=${TAG}" >> $GITHUB_OUTPUT
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
