@@ -7,6 +7,9 @@ on:
     paths:
       - 'src/**'
       - 'tests/**'
+      - 'core/**'
+      - 'cli/**'
+      - 'agent/**'
       - 'Cargo.toml'
       - 'Cargo.lock'
       - 'Makefile'
@@ -20,7 +23,7 @@ concurrency:
 
 env:
   CARGO_TERM_COLOR: always
-  RUST_TOOLCHAIN: 1.87.0
+  RUST_TOOLCHAIN: stable
 
 jobs:
   check:

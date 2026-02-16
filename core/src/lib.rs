@@ -1,7 +1,5 @@
-// Core modules
+// Core modules for obsidian-cli
 pub mod chunker;
-pub mod cli;
-pub mod commands;
 pub mod config;
 pub mod db;
 pub mod logger;
