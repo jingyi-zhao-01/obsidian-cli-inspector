@@ -68,7 +68,7 @@ fn test_config_database_path_default() {
 
     let db_path = config.database_path();
     assert!(db_path.to_string_lossy().contains("obsidian-cli-inspector"));
-    assert!(db_path.to_string_lossy().ends_with("index.db"));
+    assert!(db_path.to_string_lossy().ends_with("vault.db"));
 }
 
 #[test]

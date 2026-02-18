@@ -45,7 +45,7 @@ EXAMPLES:
   obsidian-cli-inspector tui
 
 CONFIG:
-  Place config at ~/.config/obsidian-cli/config.toml
+  Place config at ~/.config/obsidian-cli-inspector/config.toml
   Specify vault path and database location there.
 ";
 

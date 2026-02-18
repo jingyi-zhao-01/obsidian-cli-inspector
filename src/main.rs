@@ -22,11 +22,16 @@ fn main() -> Result<()> {
     let start = Instant::now();
     let (command_name, result) = match cli.command {
         Commands::Init { force } => {
-            let config = load_config(cli.config)?;
-            if let Some(ref log) = logger {
+            // Prompt the user to confirm/override vault/database/log locations and persist them
+            let config = interactive_config_setup(cli.config)?;
+
+            // Create a logger using the (possibly updated) config so init logs go to the right place
+            let cmd_logger = Logger::new(config.log_dir()).ok();
+            if let Some(ref log) = cmd_logger {
                 let _ = log.log_section("init", "Starting Init Command");
             }
-            ("init", initialize_database(&config, force, logger.as_ref()))
+
+            ("init", initialize_database(&config, force, cmd_logger.as_ref()))
         }
         Commands::Stats => {
             let config = load_config(cli.config)?;
@@ -178,6 +183,79 @@ fn ensure_config_exists(path: &PathBuf) -> Result<PathBuf> {
     }
 
     Ok(path.clone())
+}
+
+/// Ensure the config file exists and return its path (does not parse the file)
+fn config_file_path(config_path: Option<PathBuf>) -> Result<PathBuf> {
+    let path = config_path.unwrap_or_else(|| {
+        let mut p = dirs::config_dir().unwrap_or_else(|| PathBuf::from("."));
+        p.push("obsidian-cli-inspector");
+        p.push("config.toml");
+        p
+    });
+
+    ensure_config_exists(&path)
+}
+
+/// Interactively prompt the user to confirm or override key config values and persist them.
+/// Prompts: vault_path, database_path, log_path — each shows a sensible default and accepts ENTER to keep it.
+fn interactive_config_setup(config_path: Option<PathBuf>) -> Result<Config> {
+    use std::io::{self, Write};
+
+    let config_file = config_file_path(config_path)?;
+
+    // Load current config (template will already contain a placeholder)
+    let mut cfg = Config::from_file(&config_file).context("Failed to parse config file")?;
+
+    // 1) Vault path (required)
+    let current_vault = cfg.vault_path.to_string_lossy();
+    print!("Vault path [{}]: ", current_vault);
+    io::stdout().flush()?;
+    let mut input = String::new();
+    let _ = io::stdin().read_line(&mut input)?;
+    let val = input.trim();
+    if !val.is_empty() {
+        cfg.vault_path = PathBuf::from(val);
+    }
+
+    // 2) Database path (optional) — show explicit default
+    let db_default = cfg
+        .database_path
+        .clone()
+        .unwrap_or_else(|| cfg.database_path());
+    print!("Database path [{}]: ", db_default.display());
+    io::stdout().flush()?;
+    input.clear();
+    let _ = io::stdin().read_line(&mut input)?;
+    let val = input.trim();
+    if !val.is_empty() {
+        cfg.database_path = Some(PathBuf::from(val));
+    } else {
+        // store the explicit default so config.toml contains the concrete path
+        cfg.database_path = Some(db_default);
+    }
+
+    // 3) Log path (optional) — show explicit default
+    let log_default = cfg.log_path.clone().unwrap_or_else(|| cfg.log_dir());
+    print!("Log path [{}]: ", log_default.display());
+    io::stdout().flush()?;
+    input.clear();
+    let _ = io::stdin().read_line(&mut input)?;
+    let val = input.trim();
+    if !val.is_empty() {
+        cfg.log_path = Some(PathBuf::from(val));
+    } else {
+        // store the explicit default so config.toml contains the concrete path
+        cfg.log_path = Some(log_default);
+    }
+
+    // Persist updated config back to disk (overwrite)
+    let toml = toml::to_string_pretty(&cfg).context("Failed to serialize config to TOML")?;
+    std::fs::write(&config_file, toml).context("Failed to write updated config file")?;
+
+    println!("Updated config at: {}", config_file.display());
+
+    Ok(cfg)
 }
 
 fn load_config(config_path: Option<PathBuf>) -> Result<Config> {

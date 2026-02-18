@@ -97,7 +97,7 @@ fn test_cli_help_contains_config_location() {
     let long_help = cmd.get_long_about().expect("Long about should be set");
     let help_text = long_help.to_string();
 
-    assert!(help_text.contains("~/.config/obsidian-cli/config.toml"));
+    assert!(help_text.contains("~/.config/obsidian-cli-inspector/config.toml"));
 }
 
 #[test]

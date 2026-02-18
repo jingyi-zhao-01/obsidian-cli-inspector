@@ -4,7 +4,7 @@
 vault_path = "/path/to/your/obsidian/vault"
 
 # Optional: override where the index database is stored
-# database_path = "/custom/path/index.db"
+# database_path = "/custom/path/vault.db"
 
 # Optional: override where logs are written
 # log_path = "/custom/path/logs"
