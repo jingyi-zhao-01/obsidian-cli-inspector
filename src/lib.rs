@@ -1,8 +1,10 @@
 // Core modules
 pub mod chunker;
 pub mod cli;
+pub mod command_handlers;
 pub mod commands;
 pub mod config;
+pub mod config_setup;
 pub mod db;
 pub mod logger;
 pub mod parser;
