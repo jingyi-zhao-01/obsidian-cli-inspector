@@ -83,7 +83,7 @@ tags-sanity: build-release
 
 
 init: 
-	cargo run -- --config test-config.toml init
+	cargo run -- init
 
 
 index:

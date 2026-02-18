@@ -5,7 +5,7 @@
 vault_path = "/path/to/your/obsidian/vault"
 
 # Optional: override where the index database is stored
-# database_path = "~/.local/share/obsidian-cli-inspector/index.db"
+# database_path = "~/.config/obsidian-cli-inspector/vault.db"
 
 # Optional: override where logs are written
 # log_path = "~/.local/share/obsidian-cli-inspector/logs"

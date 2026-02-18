@@ -4,7 +4,7 @@ version = "0.0.7"
 edition = "2021"
 authors = ["jingyi zhao"]
 description = "Local-first CLI/TUI for indexing and querying Obsidian vaults"
-repository = "https://github.com/jingyi-zhao-01/obsidian-cli"
+repository = "https://github.com/jingyi-zhao-01/obsidian-cli-inspector"
 license = "Apache-2.0"
 
 [dependencies]

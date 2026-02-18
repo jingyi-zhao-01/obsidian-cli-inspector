@@ -89,9 +89,9 @@ impl Config {
 
     pub fn database_path(&self) -> PathBuf {
         self.database_path.clone().unwrap_or_else(|| {
-            let mut path = dirs::data_local_dir().unwrap_or_else(|| PathBuf::from("."));
-            path.push("obsidian-cli-inspector");
-            path.push("index.db");
+            // default to the XDG config directory so the DB lives next to config/logs
+            let mut path = self.config_dir();
+            path.push("vault.db");
             path
         })
     }
