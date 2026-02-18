@@ -22,16 +22,21 @@ fn main() -> Result<()> {
     let start = Instant::now();
     let (command_name, result) = match cli.command {
         Commands::Init { force } => {
-            // Prompt the user to confirm/override vault/database/log locations and persist them
+            // Prompt the user to confirm/override vault/database/log locations and persist
+            // them
             let config = interactive_config_setup(cli.config)?;
 
-            // Create a logger using the (possibly updated) config so init logs go to the right place
+            // Create a logger using the (possibly updated) config so init logs go to the
+            // right place
             let cmd_logger = Logger::new(config.log_dir()).ok();
             if let Some(ref log) = cmd_logger {
                 let _ = log.log_section("init", "Starting Init Command");
             }
 
-            ("init", initialize_database(&config, force, cmd_logger.as_ref()))
+            (
+                "init",
+                initialize_database(&config, force, cmd_logger.as_ref()),
+            )
         }
         Commands::Stats => {
             let config = load_config(cli.config)?;
@@ -197,8 +202,9 @@ fn config_file_path(config_path: Option<PathBuf>) -> Result<PathBuf> {
     ensure_config_exists(&path)
 }
 
-/// Interactively prompt the user to confirm or override key config values and persist them.
-/// Prompts: vault_path, database_path, log_path — each shows a sensible default and accepts ENTER to keep it.
+/// Interactively prompt the user to confirm or override key config values and
+/// persist them. Prompts: vault_path, database_path, log_path — each shows a
+/// sensible default and accepts ENTER to keep it.
 fn interactive_config_setup(config_path: Option<PathBuf>) -> Result<Config> {
     use std::io::{self, Write};
 
