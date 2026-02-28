@@ -50,7 +50,14 @@ all:
 	  } > PKGBUILD
 	@rm -f source.tar.gz && \
 	  echo "Generating .SRCINFO..." && \
-	  makepkg --printsrcinfo > .SRCINFO && \
+	  if command -v makepkg >/dev/null 2>&1; then \
+	    makepkg --printsrcinfo > .SRCINFO; \
+	  elif command -v docker >/dev/null 2>&1; then \
+	    docker run --rm -v "$$(pwd)":/pkg -w /pkg archlinux:latest bash -lc "pacman -Sy --noconfirm --needed base-devel >/dev/null && makepkg --printsrcinfo" > .SRCINFO; \
+	  else \
+	    echo "ERROR: makepkg not found. Install Arch base-devel or Docker for fallback generation."; \
+	    exit 127; \
+	  fi && \
 	  echo "✓ Generated PKGBUILD and .SRCINFO for v$(VERSION)"
 
 syntax-check:
