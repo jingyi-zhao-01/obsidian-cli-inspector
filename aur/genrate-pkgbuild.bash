@@ -64,7 +64,6 @@ build() {
 package() {
   cd "\${srcdir}/${REPO_NAME}-${VERSION}"
   install -Dm755 "target/release/${PKGNAME}" "\${pkgdir}/usr/bin/${PKGNAME}"
-  install -Dm644 LICENSE "\${pkgdir}/usr/share/licenses/\${pkgname}/LICENSE"
 }
 EOF
 
