@@ -18,7 +18,7 @@ env:
 jobs:
   release:
     name: Release to crates.io
-    runs-on: self-hosted
+    runs-on: spot
     permissions:
       contents: write
     steps:
