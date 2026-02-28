@@ -141,42 +141,28 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4
 
-      - name: Generate PKGBUILD
+      - name: Extract version from Cargo.toml
+        id: version
         run: |
-          bash ./aur/genrate-pkgbuild.bash
+          VERSION=$(grep '^version' Cargo.toml | head -n1 | sed 's/version = "\(.*\)"/\1/')
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
-      - name: Verify PKGBUILD exists
+      - name: Generate PKGBUILD and .SRCINFO
         run: |
-          test -f PKGBUILD || (echo "PKGBUILD not found" && exit 1)
+          cd aur
+          make VERSION=${{ steps.version.outputs.VERSION }} all
 
-      - name: Generate .SRCINFO
+      - name: Verify artifacts exist
         run: |
-          docker run --rm -v "$PWD":/pkg archlinux:latest bash -c "
-            pacman -Syu --noconfirm base-devel git
-            cd /pkg
-            makepkg --printsrcinfo > .SRCINFO
-          "
+          test -f ./aur/PKGBUILD || (echo "PKGBUILD not found" && exit 1)
+          test -f ./aur/.SRCINFO || (echo ".SRCINFO not found" && exit 1)
 
       - name: Validate PKGBUILD syntax
         run: |
-          docker run --rm -v "$PWD":/pkg archlinux:latest bash -c "
-            pacman -Syu --noconfirm base-devel git
-            cd /pkg
-            makepkg --check
-          "
+          cd aur
+          make syntax-check
 
       - name: Full clean Arch build
         run: |
-          docker run --rm -v "$PWD":/pkg archlinux:latest bash -c "
-            set -e
-
-            pacman -Syu --noconfirm base-devel git rust cargo
-
-            useradd -m builduser
-            chown -R builduser:builduser /pkg
-
-            su builduser -c '
-              cd /pkg
-              makepkg -si --noconfirm --cleanbuild --clean
-            '
-          "
+          cd aur
+          make build-test

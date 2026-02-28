@@ -60,20 +60,38 @@ jobs:
     needs: release
     if: ${{ needs.release.outputs.release_created == 'true' }}
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout release tag
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.release.outputs.tag_name }}
 
-      - name: Generate PKGBUILD
-        run: bash ./aur/genrate-pkgbuild.bash
+      - name: Extract version from tag
+        id: version
+        run: |
+          VERSION=${{ needs.release.outputs.tag_name }}
+          VERSION=${VERSION#v}
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
-      - name: Publish AUR package
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cargo
+
+      - name: Generate PKGBUILD and .SRCINFO
+        run: |
+          cd aur
+          make VERSION=${{ steps.version.outputs.VERSION }} all
+
+      - name: Publish to AUR
         uses: KSXGitHub/github-actions-deploy-aur@v2.3.0
         with:
           pkgname: obsidian-cli-inspector
-          pkgbuild: ./PKGBUILD
+          pkgbuild: ./aur/PKGBUILD
           commit_username: ${{ secrets.AUR_USERNAME }}
           commit_email: ${{ secrets.AUR_EMAIL }}
           ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
-          commit_message: Update AUR package
+          commit_message: "Update to ${{ steps.version.outputs.VERSION }}"
           ssh_keyscan_types: rsa,ecdsa,ed25519
 
