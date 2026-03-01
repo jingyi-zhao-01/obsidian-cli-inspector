@@ -150,3 +150,55 @@ stats:
 # Describe a note
 describe:
 	cargo run -- --config test-config.toml view describe "$(NOTE)"
+
+# =============================================================================
+# Machine Contract Commands (JSON output for agent integration)
+# =============================================================================
+
+# Search with JSON output
+search-json:
+	cargo run -- --output json --config test-config.toml query search "$(QUERY)"
+
+# Backlinks with JSON output
+backlinks-json:
+	cargo run -- --output json --config test-config.toml query backlinks "$(NOTE)"
+
+# Links with JSON output
+links-json:
+	cargo run -- --output json --config test-config.toml query links "$(NOTE)"
+
+# Unresolved links with JSON output
+unresolved-json:
+	cargo run -- --output json --config test-config.toml query unresolved
+
+# Tags with JSON output
+tags-json:
+	cargo run -- --output json --config test-config.toml query tags
+
+# Tags list with JSON output
+tags-list-json:
+	cargo run -- --output json --config test-config.toml query tags --list
+
+# Bloat analysis with JSON output
+bloat-json:
+	cargo run -- --output json --config test-config.toml analyze bloat
+
+# Related notes with JSON output
+related-json:
+	cargo run -- --output json --config test-config.toml analyze related "$(NOTE)"
+
+# Orphan diagnosis with JSON output
+orphans-json:
+	cargo run -- --output json --config test-config.toml diagnose orphans
+
+# Broken links diagnosis with JSON output
+broken-links-json:
+	cargo run -- --output json --config test-config.toml diagnose broken-links
+
+# Stats with JSON output
+stats-json:
+	cargo run -- --output json --config test-config.toml view stats
+
+# Describe with JSON output
+describe-json:
+	cargo run -- --output json --config test-config.toml view describe "$(NOTE)"
