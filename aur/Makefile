@@ -39,6 +39,7 @@ all:
 	      '' \
 	      'build() {' \
 	      '  cd "$${srcdir}/$${pkgname}-$${pkgver}"' \
+	      '  . /etc/profile.d/rustup.sh 2>/dev/null || true' \
 	      '  rustup default 1.88.0' \
 	      '  cargo build --release' \
 	      '}' \
@@ -93,11 +94,11 @@ build-test:
 	@echo "Running full clean Arch build test..."
 	@docker run --rm -v "$$(pwd)":/pkg archlinux:latest bash -c "\
 	  set -e; \
-	  pacman -Syu --noconfirm base-devel git openssl && \
-	  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain 1.88.0 && \
+	  pacman -Syu --noconfirm base-devel git && \
 	  useradd -m builduser; \
 	  chown -R builduser:builduser /pkg; \
-	  su builduser -c 'source ~/.cargo/env && cd /pkg && makepkg -si --noconfirm --cleanbuild --clean'; \
+	  su builduser -s /bin/bash -c 'curl --proto =https --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain 1.88.0'; \
+	  su builduser -s /bin/bash -c 'export PATH=\"$$HOME/.cargo/bin:$$PATH\" && cd /pkg && makepkg -si --noconfirm --cleanbuild --clean'; \
 	" || exit 1
 	@echo "✓ Build test passed"
 
