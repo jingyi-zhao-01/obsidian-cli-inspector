@@ -1,7 +1,10 @@
 use anyhow::{Context, Result};
 use clap::Parser;
 use obsidian_cli_inspector::{
-    cli::{Cli, Commands, InitCommands, IndexCommands, QueryCommands, AnalyzeCommands, DiagnoseCommands, ViewCommands},
+    cli::{
+        AnalyzeCommands, Cli, Commands, DiagnoseCommands, IndexCommands, InitCommands,
+        QueryCommands, ViewCommands,
+    },
     commands::*,
     config::Config,
     logger::Logger,
@@ -50,7 +53,11 @@ fn main() -> Result<()> {
         // ============================================================================
         // INDEX Commands
         // ============================================================================
-        Commands::Index(IndexCommands::Index { dry_run, force, verbose }) => {
+        Commands::Index(IndexCommands::Index {
+            dry_run,
+            force,
+            verbose,
+        }) => {
             let config = load_config(cli.config)?;
             if let Some(ref log) = logger {
                 let _ = log.log_section("index", "Starting Index Command");
@@ -89,10 +96,7 @@ fn main() -> Result<()> {
             if let Some(ref log) = logger {
                 let _ = log.log_section("query.links", "Starting Links Command");
             }
-            (
-                "query.links",
-                Ok(show_links(&note, logger.as_ref())),
-            )
+            ("query.links", Ok(show_links(&note, logger.as_ref())))
         }
         Commands::Query(QueryCommands::Unresolved) => {
             let config = load_config(cli.config)?;
@@ -109,10 +113,7 @@ fn main() -> Result<()> {
             if let Some(ref log) = logger {
                 let _ = log.log_section("query.tags", "Starting Tags Command");
             }
-            (
-                "query.tags",
-                Ok(show_tags(&tag, list, logger.as_ref())),
-            )
+            ("query.tags", Ok(show_tags(&tag, list, logger.as_ref())))
         }
 
         // ============================================================================
@@ -136,14 +137,20 @@ fn main() -> Result<()> {
             // Related is not yet implemented - show unimplemented message
             (
                 "analyze.related",
-                Ok(show_unimplemented("analyze.related - not yet implemented", logger.as_ref())),
+                Ok(show_unimplemented(
+                    "analyze.related - not yet implemented",
+                    logger.as_ref(),
+                )),
             )
         }
 
         // ============================================================================
         // DIAGNOSE Commands
         // ============================================================================
-        Commands::Diagnose(DiagnoseCommands::Orphans { exclude_templates, exclude_daily }) => {
+        Commands::Diagnose(DiagnoseCommands::Orphans {
+            exclude_templates,
+            exclude_daily,
+        }) => {
             let config = load_config(cli.config)?;
             if let Some(ref log) = logger {
                 let _ = log.log_section("diagnose.orphans", "Starting Diagnose Orphans Command");

@@ -97,7 +97,6 @@ pub enum Commands {
     // /// Graph operations commands
     // #[command(subcommand)]
     // Graph(GraphCommands),
-
     /// Content analysis commands
     #[command(subcommand)]
     Analyze(AnalyzeCommands),
@@ -146,7 +145,6 @@ pub enum IndexCommands {
         #[arg(short, long)]
         verbose: bool,
     },
-
     // /// Show indexing status
     // Status,
 
@@ -246,7 +244,6 @@ pub enum AnalyzeCommands {
         #[arg(short, long, default_value = "10")]
         limit: usize,
     },
-
     // /// Find similar notes based on content
     // Similar {
     //     /// Note path or title
@@ -280,7 +277,6 @@ pub enum DiagnoseCommands {
 
     /// Diagnose broken links (unresolved and ambiguous)
     BrokenLinks,
-
     // /// Diagnose note conflicts
     // Conflicts,
 }
@@ -298,7 +294,6 @@ pub enum ViewCommands {
         /// File path or title to describe
         filename: String,
     },
-
     // /// Show health metrics
     // Health,
 }
