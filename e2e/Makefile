@@ -7,7 +7,7 @@
 # =============================================================================
 
 # Full E2E: all CLI commands exercised (uses debug build for faster iteration)
-test-all:
+test-cli:
 	@cd .. && cargo build
 	@echo "=== Testing init commands ==="
 	@cd .. && cargo run -- --config test-config.toml init init --force
