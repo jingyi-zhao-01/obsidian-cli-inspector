@@ -33,13 +33,14 @@ all:
 	      'url="https://github.com/$(REPO_OWNER)/$(REPO_NAME)"' \
 	      "license=('Apache')" \
 	      'depends=()' \
-	      "makedepends=('cargo')" \
+	      "makedepends=('cargo' 'rustup')" \
 	      'source=("$${pkgname}-$${pkgver}.tar.gz::https://github.com/$(REPO_OWNER)/$(REPO_NAME)/archive/refs/tags/v$${pkgver}.tar.gz")' \
 	      "sha256sums=(\"$$SHA256\")" \
 	      '' \
 	      'build() {' \
 	      '  cd "$${srcdir}/$${pkgname}-$${pkgver}"' \
-	      '  cargo build --release --locked' \
+	      '  rustup default 1.88.0' \
+	      '  cargo build --release' \
 	      '}' \
 	      '' \
 	      'package() {' \
@@ -62,6 +63,7 @@ all:
 	      "\tarch = x86_64" \
 	      "\tlicense = Apache" \
 	      "\tmakedepends = cargo" \
+	      "\t                rustup" \
 	      "\tsource = $(PKGNAME)-$(VERSION).tar.gz::https://github.com/$(REPO_OWNER)/$(REPO_NAME)/archive/refs/tags/v$(VERSION).tar.gz" \
 	      "\tsha256sums = $(SHA256)" \
 	      "" \
@@ -91,10 +93,11 @@ build-test:
 	@echo "Running full clean Arch build test..."
 	@docker run --rm -v "$$(pwd)":/pkg archlinux:latest bash -c "\
 	  set -e; \
-	  pacman -Syu --noconfirm base-devel git rust cargo; \
+	  pacman -Syu --noconfirm base-devel git openssl && \
+	  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain 1.88.0 && \
 	  useradd -m builduser; \
 	  chown -R builduser:builduser /pkg; \
-	  su builduser -c 'cd /pkg && makepkg -si --noconfirm --cleanbuild --clean'; \
+	  su builduser -c 'source ~/.cargo/env && cd /pkg && makepkg -si --noconfirm --cleanbuild --clean'; \
 	" || exit 1
 	@echo "✓ Build test passed"
 
