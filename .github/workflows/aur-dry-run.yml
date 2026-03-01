@@ -34,8 +34,8 @@ jobs:
       # ------------------------------------------------------------
       # 3) Generate PKGBUILD + .SRCINFO using your Makefile
       #    NOTE: generate-srcinfo currently uses useradd inside docker,
-      #    which will fail in many CI contexts. We'll generate .SRCINFO
-      #    in Arch container as 'nobody' to avoid useradd.
+      #    which will fail in many CI contexts. We explicitly control
+      #    the Arch container user here instead.
       # ------------------------------------------------------------
       - name: Generate PKGBUILD (validate/download/checksum/generate-pkgbuild)
         shell: bash
@@ -47,7 +47,7 @@ jobs:
           make VERSION="${{ steps.version.outputs.VERSION }}" checksum
           make VERSION="${{ steps.version.outputs.VERSION }}" generate-pkgbuild
 
-      - name: Generate .SRCINFO (Arch container, non-root)
+      - name: Generate .SRCINFO (Arch container)
         shell: bash
         run: |
           set -euo pipefail
@@ -57,8 +57,9 @@ jobs:
             archlinux:latest bash -lc '
               set -euo pipefail
               pacman -Sy --noconfirm --needed base-devel git >/dev/null
-              chown -R nobody:nobody /work
-              su nobody -s /bin/bash -c "cd /work/aur && makepkg --printsrcinfo" > /work/aur/.SRCINFO
+              useradd -m builder
+              chown -R builder:builder /work
+              su builder -s /bin/bash -c "cd /work/aur && makepkg --printsrcinfo > .SRCINFO"
             '
 
       # ------------------------------------------------------------
@@ -78,10 +79,9 @@ jobs:
 
       # ------------------------------------------------------------
       # 5) PKGBUILD syntax check
-      #    Your Makefile target runs makepkg as root in docker -> fails.
-      #    Run makepkg --check in Arch container as nobody.
+      #    Run makepkg --check in Arch container as non-root.
       # ------------------------------------------------------------
-      - name: PKGBUILD syntax check (Arch, non-root)
+      - name: PKGBUILD syntax check
         shell: bash
         run: |
           set -euo pipefail
@@ -91,16 +91,17 @@ jobs:
             archlinux:latest bash -lc '
               set -euo pipefail
               pacman -Sy --noconfirm --needed base-devel cargo git >/dev/null
-              chown -R nobody:nobody /work
-              su nobody -s /bin/bash -c "cd /work/aur && makepkg --check"
+              useradd -m builder
+              chown -R builder:builder /work
+              su builder -s /bin/bash -c "cd /work/aur && makepkg --check"
             '
 
       # ------------------------------------------------------------
       # 6) Full clean Arch build test
-      #    Your Makefile build-test uses useradd inside docker -> fails.
-      #    Do the equivalent clean build as nobody.
+      #    Build-only test (CI-safe). We avoid -i because installation
+      #    requires root-level pacman interaction.
       # ------------------------------------------------------------
-      - name: Full clean Arch build test (Arch, non-root)
+      - name: Full clean Arch build test
         shell: bash
         run: |
           set -euo pipefail
@@ -110,6 +111,7 @@ jobs:
             archlinux:latest bash -lc '
               set -euo pipefail
               pacman -Sy --noconfirm --needed base-devel cargo git >/dev/null
-              chown -R nobody:nobody /work
-              su nobody -s /bin/bash -c "cd /work/aur && makepkg -i --noconfirm --cleanbuild --clean"
+              useradd -m builder
+              chown -R builder:builder /work
+              su builder -s /bin/bash -c "cd /work/aur && makepkg -sf --noconfirm --cleanbuild --clean"
             '
