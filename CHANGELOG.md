@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2](https://github.com/jingyi-zhao-01/obsidian-cli-inspector/compare/v0.2.1...v0.2.2) (2026-03-01)
+
+
+### Bug Fixes
+
+* use normalized version in PKGBUILD and download messages ([4b25085](https://github.com/jingyi-zhao-01/obsidian-cli-inspector/commit/4b25085a8d58da1f2108259b9482fc0158e758ba))
+
 ## [0.2.1](https://github.com/jingyi-zhao-01/obsidian-cli-inspector/compare/v0.2.0...v0.2.1) (2026-03-01)
 
 
