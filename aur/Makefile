@@ -71,9 +71,9 @@ generate-pkgbuild:
 	    'pkgdesc="Local-first CLI/TUI for indexing and querying Obsidian vaults"' \
 	    "arch=('x86_64')" \
 	    "url=\"https://github.com/$(REPO_OWNER)/$(REPO_NAME)\"" \
-	    "license=('Apache')" \
-	    "depends=()" \
-	    "makedepends=('cargo')" \
+	    "license=('Apache-2.0')" \
+	    "depends=('sqlite')" \
+	    "makedepends=('cargo' 'pkgconf')" \
 	    "source=(\"\$${pkgname}-\$${pkgver}.tar.gz::https://github.com/$(REPO_OWNER)/$(REPO_NAME)/archive/refs/tags/v\$${pkgver}.tar.gz\")" \
 	    "sha256sums=(\"$$SHA256\")" \
 	    '' \

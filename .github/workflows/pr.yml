@@ -61,51 +61,51 @@ jobs:
       - name: Run tests
         run: make test
 
-  codecov:
-    name: Upload coverage reports to Codecov
-    runs-on: ubuntu-latest
-    needs: validate
-    if: github.event.pull_request.draft == false
-    permissions:
-      contents: read
-    steps:
-      - uses: actions/checkout@v4
+  # codecov:
+  #   name: Upload coverage reports to Codecov
+  #   runs-on: ubuntu-latest
+  #   needs: validate
+  #   if: github.event.pull_request.draft == false
+  #   permissions:
+  #     contents: read
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-      - name: Setup Rust
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          toolchain: ${{ env.RUST_TOOLCHAIN }}
+  #     - name: Setup Rust
+  #       uses: dtolnay/rust-toolchain@stable
+  #       with:
+  #         toolchain: ${{ env.RUST_TOOLCHAIN }}
 
-      - name: Rust Cache
-        uses: Swatinem/rust-cache@v2
+  #     - name: Rust Cache
+  #       uses: Swatinem/rust-cache@v2
 
-      - name: Install kcov dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libcurl4-openssl-dev libelf-dev libdw-dev cmake gcc binutils-dev libiberty-dev
+  #     - name: Install kcov dependencies
+  #       run: |
+  #         sudo apt-get update
+  #         sudo apt-get install -y libcurl4-openssl-dev libelf-dev libdw-dev cmake gcc binutils-dev libiberty-dev
 
-      - name: Build and install kcov
-        run: |
-          wget https://github.com/SimonKagstrom/kcov/archive/master.tar.gz
-          tar xzf master.tar.gz
-          cd kcov-master
-          mkdir build
-          cd build
-          cmake ..
-          make
-          sudo make install
-          cd ../..
-          rm -rf kcov-master master.tar.gz
+  #     - name: Build and install kcov
+  #       run: |
+  #         wget https://github.com/SimonKagstrom/kcov/archive/master.tar.gz
+  #         tar xzf master.tar.gz
+  #         cd kcov-master
+  #         mkdir build
+  #         cd build
+  #         cmake ..
+  #         make
+  #         sudo make install
+  #         cd ../..
+  #         rm -rf kcov-master master.tar.gz
 
-      - name: Generate coverage with kcov
-        run: make coverage
+  #     - name: Generate coverage with kcov
+  #       run: make coverage
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          directory: target/cov/
-          fail_ci_if_error: true
+  #     - name: Upload coverage to Codecov
+  #       uses: codecov/codecov-action@v4
+  #       with:
+  #         token: ${{ secrets.CODECOV_TOKEN }}
+  #         directory: target/cov/
+  #         fail_ci_if_error: true
   cargo-publish-dry-run:
     name: Cargo Publish Dry Run
     runs-on: ubuntu-latest
