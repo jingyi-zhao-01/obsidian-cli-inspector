@@ -33,9 +33,9 @@ jobs:
           configFile: commitlint.config.mjs
 
   validate:
-    name: Lint, Test, Coverage
+    name: Lint, Format, Test
     runs-on: ubuntu-latest
-    needs: commit-lint
+    needs: [commit-lint]
     if: github.event.pull_request.draft == false && !contains(github.event.pull_request.labels.*.name, 'autorelease:pending')
 
     permissions:
@@ -64,7 +64,7 @@ jobs:
   e2e:
     name: E2E Tests
     runs-on: ubuntu-latest
-    needs: validate
+    needs: [commit-lint]
     if: github.event.pull_request.draft == false && !contains(github.event.pull_request.labels.*.name, 'autorelease:pending')
 
     permissions:
@@ -85,8 +85,8 @@ jobs:
       - name: test machine contract commands
         run: make -C e2e test-machine-contract
 
-  codecov:
-    name: Upload coverage reports to Codecov
+  coverage:
+    name: coverage
     runs-on: ubuntu-latest
     needs: [validate, e2e]
     if: github.event.pull_request.draft == false && !contains(github.event.pull_request.labels.*.name, 'autorelease:pending')
@@ -133,7 +133,7 @@ jobs:
   cargo-publish-dry-run:
     name: Cargo Publish Dry Run
     runs-on: ubuntu-latest
-    needs: [validate, e2e]
+    needs: [coverage]
     if: github.event.pull_request.draft == false && !contains(github.event.pull_request.labels.*.name, 'autorelease:pending')
 
     permissions:
@@ -154,6 +154,6 @@ jobs:
 
   aur-dry-run:
     name: AUR Build
-    needs: validate
+    needs: [coverage]
     if: github.event.pull_request.draft == false && !contains(github.event.pull_request.labels.*.name, 'autorelease:pending')
     uses: ./.github/workflows/aur-build.yml
