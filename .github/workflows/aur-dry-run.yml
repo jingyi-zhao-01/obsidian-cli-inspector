@@ -63,13 +63,18 @@ jobs:
       # ------------------------------------------------------------
       - name: PKGBUILD syntax check
         run: |
-          cd aur
-          make syntax-check
+            useradd -m builder
+            chown -R builder:builder aur
+            cd aur
+            su builder -c "makepkg --printsrcinfo > .SRCINFO"
+            su builder -c "makepkg --check"
 
       # ------------------------------------------------------------
       # 6️Full clean build test
       # ------------------------------------------------------------
       - name: Full clean Arch build test
         run: |
-          cd aur
-          make build-test
+            useradd -m builder
+            chown -R builder:builder aur
+            cd aur
+            su builder -c "make build-test"
