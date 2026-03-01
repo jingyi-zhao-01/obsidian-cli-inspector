@@ -1,5 +1,7 @@
 .PHONY: build check test fmt fmt-check lint clippy run clean set-version build-release coverage
 
+# Note: E2E tests are located in e2e/Makefile
+
 # =============================================================================
 # Build Commands
 # =============================================================================
@@ -52,73 +54,6 @@ set-version:
 	cargo set-version $(VERSION)
 	cargo update --workspace
 	@echo "Version set to $(VERSION) and Cargo.lock updated"
-
-# =============================================================================
-# Local Development & Testing
-# =============================================================================
-# These commands use the debug build (cargo run) for faster iteration.
-# They assume test-config.toml exists in the project root.
-# =============================================================================
-
-# Build and run all CLI commands to test the entire CLI
-test-all: build
-	@echo "=== Testing init commands ==="
-	@cargo run -- --config test-config.toml init init --force
-	@echo ""
-	@echo "=== Testing index commands ==="
-	@cargo run -- --config test-config.toml index index --force
-	@echo ""
-	@echo "=== Testing query commands ==="
-	@cargo run -- --config test-config.toml query search "productivity"
-	@cargo run -- --config test-config.toml query backlinks "Home"
-	@cargo run -- --config test-config.toml query links "Home"
-	@cargo run -- --config test-config.toml query unresolved
-	@cargo run -- --config test-config.toml query tags
-	@cargo run -- --config test-config.toml query tags --list
-	@echo ""
-	@echo "=== Testing analyze commands ==="
-	@cargo run -- --config test-config.toml analyze bloat --threshold 50000
-	@cargo run -- --config test-config.toml analyze related "Home" --limit 5
-	@echo ""
-	@echo "=== Testing diagnose commands ==="
-	@cargo run -- --config test-config.toml diagnose orphans
-	@cargo run -- --config test-config.toml diagnose broken-links
-	@echo ""
-	@echo "=== Testing view commands ==="
-	@cargo run -- --config test-config.toml view stats
-	@cargo run -- --config test-config.toml view describe "Home"
-	@echo ""
-	@echo "=== All CLI commands tested successfully ==="
-
-# =============================================================================
-# Sanity Tests - Quick smoke tests using release build
-# =============================================================================
-
-# Full sanity: init, index, search, stats
-init-sanity: build-release
-	./target/release/obsidian-cli-inspector --config test-config.toml init init
-	./target/release/obsidian-cli-inspector --config test-config.toml index index
-	./target/release/obsidian-cli-inspector --config test-config.toml query search "productivity"
-	./target/release/obsidian-cli-inspector --config test-config.toml view stats
-
-# Search sanity: init, index, search
-search-sanity: build-release
-	./target/release/obsidian-cli-inspector --config test-config.toml init init
-	./target/release/obsidian-cli-inspector --config test-config.toml index index
-	./target/release/obsidian-cli-inspector --config test-config.toml query search "productivity"
-
-# Links sanity: init, index, links, backlinks
-links-sanity: build-release
-	./target/release/obsidian-cli-inspector --config test-config.toml init init
-	./target/release/obsidian-cli-inspector --config test-config.toml index index
-	./target/release/obsidian-cli-inspector --config test-config.toml query links "Home.md"
-	./target/release/obsidian-cli-inspector --config test-config.toml query backlinks "Home.md"
-
-# Tags sanity: init, index, tags
-tags-sanity: build-release
-	./target/release/obsidian-cli-inspector --config test-config.toml init init
-	./target/release/obsidian-cli-inspector --config test-config.toml index index
-	./target/release/obsidian-cli-inspector --config test-config.toml query tags learning
 
 # =============================================================================
 # Individual Development Commands (using cargo run for debug build)
