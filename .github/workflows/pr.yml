@@ -80,8 +80,10 @@ jobs:
 
       - uses: Swatinem/rust-cache@v2
 
-      - name: Run E2E tests
-        run: make -C e2e test-all
+      - name: test CLI commands
+        run: make -C e2e test-cli
+      - name: test machine contract commands
+        run: make -C e2e test-machine-contract
 
   codecov:
     name: Upload coverage reports to Codecov
