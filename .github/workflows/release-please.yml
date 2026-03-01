@@ -31,7 +31,7 @@ jobs:
           token : ${{ secrets.RELEASE_TOKEN }}
           release-type: rust
 
-  publish:
+  crate-publish:
     name: Publish to crates.io
     needs: release
     if: ${{ needs.release.outputs.release_created == 'true' }}
@@ -54,3 +54,49 @@ jobs:
 
       - name: Publish crate
         run: cargo publish --locked --token ${{ secrets.CARGO_REGISTRY_TOKEN }}
+
+  aur-build:
+    name: Build AUR Package
+    needs: release
+    if: ${{ needs.release.outputs.release_created == 'true' }}
+    uses: ./.github/workflows/aur-build.yml
+    with:
+      ref: ${{ needs.release.outputs.tag_name }}
+      version: ${{ needs.release.outputs.tag_name }}
+
+  aur-publish:
+    name: Publish to AUR
+    needs: [release, aur-build]
+    if: ${{ needs.release.outputs.release_created == 'true' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout release tag
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.release.outputs.tag_name }}
+
+      - name: Download PKGBUILD artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: aur-package
+          path: aur/
+
+      - name: Extract version from tag
+        id: version
+        run: |
+          VERSION=${{ needs.release.outputs.tag_name }}
+          VERSION=${VERSION#v}
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Publish to AUR
+        uses: KSXGitHub/github-actions-deploy-aur@v2.3.0
+        with:
+          pkgname: obsidian-cli-inspector
+          pkgbuild: ./aur/PKGBUILD
+          commit_username: ${{ secrets.AUR_USERNAME }}
+          commit_email: ${{ secrets.AUR_EMAIL }}
+          ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
+          commit_message: "Update to ${{ steps.version.outputs.VERSION }}"
+          ssh_keyscan_types: rsa,ecdsa,ed25519
+
