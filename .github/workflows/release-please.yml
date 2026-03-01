@@ -57,7 +57,7 @@ jobs:
 
   aur-build:
     name: Build AUR Package
-    needs: release
+    needs: [release, crate-publish]
     if: ${{ needs.release.outputs.release_created == 'true' }}
     uses: ./.github/workflows/aur-build.yml
     with:
