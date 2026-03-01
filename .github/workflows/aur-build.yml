@@ -1,0 +1,148 @@
+name: AUR Build
+
+on:
+  workflow_call:
+    inputs:
+      ref:
+        description: 'Git ref to checkout (branch, tag, or SHA)'
+        required: false
+        type: string
+        default: ''
+      version:
+        description: 'Version override (if not provided, extracts from Cargo.toml)'
+        required: false
+        type: string
+        default: ''
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  aur-dry-run:
+    name: AUR Build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      # ------------------------------------------------------------
+      # 1) Checkout
+      # ------------------------------------------------------------
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.ref }}
+
+      # ------------------------------------------------------------
+      # 2) Extract version
+      # ------------------------------------------------------------
+      - name: Extract version from Cargo.toml
+        id: version
+        shell: bash
+        env:
+          VERSION_INPUT: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+          if [ -n "$VERSION_INPUT" ]; then
+            VERSION="$VERSION_INPUT"
+          else
+            VERSION="$(grep -E '^version\s*=' Cargo.toml | head -n1 | sed -E 's/version\s*=\s*"(.*)"/\1/')"
+          fi
+          echo "VERSION=$VERSION" >> "$GITHUB_OUTPUT"
+
+      # ------------------------------------------------------------
+      # 3) Generate PKGBUILD + .SRCINFO using your Makefile
+      #    NOTE: generate-srcinfo currently uses useradd inside docker,
+      #    which will fail in many CI contexts. We explicitly control
+      #    the Arch container user here instead.
+      # ------------------------------------------------------------
+      - name: Generate PKGBUILD (validate/download/checksum/generate-pkgbuild)
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd aur
+          make VERSION="${{ steps.version.outputs.VERSION }}" validate
+          make VERSION="${{ steps.version.outputs.VERSION }}" download
+          make VERSION="${{ steps.version.outputs.VERSION }}" checksum
+          make VERSION="${{ steps.version.outputs.VERSION }}" generate-pkgbuild
+
+      - name: Generate .SRCINFO (Arch container)
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker run --rm \
+            -v "${GITHUB_WORKSPACE}:/work" \
+            -w /work/aur \
+            archlinux:latest bash -lc '
+              set -euo pipefail
+              pacman -Sy --noconfirm --needed base-devel git >/dev/null
+              useradd -m builder
+              chown -R builder:builder /work
+              su builder -s /bin/bash -c "cd /work/aur && makepkg --printsrcinfo > .SRCINFO"
+            '
+
+      # ------------------------------------------------------------
+      # 4) Verify artifacts
+      # ------------------------------------------------------------
+      - name: Verify PKGBUILD exists
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f aur/PKGBUILD || (echo "PKGBUILD missing" && exit 1)
+
+      - name: Verify .SRCINFO exists
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f aur/.SRCINFO || (echo ".SRCINFO missing" && exit 1)
+
+      # ------------------------------------------------------------
+      # 5) PKGBUILD syntax check
+      #    Run makepkg --check in Arch container as non-root.
+      # ------------------------------------------------------------
+      - name: PKGBUILD syntax check
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker run --rm \
+            -v "${GITHUB_WORKSPACE}:/work" \
+            -w /work/aur \
+            archlinux:latest bash -lc '
+              set -euo pipefail
+              pacman -Sy --noconfirm --needed base-devel cargo git >/dev/null
+              useradd -m builder
+              chown -R builder:builder /work
+              su builder -s /bin/bash -c "cd /work/aur && makepkg --check"
+            '
+
+      # ------------------------------------------------------------
+      # 6) Full clean Arch build test
+      #    Build-only test (CI-safe). We avoid -i because installation
+      #    requires root-level pacman interaction.
+      # ------------------------------------------------------------
+      - name: Full clean Arch build test
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker run --rm \
+            -v "${GITHUB_WORKSPACE}:/work" \
+            -w /work/aur \
+            archlinux:latest bash -lc '
+              set -euo pipefail
+              pacman -Sy --noconfirm --needed base-devel cargo git >/dev/null
+              useradd -m builder
+              chown -R builder:builder /work
+              su builder -s /bin/bash -c "cd /work/aur && makepkg -sf --noconfirm --cleanbuild --clean"
+            '
+
+      # ------------------------------------------------------------
+      # 7) Upload artifacts for potential publishing
+      # ------------------------------------------------------------
+      - name: Upload PKGBUILD and .SRCINFO
+        uses: actions/upload-artifact@v4
+        with:
+          name: aur-package
+          path: |
+            aur/PKGBUILD
+            aur/.SRCINFO
+          retention-days: 1
