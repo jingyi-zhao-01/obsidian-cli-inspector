@@ -8,7 +8,7 @@ env:
 
 jobs:
   aur-dry-run:
-    name: AUR Build Dry Run
+    name: AUR Build
     runs-on: ubuntu-latest
     permissions:
       contents: read

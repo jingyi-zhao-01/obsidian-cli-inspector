@@ -129,7 +129,7 @@ jobs:
         run: cargo publish --dry-run --locked
 
   aur-dry-run:
-    name: AUR Build Dry Run
+    name: AUR Build
     needs: validate
     if: github.event.pull_request.draft == false
-    uses: ./.github/workflows/aur-dry-run.yml
+    uses: ./.github/workflows/aur-build.yml

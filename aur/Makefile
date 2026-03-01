@@ -79,6 +79,15 @@ generate-pkgbuild:
 	    '' \
 	    'build() {' \
 	    '  cd "$${srcdir}/$${pkgname}-$${pkgver}"' \
+	    '  # Prevent CI/env from forcing lld or static native linking' \
+	    '  unset RUSTFLAGS' \
+	    '  unset CARGO_ENCODED_RUSTFLAGS' \
+	    '  unset LDFLAGS' \
+	    '  unset CC' \
+	    '  unset CXX' \
+	    '  unset LD' \
+	    '  # Force GNU linker toolchain (avoid ld.lld)' \
+	    '  export CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_LINKER=gcc' \
 	    '  cargo build --release --locked' \
 	    '}' \
 	    '' \
