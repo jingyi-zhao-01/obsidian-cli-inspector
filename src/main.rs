@@ -78,28 +78,34 @@ fn main() -> Result<()> {
         // QUERY Commands
         // ============================================================================
         Commands::Query(QueryCommands::Search { query, limit }) => {
-            let _config = load_config(cli.config)?;
+            let config = load_config(cli.config)?;
             if let Some(ref log) = logger {
                 let _ = log.log_section("query.search", "Starting Search Command");
             }
-            show_search(&query, limit, logger.as_ref());
-            ("query.search", Ok(()))
+            (
+                "query.search",
+                search_vault(&config, &query, limit, logger.as_ref()),
+            )
         }
         Commands::Query(QueryCommands::Backlinks { note }) => {
-            let _config = load_config(cli.config)?;
+            let config = load_config(cli.config)?;
             if let Some(ref log) = logger {
                 let _ = log.log_section("query.backlinks", "Starting Backlinks Command");
             }
-            show_backlinks(&note, logger.as_ref());
-            ("query.backlinks", Ok(()))
+            (
+                "query.backlinks",
+                get_backlinks(&config, &note, logger.as_ref()),
+            )
         }
         Commands::Query(QueryCommands::Links { note }) => {
-            let _config = load_config(cli.config)?;
+            let config = load_config(cli.config)?;
             if let Some(ref log) = logger {
                 let _ = log.log_section("query.links", "Starting Links Command");
             }
-            show_links(&note, logger.as_ref());
-            ("query.links", Ok(()))
+            (
+                "query.links",
+                get_forward_links(&config, &note, logger.as_ref()),
+            )
         }
         Commands::Query(QueryCommands::Unresolved) => {
             let config = load_config(cli.config)?;
@@ -112,12 +118,15 @@ fn main() -> Result<()> {
             )
         }
         Commands::Query(QueryCommands::Tags { tag, list }) => {
-            let _config = load_config(cli.config)?;
+            let config = load_config(cli.config)?;
             if let Some(ref log) = logger {
                 let _ = log.log_section("query.tags", "Starting Tags Command");
             }
-            show_tags(&tag, list, logger.as_ref());
-            ("query.tags", Ok(()))
+            // Convert `list` flag to `all` for the underlying function
+            (
+                "query.tags",
+                list_notes_by_tag(&config, &tag, list, logger.as_ref()),
+            )
         }
 
         // ============================================================================
