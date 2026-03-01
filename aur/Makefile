@@ -62,40 +62,7 @@ checksum:
 
 generate-pkgbuild:
 	@echo "Generating PKGBUILD..."
-	@SHA256=$$(cat $(SHA256_FILE)) && \
-	{ \
-	  printf '%s\n' \
-	    "pkgname=$(PKGNAME)" \
-	    "pkgver=$(VERSION)" \
-	    "pkgrel=1" \
-	    'pkgdesc="Local-first CLI/TUI for indexing and querying Obsidian vaults"' \
-	    "arch=('x86_64')" \
-	    "url=\"https://github.com/$(REPO_OWNER)/$(REPO_NAME)\"" \
-	    "license=('Apache-2.0')" \
-	    "depends=('sqlite')" \
-	    "makedepends=('cargo' 'pkgconf')" \
-	    "source=(\"\$${pkgname}-\$${pkgver}.tar.gz::https://github.com/$(REPO_OWNER)/$(REPO_NAME)/archive/refs/tags/v\$${pkgver}.tar.gz\")" \
-	    "sha256sums=(\"$$SHA256\")" \
-	    '' \
-	    'build() {' \
-	    '  cd "$${srcdir}/$${pkgname}-$${pkgver}"' \
-	    '  # Prevent CI/env from forcing lld or static native linking' \
-	    '  unset RUSTFLAGS' \
-	    '  unset CARGO_ENCODED_RUSTFLAGS' \
-	    '  unset LDFLAGS' \
-	    '  unset CC' \
-	    '  unset CXX' \
-	    '  unset LD' \
-	    '  # Force GNU linker toolchain (avoid ld.lld)' \
-	    '  export CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_LINKER=gcc' \
-	    '  cargo build --release --locked' \
-	    '}' \
-	    '' \
-	    'package() {' \
-	    '  cd "$${srcdir}/$${pkgname}-$${pkgver}"' \
-	    '  install -Dm755 target/release/$${pkgname} "$${pkgdir}/usr/bin/$${pkgname}"' \
-	    '}'; \
-	} > PKGBUILD
+	@./generate-pkgbuild.sh $(PKGNAME) $(VERSION) "$$(cat $(SHA256_FILE))" $(REPO_OWNER) $(REPO_NAME) > PKGBUILD
 
 # ============================================================
 # Step 5: Generate .SRCINFO
