@@ -84,7 +84,6 @@ obsidian-cli-inspector query search "Notes"
 
 ## Common commands
 
-
 ```bash
 # Init & Index
 obsidian-cli-inspector init init [--force]
