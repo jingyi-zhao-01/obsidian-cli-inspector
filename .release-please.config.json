@@ -1,0 +1,16 @@
+{
+  "release-type": "rust",
+  "packages": {
+    ".": {}
+  },
+  "branches": [
+    {
+      "branch": "master"
+    },
+    {
+      "branch": "staging",
+      "prerelease": true,
+      "prerelease-type": "alpha"
+    }
+  ]
+}

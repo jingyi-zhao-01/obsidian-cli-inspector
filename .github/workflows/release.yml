@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - staging
 
 concurrency:
   group: release-${{ github.ref }}
@@ -34,7 +35,7 @@ jobs:
   crate-publish:
     name: Publish to crates.io
     needs: release
-    if: ${{ needs.release.outputs.release_created == 'true' }}
+    if: ${{ needs.release.outputs.release_created == 'true' && github.ref == 'refs/heads/master' }}
     runs-on: ubuntu-latest
 
     permissions:
@@ -58,7 +59,7 @@ jobs:
   aur-build:
     name: Build AUR Package
     needs: [release, crate-publish]
-    if: ${{ needs.release.outputs.release_created == 'true' }}
+    if: ${{ needs.release.outputs.release_created == 'true' && github.ref == 'refs/heads/master' }}
     uses: ./.github/workflows/aur-build.yml
     with:
       ref: ${{ needs.release.outputs.tag_name }}
@@ -67,7 +68,7 @@ jobs:
   aur-publish:
     name: Publish to AUR
     needs: [release, aur-build]
-    if: ${{ needs.release.outputs.release_created == 'true' }}
+    if: ${{ needs.release.outputs.release_created == 'true' && github.ref == 'refs/heads/master' }}
     runs-on: ubuntu-latest
 
     steps:
