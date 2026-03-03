@@ -11,3 +11,18 @@ pub fn show_bloat(threshold: usize, limit: usize, logger: Option<&Logger>) {
         println!("  limit: {limit}");
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_show_bloat_without_logger() {
+        show_bloat(100, 50, None);
+    }
+
+    #[test]
+    fn test_show_bloat_with_zero_values() {
+        show_bloat(0, 0, None);
+    }
+}

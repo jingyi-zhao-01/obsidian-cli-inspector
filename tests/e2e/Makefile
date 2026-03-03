@@ -1,4 +1,4 @@
-.PHONY: test-all init-sanity search-sanity links-sanity tags-sanity bootstrap-db contracts contracts-update machine-contract machine-contract-update
+.PHONY: test-all init-sanity search-sanity links-sanity tags-sanity clean-test-db bootstrap-db contracts contracts-update machine-contract machine-contract-update
 
 # =============================================================================
 # E2E Tests - End-to-end CLI tests
@@ -16,7 +16,11 @@
 # =============================================================================
 
 # Bootstrap test database before any e2e tests
-bootstrap-db: build
+clean-test-db:
+	@echo "=== Cleaning e2e test database files ==="
+	@rm -f ../test.db ../test.db-wal ../test.db-shm
+
+bootstrap-db: clean-test-db build
 	@echo "=== Bootstrapping e2e test database ==="
 	@cd ../.. && cargo run -- --config test-config.toml init init --force
 	@echo ""

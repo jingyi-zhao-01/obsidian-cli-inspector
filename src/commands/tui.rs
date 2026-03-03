@@ -7,3 +7,13 @@ pub fn show_tui(logger: Option<&Logger>) {
         println!("TUI not yet implemented");
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_show_tui_without_logger() {
+        show_tui(None);
+    }
+}

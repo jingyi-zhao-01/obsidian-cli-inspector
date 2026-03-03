@@ -26,7 +26,7 @@ pub fn search_chunks(conn: &Connection, query: &str, limit: usize) -> Result<Vec
          JOIN chunks c ON fc.rowid = c.id
          JOIN notes n ON c.note_id = n.id
          WHERE fts_chunks MATCH ?1
-         ORDER BY rank
+            ORDER BY rank, n.path COLLATE NOCASE, c.byte_offset, c.id
          LIMIT ?2",
     )?;
 

@@ -30,8 +30,14 @@ impl VaultScanner {
     }
 
     fn walk_dir(&self, dir: &Path, entries: &mut Vec<FileEntry>) -> Result<()> {
+        let mut dir_entries = Vec::new();
         for entry in fs::read_dir(dir)? {
-            let entry = entry?;
+            dir_entries.push(entry?);
+        }
+
+        dir_entries.sort_by_key(|a| a.path());
+
+        for entry in dir_entries {
             let path = entry.path();
             let relative_path = path.strip_prefix(&self.vault_path)?.to_path_buf();
 
