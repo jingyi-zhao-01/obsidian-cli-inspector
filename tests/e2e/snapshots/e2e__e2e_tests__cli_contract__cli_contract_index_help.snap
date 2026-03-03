@@ -1,0 +1,16 @@
+---
+source: tests/e2e/cli_contract.rs
+assertion_line: 45
+expression: stdout
+---
+Vault indexing commands
+
+Usage: obsidian-cli-inspector index [OPTIONS] <COMMAND>
+
+Commands:
+  index  Index the vault (scan and parse all files)
+  help   Print this message or the help of the given subcommand(s)
+
+Options:
+  -o, --output <FORMAT>  Output in JSON format (for machine integration)
+  -h, --help             Print help

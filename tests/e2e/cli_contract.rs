@@ -34,10 +34,7 @@ fn run_command(args: &[&str]) -> (bool, String, String) {
 fn test_cli_contract_init_help() {
     let (success, stdout, _stderr) = run_command(&["init", "--help"]);
     assert!(success, "init --help should succeed");
-    assert!(
-        stdout.contains("init"),
-        "Help should mention init subcommand"
-    );
+    insta::assert_snapshot!("cli_contract_init_help", stdout);
 }
 
 #[test]
@@ -45,10 +42,7 @@ fn test_cli_contract_init_help() {
 fn test_cli_contract_index_help() {
     let (success, stdout, _stderr) = run_command(&["index", "--help"]);
     assert!(success, "index --help should succeed");
-    assert!(
-        stdout.contains("index"),
-        "Help should mention index subcommand"
-    );
+    insta::assert_snapshot!("cli_contract_index_help", stdout);
 }
 
 #[test]
@@ -56,10 +50,7 @@ fn test_cli_contract_index_help() {
 fn test_cli_contract_query_help() {
     let (success, stdout, _stderr) = run_command(&["query", "--help"]);
     assert!(success, "query --help should succeed");
-    assert!(
-        stdout.contains("search") || stdout.contains("query"),
-        "Help should mention search"
-    );
+    insta::assert_snapshot!("cli_contract_query_help", stdout);
 }
 
 #[test]
@@ -121,7 +112,7 @@ fn test_cli_contract_query_tags_help() {
 fn test_cli_contract_analyze_help() {
     let (success, stdout, _stderr) = run_command(&["analyze", "--help"]);
     assert!(success, "analyze --help should succeed");
-    assert!(stdout.contains("analyze"), "Help should mention analyze");
+    insta::assert_snapshot!("cli_contract_analyze_help", stdout);
 }
 
 #[test]
@@ -153,7 +144,7 @@ fn test_cli_contract_analyze_related_help() {
 fn test_cli_contract_diagnose_help() {
     let (success, stdout, _stderr) = run_command(&["diagnose", "--help"]);
     assert!(success, "diagnose --help should succeed");
-    assert!(stdout.contains("diagnose"), "Help should mention diagnose");
+    insta::assert_snapshot!("cli_contract_diagnose_help", stdout);
 }
 
 #[test]
@@ -184,7 +175,7 @@ fn test_cli_contract_diagnose_broken_links_help() {
 fn test_cli_contract_view_help() {
     let (success, stdout, _stderr) = run_command(&["view", "--help"]);
     assert!(success, "view --help should succeed");
-    assert!(stdout.contains("view"), "Help should mention view");
+    insta::assert_snapshot!("cli_contract_view_help", stdout);
 }
 
 #[test]
@@ -288,5 +279,5 @@ fn test_cli_contract_version_flag() {
 fn test_cli_contract_help_flag() {
     let (success, stdout, _stderr) = run_command(&["--help"]);
     assert!(success, "--help should succeed");
-    assert!(!stdout.is_empty(), "Help output should be present");
+    insta::assert_snapshot!("cli_contract_root_help", stdout);
 }
