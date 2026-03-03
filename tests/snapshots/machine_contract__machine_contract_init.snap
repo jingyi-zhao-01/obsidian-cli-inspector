@@ -1,0 +1,20 @@
+---
+source: tests/machine_contract.rs
+assertion_line: 106
+expression: normalized
+---
+{
+  "command": "init.init",
+  "meta": {
+    "query_time_ms": 0,
+    "vault_path": "./tests/test-vault"
+  },
+  "params": {
+    "force": true
+  },
+  "result": {
+    "status": "success"
+  },
+  "timestamp": "TIMESTAMP",
+  "version": "1.0"
+}

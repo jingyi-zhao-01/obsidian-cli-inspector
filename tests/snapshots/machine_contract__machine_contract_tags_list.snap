@@ -1,0 +1,21 @@
+---
+source: tests/machine_contract.rs
+assertion_line: 257
+expression: normalize_for_snapshot(output)
+---
+{
+  "command": "query.tags",
+  "meta": {
+    "query_time_ms": 0,
+    "vault_path": "./tests/test-vault"
+  },
+  "params": {
+    "list": true,
+    "tag": null
+  },
+  "result": {
+    "status": "success"
+  },
+  "timestamp": "TIMESTAMP",
+  "version": "1.0"
+}

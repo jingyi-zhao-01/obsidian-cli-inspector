@@ -19,6 +19,12 @@ fn is_json_output(output: &Option<String>) -> bool {
     output.as_ref().map(|s| s.to_lowercase()).as_deref() == Some("json")
 }
 
+/// Hold command metadata for JSON responses
+struct CommandMetadata {
+    name: String,
+    params: serde_json::Value,
+}
+
 fn main() -> Result<()> {
     let cli = Cli::parse();
 
@@ -32,7 +38,7 @@ fn main() -> Result<()> {
     };
 
     let start = Instant::now();
-    let (command_name, result) = match cli.command {
+    let (metadata, result) = match cli.command {
         // ============================================================================
         // INIT Commands
         // ============================================================================
@@ -53,7 +59,10 @@ fn main() -> Result<()> {
             }
 
             (
-                "init.init",
+                CommandMetadata {
+                    name: "init.init".to_string(),
+                    params: serde_json::json!({"force": force}),
+                },
                 initialize_database(&config, force, cmd_logger.as_ref()),
             )
         }
@@ -71,7 +80,10 @@ fn main() -> Result<()> {
                 let _ = log.log_section("index", "Starting Index Command");
             }
             (
-                "index.index",
+                CommandMetadata {
+                    name: "index.index".to_string(),
+                    params: serde_json::json!({"dry_run": dry_run, "force": force, "verbose": verbose}),
+                },
                 index_vault(&config, dry_run, force, verbose, logger.as_ref()),
             )
         }
@@ -85,7 +97,10 @@ fn main() -> Result<()> {
                 let _ = log.log_section("query.search", "Starting Search Command");
             }
             (
-                "query.search",
+                CommandMetadata {
+                    name: "query.search".to_string(),
+                    params: serde_json::json!({"query": query, "limit": limit}),
+                },
                 search_vault(&config, &query, limit, logger.as_ref()),
             )
         }
@@ -95,7 +110,10 @@ fn main() -> Result<()> {
                 let _ = log.log_section("query.backlinks", "Starting Backlinks Command");
             }
             (
-                "query.backlinks",
+                CommandMetadata {
+                    name: "query.backlinks".to_string(),
+                    params: serde_json::json!({"note": note}),
+                },
                 get_backlinks(&config, &note, logger.as_ref()),
             )
         }
@@ -105,7 +123,10 @@ fn main() -> Result<()> {
                 let _ = log.log_section("query.links", "Starting Links Command");
             }
             (
-                "query.links",
+                CommandMetadata {
+                    name: "query.links".to_string(),
+                    params: serde_json::json!({"note": note}),
+                },
                 get_forward_links(&config, &note, logger.as_ref()),
             )
         }
@@ -115,7 +136,10 @@ fn main() -> Result<()> {
                 let _ = log.log_section("query.unresolved", "Starting Unresolved Links Command");
             }
             (
-                "query.unresolved",
+                CommandMetadata {
+                    name: "query.unresolved".to_string(),
+                    params: serde_json::json!({}),
+                },
                 list_unresolved_links(&config, logger.as_ref()),
             )
         }
@@ -126,7 +150,10 @@ fn main() -> Result<()> {
             }
             // Convert `list` flag to `all` for the underlying function
             (
-                "query.tags",
+                CommandMetadata {
+                    name: "query.tags".to_string(),
+                    params: serde_json::json!({"tag": tag, "list": list}),
+                },
                 list_notes_by_tag(&config, &tag, list, logger.as_ref()),
             )
         }
@@ -140,16 +167,28 @@ fn main() -> Result<()> {
                 let _ = log.log_section("analyze.bloat", "Starting Bloat Command");
             }
             show_bloat(threshold, limit, logger.as_ref());
-            ("analyze.bloat", Ok(()))
+            (
+                CommandMetadata {
+                    name: "analyze.bloat".to_string(),
+                    params: serde_json::json!({"threshold": threshold, "limit": limit}),
+                },
+                Ok(()),
+            )
         }
-        Commands::Analyze(AnalyzeCommands::Related { note: _, limit: _ }) => {
+        Commands::Analyze(AnalyzeCommands::Related { note, limit }) => {
             let _config = load_config(cli.config)?;
             if let Some(ref log) = logger {
                 let _ = log.log_section("analyze.related", "Starting Related Command");
             }
             // Related is not yet implemented - show unimplemented message
             show_unimplemented("analyze.related - not yet implemented", logger.as_ref());
-            ("analyze.related", Ok(()))
+            (
+                CommandMetadata {
+                    name: "analyze.related".to_string(),
+                    params: serde_json::json!({"note": note, "limit": limit}),
+                },
+                Ok(()),
+            )
         }
 
         // ============================================================================
@@ -164,7 +203,10 @@ fn main() -> Result<()> {
                 let _ = log.log_section("diagnose.orphans", "Starting Diagnose Orphans Command");
             }
             (
-                "diagnose.orphans",
+                CommandMetadata {
+                    name: "diagnose.orphans".to_string(),
+                    params: serde_json::json!({"exclude_templates": exclude_templates, "exclude_daily": exclude_daily}),
+                },
                 diagnose_orphans(&config, exclude_templates, exclude_daily, logger.as_ref()),
             )
         }
@@ -177,7 +219,10 @@ fn main() -> Result<()> {
                 );
             }
             (
-                "diagnose.broken-links",
+                CommandMetadata {
+                    name: "diagnose.broken-links".to_string(),
+                    params: serde_json::json!({}),
+                },
                 diagnose_broken_links_cmd(&config, logger.as_ref()),
             )
         }
@@ -190,7 +235,13 @@ fn main() -> Result<()> {
             if let Some(ref log) = logger {
                 let _ = log.log_section("view.stats", "Starting Stats Command");
             }
-            ("view.stats", show_stats(&config, logger.as_ref()))
+            (
+                CommandMetadata {
+                    name: "view.stats".to_string(),
+                    params: serde_json::json!({}),
+                },
+                show_stats(&config, logger.as_ref()),
+            )
         }
         Commands::View(ViewCommands::Describe { filename }) => {
             let config = load_config(cli.config)?;
@@ -198,7 +249,10 @@ fn main() -> Result<()> {
                 let _ = log.log_section("view.describe", "Starting Describe Command");
             }
             (
-                "view.describe",
+                CommandMetadata {
+                    name: "view.describe".to_string(),
+                    params: serde_json::json!({"filename": filename}),
+                },
                 get_note_describe(&config, &filename, logger.as_ref()),
             )
         }
@@ -211,7 +265,13 @@ fn main() -> Result<()> {
                 let _ = log.log_section("tui", "Starting TUI Command");
             }
             show_tui(logger.as_ref());
-            ("tui", Ok(()))
+            (
+                CommandMetadata {
+                    name: "tui".to_string(),
+                    params: serde_json::json!({}),
+                },
+                Ok(()),
+            )
         }
     };
 
@@ -223,19 +283,28 @@ fn main() -> Result<()> {
             .map(|c| c.vault_path.to_string_lossy().to_string())
             .unwrap_or_default();
 
-        // Build params and result based on command_name
-        // For commands that need parameters, we fetch from config/db
-        let params = serde_json::json!({});
-        let result_data = if command_name == "query.search" {
+        // Build result based on command type
+        let result_data = if metadata.name == "query.search" {
             // Try to get search results from the database
             if let Some(ref cfg) = config {
                 let db_path = cfg.database_path();
                 if db_path.exists() {
                     if let Ok(db) = Database::open(&db_path) {
-                        // Use default search parameters
+                        // Get query parameter from params
+                        let query = metadata
+                            .params
+                            .get("query")
+                            .and_then(|v| v.as_str())
+                            .unwrap_or("productivity");
+                        let limit = metadata
+                            .params
+                            .get("limit")
+                            .and_then(|v| v.as_u64())
+                            .unwrap_or(20) as usize;
+
                         if let Ok(results) = db
                             .conn()
-                            .execute_query(|conn| query::search_chunks(conn, "productivity", 20))
+                            .execute_query(|conn| query::search_chunks(conn, query, limit))
                         {
                             let items: Vec<serde_json::Value> = results
                                 .iter()
@@ -267,7 +336,7 @@ fn main() -> Result<()> {
             } else {
                 serde_json::json!({"status": "success"})
             }
-        } else if command_name == "view.stats" {
+        } else if metadata.name == "view.stats" {
             // Try to get stats from database
             if let Some(ref cfg) = config {
                 let db_path = cfg.database_path();
@@ -299,9 +368,9 @@ fn main() -> Result<()> {
 
         let response = serde_json::json!({
             "version": "1.0",
-            "command": command_name,
+            "command": metadata.name,
             "timestamp": chrono::Utc::now().to_rfc3339(),
-            "params": params,
+            "params": metadata.params,
             "result": result_data,
             "meta": {
                 "query_time_ms": start.elapsed().as_millis() as u64,
@@ -327,9 +396,9 @@ fn main() -> Result<()> {
     } else {
         let elapsed = start.elapsed();
         if result.is_ok() {
-            println!("Command '{command_name}' completed in {elapsed:.2?}");
+            println!("Command '{}' completed in {elapsed:.2?}", metadata.name);
         } else {
-            eprintln!("Command '{command_name}' failed after {elapsed:.2?}");
+            eprintln!("Command '{}' failed after {elapsed:.2?}", metadata.name);
         }
     }
 

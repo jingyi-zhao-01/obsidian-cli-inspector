@@ -1,0 +1,20 @@
+---
+source: tests/machine_contract.rs
+assertion_line: 193
+expression: normalize_for_snapshot(output)
+---
+{
+  "command": "query.links",
+  "meta": {
+    "query_time_ms": 0,
+    "vault_path": "./tests/test-vault"
+  },
+  "params": {
+    "note": "Home"
+  },
+  "result": {
+    "status": "success"
+  },
+  "timestamp": "TIMESTAMP",
+  "version": "1.0"
+}
