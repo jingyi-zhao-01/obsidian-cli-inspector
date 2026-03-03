@@ -1,20 +1,21 @@
 ---
-source: tests/machine_contract.rs
-assertion_line: 257
+source: tests/e2e/machine_contract.rs
+assertion_line: 386
 expression: normalize_for_snapshot(output)
 ---
 {
-  "command": "query.tags",
+  "command": "view.stats",
   "meta": {
     "query_time_ms": 0,
     "vault_path": "./tests/test-vault"
   },
-  "params": {
-    "list": true,
-    "tag": null
-  },
+  "params": {},
   "result": {
-    "status": "success"
+    "chunks": 0,
+    "links": 0,
+    "notes": 0,
+    "tags": 0,
+    "unresolved_links": 0
   },
   "timestamp": "TIMESTAMP",
   "version": "1.0"

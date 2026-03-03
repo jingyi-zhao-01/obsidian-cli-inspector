@@ -1,18 +1,16 @@
 ---
-source: tests/machine_contract.rs
-assertion_line: 126
-expression: normalized
+source: tests/e2e/machine_contract.rs
+assertion_line: 408
+expression: normalize_for_snapshot(output)
 ---
 {
-  "command": "index.index",
+  "command": "view.describe",
   "meta": {
     "query_time_ms": 0,
     "vault_path": "./tests/test-vault"
   },
   "params": {
-    "dry_run": false,
-    "force": true,
-    "verbose": false
+    "filename": "Home"
   },
   "result": {
     "status": "success"

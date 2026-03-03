@@ -99,8 +99,8 @@ jobs:
 
       - uses: Swatinem/rust-cache@v2
 
-      # - name: test CLI commands
-      #   run: make -C e2e test-cli
+      - name: test CLI commands
+        run: make -C tests/e2e cli-contract
       - name: test machine contract commands
         run: make -C tests/e2e machine-contract
 

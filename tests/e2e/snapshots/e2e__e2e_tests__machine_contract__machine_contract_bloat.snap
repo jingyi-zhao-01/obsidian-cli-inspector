@@ -1,15 +1,18 @@
 ---
-source: tests/machine_contract.rs
-assertion_line: 339
+source: tests/e2e/machine_contract.rs
+assertion_line: 293
 expression: normalize_for_snapshot(output)
 ---
 {
-  "command": "diagnose.broken-links",
+  "command": "analyze.bloat",
   "meta": {
     "query_time_ms": 0,
     "vault_path": "./tests/test-vault"
   },
-  "params": {},
+  "params": {
+    "limit": 10,
+    "threshold": 50000
+  },
   "result": {
     "status": "success"
   },
