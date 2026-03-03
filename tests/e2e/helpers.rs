@@ -19,8 +19,12 @@ pub fn run_command(args: &[&str]) -> (bool, String, String) {
 }
 
 pub fn run_command_json(args: &[&str]) -> Result<Value, String> {
+    // Add --stub flag for E2E tests to use stubbed responses
+    let mut full_args: Vec<&str> = vec!["--stub"];
+    full_args.extend(args);
+
     let output = Command::new("./target/debug/obsidian-cli-inspector")
-        .args(args)
+        .args(&full_args)
         .current_dir(".")
         .output()
         .map_err(|e| format!("Failed to execute command: {e}"))?;

@@ -75,6 +75,10 @@ pub struct Cli {
     #[arg(short = 'o', long = "output", value_name = "FORMAT", global = true)]
     pub output: Option<String>,
 
+    /// Use stubbed responses for testing (no actual database operations)
+    #[arg(long, global = true)]
+    pub stub: bool,
+
     #[command(subcommand)]
     pub command: Commands,
 }

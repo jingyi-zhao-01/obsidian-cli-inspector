@@ -9,6 +9,7 @@ use obsidian_cli_inspector::{
     config::Config,
     logger::Logger,
     machine_contract::ResultDataBuilder,
+    stub,
 };
 use serde_json::Value;
 use std::path::PathBuf;
@@ -322,6 +323,16 @@ fn main() -> Result<()> {
 
     // Handle JSON output for machine contracts
     if is_json {
+        // If stub mode is enabled, return stubbed responses
+        if cli.stub {
+            let stub_response = stub::get_stub_response(&metadata.name, &metadata.params);
+            println!(
+                "{}",
+                serde_json::to_string(&stub_response).unwrap_or_default()
+            );
+            return Ok(());
+        }
+
         // Get vault path from config if available
         let vault_path = config
             .as_ref()

@@ -9,3 +9,4 @@ pub mod machine_contract;
 pub mod parser;
 pub mod query;
 pub mod scanner;
+pub mod stub;
