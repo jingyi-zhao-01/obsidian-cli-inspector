@@ -117,6 +117,7 @@ pub fn create_schema(conn: &Connection) -> rusqlite::Result<()> {
 }
 
 pub fn drop_tables(conn: &Connection) -> rusqlite::Result<()> {
+    conn.execute("DROP TABLE IF EXISTS chunk_embeddings", [])?;
     conn.execute("DROP TABLE IF EXISTS fts_chunks", [])?;
     conn.execute("DROP TABLE IF EXISTS chunks", [])?;
     conn.execute("DROP TABLE IF EXISTS tags", [])?;

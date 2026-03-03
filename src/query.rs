@@ -1,6 +1,7 @@
 // Query module for retrieving and searching vault data
 mod links;
 mod search;
+mod semantic;
 mod tags;
 
 pub use links::{
@@ -8,6 +9,7 @@ pub use links::{
     get_unresolved_links, BrokenLinkResult, DiagnoseResult, LinkResult,
 };
 pub use search::{search_chunks, SearchResult};
+pub use semantic::{ensure_semantic_embedding_cache, semantic_search_chunks, SemanticSearchResult};
 pub use tags::{
     get_notes_by_tag, get_notes_by_tags_and, get_notes_by_tags_or, list_tags, TagResult,
 };
