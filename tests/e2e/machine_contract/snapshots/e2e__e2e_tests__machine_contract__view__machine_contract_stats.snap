@@ -1,0 +1,21 @@
+---
+source: tests/e2e/machine_contract/view.rs
+expression: normalize_for_snapshot(output)
+---
+{
+  "command": "view.stats",
+  "meta": {
+    "query_time_ms": 0,
+    "vault_path": "./tests/test-vault"
+  },
+  "params": {},
+  "result": {
+    "chunks": 87,
+    "links": 119,
+    "notes": 12,
+    "tags": 12,
+    "unresolved_links": 119
+  },
+  "timestamp": "TIMESTAMP",
+  "version": "1.0"
+}
