@@ -13,11 +13,11 @@ fn run_command(args: &[&str]) -> Result<Value, String> {
         .args(args)
         .current_dir(".")
         .output()
-        .map_err(|e| format!("Failed to execute command: {}", e))?;
+        .map_err(|e| format!("Failed to execute command: {e}"))?;
 
     if !output.status.success() {
         let stderr = String::from_utf8_lossy(&output.stderr);
-        return Err(format!("Command failed: {}", stderr));
+        return Err(format!("Command failed: {stderr}"));
     }
 
     let stdout = String::from_utf8_lossy(&output.stdout);
@@ -28,7 +28,7 @@ fn run_command(args: &[&str]) -> Result<Value, String> {
         // Check if it looks like JSON (starts with {)
         if last_line.trim_start().starts_with('{') {
             return serde_json::from_str(last_line)
-                .map_err(|e| format!("Failed to parse JSON: {:?}", e));
+                .map_err(|e| format!("Failed to parse JSON: {e:?}"));
         }
 
         // Otherwise search for the last { and } pair
@@ -36,7 +36,7 @@ fn run_command(args: &[&str]) -> Result<Value, String> {
             if let Some(json_start) = last_line[..=json_end].rfind('{') {
                 let json_str = &last_line[json_start..=json_end];
                 return serde_json::from_str(json_str)
-                    .map_err(|e| format!("Failed to parse JSON: {:?}", e));
+                    .map_err(|e| format!("Failed to parse JSON: {e:?}"));
             }
         }
     }
