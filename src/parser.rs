@@ -199,4 +199,38 @@ mod tests {
         assert_eq!(normalize_note_identifier("./Note.md"), "Note");
         assert_eq!(normalize_note_identifier("Folder\\Note.md"), "Folder/Note");
     }
+
+    #[test]
+    fn test_link_type_as_str() {
+        assert_eq!(LinkType::Wiki.as_str(), "wikilink");
+        assert_eq!(LinkType::Markdown.as_str(), "markdown");
+    }
+
+    #[test]
+    fn test_link_creation() {
+        let link = Link {
+            text: "test".to_string(),
+            alias: Some("alias".to_string()),
+            heading_ref: Some("heading".to_string()),
+            block_ref: Some("block".to_string()),
+            is_embed: true,
+            link_type: LinkType::Wiki,
+        };
+        assert_eq!(link.text, "test");
+        assert!(link.alias.is_some());
+        assert!(link.is_embed);
+    }
+
+    #[test]
+    fn test_parsed_note_creation() {
+        let note = ParsedNote {
+            title: "Test".to_string(),
+            frontmatter: HashMap::new(),
+            tags: vec!["tag1".to_string()],
+            links: vec![],
+            text: "Content".to_string(),
+        };
+        assert_eq!(note.title, "Test");
+        assert_eq!(note.tags.len(), 1);
+    }
 }

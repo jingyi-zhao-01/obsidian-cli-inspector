@@ -204,3 +204,88 @@ impl ResultDataBuilder {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::fs;
+    use tempfile::TempDir;
+
+    #[test]
+    fn test_empty_query_result() {
+        let result = ResultDataBuilder::empty_query_result();
+        assert_eq!(result.get("total").unwrap(), 0);
+        assert!(result.get("items").unwrap().is_array());
+    }
+
+    #[test]
+    fn test_query_result_with_items() {
+        let items = vec![
+            serde_json::json!({"id": 1}),
+            serde_json::json!({"id": 2}),
+        ];
+        let result = ResultDataBuilder::query_result(items);
+        assert_eq!(result.get("total").unwrap(), 2);
+        assert!(result.get("items").unwrap().is_array());
+    }
+
+    #[test]
+    fn test_query_result_empty_items() {
+        let items: Vec<Value> = vec![];
+        let result = ResultDataBuilder::query_result(items);
+        assert_eq!(result.get("total").unwrap(), 0);
+    }
+
+    #[test]
+    fn test_build_query_result_data_no_database() {
+        let temp_dir = TempDir::new().unwrap();
+        let config = Config {
+            vault_path: temp_dir.path().to_path_buf(),
+            database_path: Some(temp_dir.path().join("nonexistent.db")),
+            log_path: None,
+            exclude: Default::default(),
+            search: Default::default(),
+            graph: Default::default(),
+            llm: None,
+        };
+
+        let params = serde_json::json!({});
+        let result = ResultDataBuilder::build_query_result_data(&config, "query.search", &params);
+        assert_eq!(result.get("total").unwrap(), 0);
+    }
+
+    #[test]
+    fn test_build_query_result_data_unknown_command() {
+        let temp_dir = TempDir::new().unwrap();
+        let config = Config {
+            vault_path: temp_dir.path().to_path_buf(),
+            database_path: Some(temp_dir.path().join("nonexistent.db")),
+            log_path: None,
+            exclude: Default::default(),
+            search: Default::default(),
+            graph: Default::default(),
+            llm: None,
+        };
+
+        let params = serde_json::json!({});
+        let result = ResultDataBuilder::build_query_result_data(&config, "unknown.command", &params);
+        assert_eq!(result.get("total").unwrap(), 0);
+    }
+
+    #[test]
+    fn test_build_view_stats_result_data_no_database() {
+        let temp_dir = TempDir::new().unwrap();
+        let config = Config {
+            vault_path: temp_dir.path().to_path_buf(),
+            database_path: Some(temp_dir.path().join("nonexistent.db")),
+            log_path: None,
+            exclude: Default::default(),
+            search: Default::default(),
+            graph: Default::default(),
+            llm: None,
+        };
+
+        let result = ResultDataBuilder::build_view_stats_result_data(&config);
+        assert_eq!(result.get("status").unwrap(), "success");
+    }
+}
