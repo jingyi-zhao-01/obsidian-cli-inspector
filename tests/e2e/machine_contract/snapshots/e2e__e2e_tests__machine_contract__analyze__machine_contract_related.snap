@@ -1,0 +1,20 @@
+---
+source: tests/e2e/machine_contract/analyze.rs
+expression: normalize_for_snapshot(output)
+---
+{
+  "command": "analyze.related",
+  "meta": {
+    "query_time_ms": 0,
+    "vault_path": "./tests/test-vault"
+  },
+  "params": {
+    "limit": 5,
+    "note": "Home"
+  },
+  "result": {
+    "status": "success"
+  },
+  "timestamp": "TIMESTAMP",
+  "version": "1.0"
+}

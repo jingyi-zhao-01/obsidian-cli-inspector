@@ -1,0 +1,22 @@
+# Obsidian CLI Inspector configuration
+# Generated on first run - modify as needed
+
+# Required: path to your Obsidian vault
+vault_path = "./tests/test-vault"
+
+# Optional: override where the index database is stored
+# Tests run from project root (not tests/e2e), so use relative paths from project root
+database_path = "./tests/test.db"
+
+# Optional: override where logs are written
+log_path = "./logs"
+
+[exclude]
+# Default patterns are: .obsidian/, .git/, .trash/
+patterns = [".obsidian/", ".git/", ".trash/"]
+
+[search]
+default_limit = 20
+
+[graph]
+max_depth = 3

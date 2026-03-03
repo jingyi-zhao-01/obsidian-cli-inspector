@@ -5,6 +5,7 @@ pub mod commands;
 pub mod config;
 pub mod db;
 pub mod logger;
+pub mod machine_contract;
 pub mod parser;
 pub mod query;
 pub mod scanner;
