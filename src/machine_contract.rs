@@ -208,7 +208,6 @@ impl ResultDataBuilder {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::fs;
     use tempfile::TempDir;
 
     #[test]
@@ -220,10 +219,7 @@ mod tests {
 
     #[test]
     fn test_query_result_with_items() {
-        let items = vec![
-            serde_json::json!({"id": 1}),
-            serde_json::json!({"id": 2}),
-        ];
+        let items = vec![serde_json::json!({"id": 1}), serde_json::json!({"id": 2})];
         let result = ResultDataBuilder::query_result(items);
         assert_eq!(result.get("total").unwrap(), 2);
         assert!(result.get("items").unwrap().is_array());
@@ -268,7 +264,8 @@ mod tests {
         };
 
         let params = serde_json::json!({});
-        let result = ResultDataBuilder::build_query_result_data(&config, "unknown.command", &params);
+        let result =
+            ResultDataBuilder::build_query_result_data(&config, "unknown.command", &params);
         assert_eq!(result.get("total").unwrap(), 0);
     }
 
