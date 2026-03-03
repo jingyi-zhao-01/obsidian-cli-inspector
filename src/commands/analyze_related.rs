@@ -11,3 +11,18 @@ pub fn analyze_related(note: &str, limit: usize, logger: Option<&Logger>) {
         println!("  limit: {limit}");
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_analyze_related_without_logger() {
+        analyze_related("test_note", 10, None);
+    }
+
+    #[test]
+    fn test_analyze_related_with_empty_note() {
+        analyze_related("", 0, None);
+    }
+}

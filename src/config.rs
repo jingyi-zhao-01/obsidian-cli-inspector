@@ -114,6 +114,80 @@ mod tests {
     use super::*;
 
     #[test]
+    fn test_config_database_path_with_custom_path() {
+        let config = Config {
+            vault_path: PathBuf::from("/test/vault"),
+            database_path: Some(PathBuf::from("/custom/path/db.db")),
+            log_path: None,
+            exclude: Default::default(),
+            search: Default::default(),
+            graph: Default::default(),
+            llm: None,
+        };
+
+        assert_eq!(config.database_path(), PathBuf::from("/custom/path/db.db"));
+    }
+
+    #[test]
+    fn test_config_database_path_default() {
+        let config = Config {
+            vault_path: PathBuf::from("/test/vault"),
+            database_path: None,
+            log_path: None,
+            exclude: Default::default(),
+            search: Default::default(),
+            graph: Default::default(),
+            llm: None,
+        };
+
+        let db_path = config.database_path();
+        assert!(db_path.to_string_lossy().ends_with("vault.db"));
+    }
+
+    #[test]
+    fn test_config_log_dir_with_custom_path() {
+        let config = Config {
+            vault_path: PathBuf::from("/test/vault"),
+            database_path: None,
+            log_path: Some(PathBuf::from("/custom/logs")),
+            exclude: Default::default(),
+            search: Default::default(),
+            graph: Default::default(),
+            llm: None,
+        };
+
+        assert_eq!(config.log_dir(), PathBuf::from("/custom/logs"));
+    }
+
+    #[test]
+    fn test_config_log_dir_default() {
+        let config = Config {
+            vault_path: PathBuf::from("/test/vault"),
+            database_path: None,
+            log_path: None,
+            exclude: Default::default(),
+            search: Default::default(),
+            graph: Default::default(),
+            llm: None,
+        };
+
+        let log_path = config.log_dir();
+        assert!(log_path.to_string_lossy().contains("logs"));
+    }
+
+    #[test]
+    fn test_llm_config_creation() {
+        let llm = LlmConfig {
+            api_url: "http://api.example.com".to_string(),
+            model: "gpt-4".to_string(),
+            timeout_seconds: 60,
+        };
+
+        assert_eq!(llm.api_url, "http://api.example.com");
+        assert_eq!(llm.timeout_seconds, 60);
+    }
+
+    #[test]
     fn test_config_default_search_limit() {
         assert_eq!(super::default_search_limit(), 20);
     }
