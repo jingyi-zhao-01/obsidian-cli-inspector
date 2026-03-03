@@ -1,0 +1,58 @@
+---
+source: tests/e2e/machine_contract/query.rs
+expression: normalize_for_snapshot(output)
+---
+{
+  "command": "query.tags",
+  "meta": {
+    "query_time_ms": 0,
+    "vault_path": "./tests/test-vault"
+  },
+  "params": {
+    "list": true,
+    "tag": null
+  },
+  "result": {
+    "items": [
+      {
+        "tag": "brainstorming"
+      },
+      {
+        "tag": "creativity"
+      },
+      {
+        "tag": "daily"
+      },
+      {
+        "tag": "engineering"
+      },
+      {
+        "tag": "journal"
+      },
+      {
+        "tag": "learning"
+      },
+      {
+        "tag": "links"
+      },
+      {
+        "tag": "pkm"
+      },
+      {
+        "tag": "productivity"
+      },
+      {
+        "tag": "reading"
+      },
+      {
+        "tag": "software"
+      },
+      {
+        "tag": "testing"
+      }
+    ],
+    "total": 12
+  },
+  "timestamp": "TIMESTAMP",
+  "version": "1.0"
+}
