@@ -1,0 +1,21 @@
+---
+source: tests/e2e/machine_contract/query.rs
+expression: normalize_for_snapshot(output)
+---
+{
+  "command": "query.search",
+  "meta": {
+    "query_time_ms": 0,
+    "vault_path": "./tests/test-vault"
+  },
+  "params": {
+    "limit": 20,
+    "query": "productivity"
+  },
+  "result": {
+    "items": [],
+    "total": 0
+  },
+  "timestamp": "TIMESTAMP",
+  "version": "1.0"
+}

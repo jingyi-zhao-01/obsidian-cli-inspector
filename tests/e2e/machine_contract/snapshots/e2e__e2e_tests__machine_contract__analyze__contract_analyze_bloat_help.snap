@@ -1,0 +1,13 @@
+---
+source: tests/e2e/machine_contract/analyze.rs
+expression: stdout
+---
+Detect bloated notes and suggest refactoring
+
+Usage: obsidian-cli-inspector analyze bloat [OPTIONS]
+
+Options:
+  -t, --threshold <THRESHOLD>  Minimum size threshold in bytes [default: 50000]
+  -l, --limit <LIMIT>          Maximum number of notes to analyze [default: 10]
+  -o, --output <FORMAT>        Output in JSON format (for machine integration)
+  -h, --help                   Print help

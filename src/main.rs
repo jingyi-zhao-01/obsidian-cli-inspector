@@ -180,8 +180,7 @@ fn main() -> Result<()> {
             if let Some(ref log) = logger {
                 let _ = log.log_section("analyze.related", "Starting Related Command");
             }
-            // Related is not yet implemented - show unimplemented message
-            show_unimplemented("analyze.related - not yet implemented", logger.as_ref());
+            analyze_related(&note, limit, logger.as_ref());
             (
                 CommandMetadata {
                     name: "analyze.related".to_string(),

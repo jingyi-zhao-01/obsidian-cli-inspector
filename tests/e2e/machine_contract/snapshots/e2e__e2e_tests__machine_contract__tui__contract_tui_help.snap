@@ -1,0 +1,11 @@
+---
+source: tests/e2e/machine_contract/tui.rs
+expression: stdout
+---
+Launch interactive TUI
+
+Usage: obsidian-cli-inspector tui [OPTIONS]
+
+Options:
+  -o, --output <FORMAT>  Output in JSON format (for machine integration)
+  -h, --help             Print help

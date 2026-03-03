@@ -1,0 +1,12 @@
+---
+source: tests/e2e/machine_contract/init.rs
+expression: stdout
+---
+Initialize or reinitialize the database
+
+Usage: obsidian-cli-inspector init init [OPTIONS]
+
+Options:
+  -f, --force            Force reinitialization (drops existing data)
+  -o, --output <FORMAT>  Output in JSON format (for machine integration)
+  -h, --help             Print help

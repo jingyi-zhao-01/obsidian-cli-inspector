@@ -1,4 +1,4 @@
-.PHONY: test-all init-sanity search-sanity links-sanity tags-sanity machine-contract machine-contract-update cli-contract cli-contract-update all-contracts
+.PHONY: test-all init-sanity search-sanity links-sanity tags-sanity contracts contracts-update machine-contract machine-contract-update
 
 # =============================================================================
 # E2E Tests - End-to-end CLI tests
@@ -8,52 +8,39 @@
 
 
 # =============================================================================
-# Contract Tests - Validation of machine and CLI contracts
+# Contract Tests - Unified validation of JSON and conventional output
 # =============================================================================
-# Machine Contract: JSON output validation and snapshot testing
-#   Location: tests/e2e/machine_contract.rs
-#   Snapshots: tests/e2e/snapshots/
-#
-# CLI Contract: CLI interface and command validation
-#   Location: tests/e2e/cli_contract.rs
+# Combined Contract: JSON schema + CLI help/output behavior
+#   Location: tests/e2e/machine_contract/
+#   Snapshots: tests/e2e/machine_contract/snapshots/
 # =============================================================================
 
-# Run machine contract tests (snapshot-based JSON validation)
-machine-contract: build
-	@echo "=== Initializing database for machine contract tests ==="
+# Run unified contract tests (JSON + conventional output)
+contracts: build
+	@echo "=== Initializing database for contract tests ==="
 	@cd ../.. && cargo run -- --config test-config.toml init init --force
 	@echo ""
-	@echo "=== Indexing vault for machine contract tests ==="
+	@echo "=== Indexing vault for contract tests ==="
 	@cd ../.. && cargo run -- --config test-config.toml index index --force
 	@echo ""
-	@echo "=== Running machine contract tests ==="
+	@echo "=== Running unified contract tests ==="
 	@cd ../.. && cargo test --test e2e machine_contract --all-features -- --ignored --test-threads=1
 
-# Update/generate machine contract snapshots (when JSON schema changes)
-machine-contract-update: build
-	@echo "=== Initializing database for machine contract snapshot generation ==="
+# Update/generate unified contract snapshots
+contracts-update: build
+	@echo "=== Initializing database for contract snapshot generation ==="
 	@cd ../.. && cargo run -- --config test-config.toml init init --force
 	@echo ""
-	@echo "=== Indexing vault for machine contract snapshot generation ==="
+	@echo "=== Indexing vault for contract snapshot generation ==="
 	@cd ../.. && cargo run -- --config test-config.toml index index --force
 	@echo ""
-	@echo "=== Updating machine contract snapshots ==="
-	@cd ../.. && INSTA_UPDATE=inline cargo test --test e2e machine_contract --all-features -- --ignored --test-threads=1
+	@echo "=== Updating contract snapshots ==="
+	@cd ../.. && INSTA_UPDATE=always cargo test --test e2e machine_contract --all-features -- --ignored --test-threads=1
 
-# Run CLI contract tests (command structure and help text validation)
-cli-contract: build
-	@echo "=== Running CLI contract tests ==="
-	@cd ../.. && cargo test --test e2e cli_contract --all-features -- --ignored --test-threads=1
+# Backward-compatible aliases
+machine-contract: contracts
 
-# Update CLI contract tests (if adding new tests)
-cli-contract-update:
-	@echo "=== Running CLI contract tests with update mode ==="
-	@cd ../.. && cargo test --test e2e cli_contract --all-features -- --ignored --test-threads=1
-
-# # Run all contract tests (both machine and CLI)
-# all-contracts: build
-# 	@echo "=== Running all contract tests ==="
-# 	@cd ../.. && cargo test --test e2e --all-features -- --ignored --test-threads=1
+machine-contract-update: contracts-update
 
 
 build:

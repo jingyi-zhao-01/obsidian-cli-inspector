@@ -1,0 +1,19 @@
+---
+source: tests/e2e/machine_contract/query.rs
+expression: normalize_for_snapshot(output)
+---
+{
+  "command": "query.backlinks",
+  "meta": {
+    "query_time_ms": 0,
+    "vault_path": "./tests/test-vault"
+  },
+  "params": {
+    "note": "Home"
+  },
+  "result": {
+    "status": "success"
+  },
+  "timestamp": "TIMESTAMP",
+  "version": "1.0"
+}

@@ -1,0 +1,11 @@
+---
+source: tests/e2e/machine_contract/diagnose.rs
+expression: stdout
+---
+Diagnose broken links (unresolved and ambiguous)
+
+Usage: obsidian-cli-inspector diagnose broken-links [OPTIONS]
+
+Options:
+  -o, --output <FORMAT>  Output in JSON format (for machine integration)
+  -h, --help             Print help

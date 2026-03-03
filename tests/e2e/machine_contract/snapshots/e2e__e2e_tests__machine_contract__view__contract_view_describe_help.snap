@@ -1,0 +1,14 @@
+---
+source: tests/e2e/machine_contract/view.rs
+expression: stdout
+---
+Describe file metadata (without displaying paragraphs)
+
+Usage: obsidian-cli-inspector view describe [OPTIONS] <FILENAME>
+
+Arguments:
+  <FILENAME>  File path or title to describe
+
+Options:
+  -o, --output <FORMAT>  Output in JSON format (for machine integration)
+  -h, --help             Print help

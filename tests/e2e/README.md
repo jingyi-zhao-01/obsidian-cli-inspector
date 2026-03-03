@@ -1,22 +1,20 @@
 # E2E Contract Tests
 
-Contract-based validation for JSON output (machine contract) and CLI interface (help text). Tests marked `#[ignore]` to keep unit test suite fast.
+Unified contract validation for JSON output (`--output json`) and conventional CLI output/help text. Tests are marked `#[ignore]` to keep the default unit test suite fast.
 
 ## Tests
 
-- `machine_contract.rs` - JSON output validation (14 tests)
-- `cli_contract.rs` - CLI help text validation (24 tests)
-- `snapshots/` - Snapshot files for both suites
+- `machine_contract/` - Contract tests for all command groups
+- `machine_contract/snapshots/` - Snapshot files for JSON and help output
 
 ## Run
 
 ```bash
-make -C tests/e2e all-contracts       # All (38 tests)
-make -C tests/e2e machine-contract    # Machine contract only
-make -C tests/e2e cli-contract        # CLI contract only
+make -C tests/e2e contracts           # Unified contract suite
+make -C tests/e2e machine-contract    # Alias to contracts
 
 # Or from root
-cargo test --test e2e -- --ignored
+cargo test --test e2e machine_contract -- --ignored
 ```
 
 ## Update Snapshots
@@ -24,11 +22,10 @@ cargo test --test e2e -- --ignored
 When you intentionally change CLI help text or JSON output structure:
 
 ```bash
-INSTA_UPDATE=inline cargo test --test e2e -- --ignored --test-threads=1
+INSTA_UPDATE=always cargo test --test e2e machine_contract -- --ignored --test-threads=1
 
 # Or from tests/e2e/
-make machine-contract-update
-make cli-contract-update
+make contracts-update
 ```
 
-Then commit the updated `snapshots/` files.
+Then commit the updated `machine_contract/snapshots/` files.

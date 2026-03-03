@@ -1,0 +1,14 @@
+---
+source: tests/e2e/machine_contract/index.rs
+expression: stdout
+---
+Index the vault (scan and parse all files)
+
+Usage: obsidian-cli-inspector index index [OPTIONS]
+
+Options:
+  -n, --dry-run          Perform a dry run without writing to database
+  -f, --force            Force full re-index (ignores change detection)
+  -o, --output <FORMAT>  Output in JSON format (for machine integration)
+  -v, --verbose          Show verbose output
+  -h, --help             Print help
