@@ -8,7 +8,7 @@
       "branch": "master"
     },
     {
-      "branch": "staging",
+      "branch": "alpha",
       "prerelease": true,
       "prerelease-type": "alpha"
     }
