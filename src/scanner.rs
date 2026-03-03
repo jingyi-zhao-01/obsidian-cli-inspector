@@ -35,7 +35,7 @@ impl VaultScanner {
             dir_entries.push(entry?);
         }
 
-        dir_entries.sort_by(|a, b| a.path().cmp(&b.path()));
+        dir_entries.sort_by_key(|a| a.path());
 
         for entry in dir_entries {
             let path = entry.path();
