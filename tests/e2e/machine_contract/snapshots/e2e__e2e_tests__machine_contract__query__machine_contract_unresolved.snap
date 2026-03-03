@@ -16,7 +16,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 1,
+        "note_id": 11,
         "note_path": "Daily Notes.md",
         "note_title": "Daily Notes"
       },
@@ -25,7 +25,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 5,
+        "note_id": 6,
         "note_path": "Home.md",
         "note_title": "Home"
       },
@@ -34,7 +34,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 4,
+        "note_id": 8,
         "note_path": "Ideas.md",
         "note_title": "Ideas"
       },
@@ -43,7 +43,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 4,
+        "note_id": 8,
         "note_path": "Ideas.md",
         "note_title": "Ideas"
       },
@@ -52,7 +52,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 9,
+        "note_id": 7,
         "note_path": "Learning Strategies.md",
         "note_title": "Learning Strategies"
       },
@@ -61,7 +61,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 7,
+        "note_id": 3,
         "note_path": "Projects.md",
         "note_title": "Projects"
       },
@@ -70,7 +70,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 10,
+        "note_id": 5,
         "note_path": "Software Architecture.md",
         "note_title": "Software Architecture"
       },
@@ -79,7 +79,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 11,
+        "note_id": 12,
         "note_path": "Stoicism.md",
         "note_title": "Stoicism"
       },
@@ -88,7 +88,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 8,
+        "note_id": 2,
         "note_path": "Zettelkasten Method.md",
         "note_title": "Zettelkasten Method"
       },
@@ -97,7 +97,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 6,
+        "note_id": 10,
         "note_path": "Book Notes.md",
         "note_title": "Book Notes"
       },
@@ -106,7 +106,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 3,
+        "note_id": 4,
         "note_path": "Deep Work.md",
         "note_title": "Deep Work"
       },
@@ -115,7 +115,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 5,
+        "note_id": 6,
         "note_path": "Home.md",
         "note_title": "Home"
       },
@@ -124,7 +124,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 4,
+        "note_id": 8,
         "note_path": "Ideas.md",
         "note_title": "Ideas"
       },
@@ -133,7 +133,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 4,
+        "note_id": 8,
         "note_path": "Ideas.md",
         "note_title": "Ideas"
       },
@@ -142,7 +142,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 9,
+        "note_id": 7,
         "note_path": "Learning Strategies.md",
         "note_title": "Learning Strategies"
       },
@@ -151,7 +151,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 12,
+        "note_id": 1,
         "note_path": "Pomodoro Technique.md",
         "note_title": "Pomodoro Technique"
       },
@@ -160,7 +160,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 12,
+        "note_id": 1,
         "note_path": "Pomodoro Technique.md",
         "note_title": "Pomodoro Technique"
       },
@@ -169,7 +169,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 7,
+        "note_id": 3,
         "note_path": "Projects.md",
         "note_title": "Projects"
       },
@@ -178,7 +178,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 7,
+        "note_id": 3,
         "note_path": "Projects.md",
         "note_title": "Projects"
       },
@@ -187,7 +187,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 10,
+        "note_id": 5,
         "note_path": "Software Architecture.md",
         "note_title": "Software Architecture"
       },
@@ -196,7 +196,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 11,
+        "note_id": 12,
         "note_path": "Stoicism.md",
         "note_title": "Stoicism"
       },
@@ -205,7 +205,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 8,
+        "note_id": 2,
         "note_path": "Zettelkasten Method.md",
         "note_title": "Zettelkasten Method"
       },
@@ -214,7 +214,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 6,
+        "note_id": 10,
         "note_path": "Book Notes.md",
         "note_title": "Book Notes"
       },
@@ -223,7 +223,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 1,
+        "note_id": 11,
         "note_path": "Daily Notes.md",
         "note_title": "Daily Notes"
       },
@@ -232,7 +232,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 5,
+        "note_id": 6,
         "note_path": "Home.md",
         "note_title": "Home"
       },
@@ -241,7 +241,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 4,
+        "note_id": 8,
         "note_path": "Ideas.md",
         "note_title": "Ideas"
       },
@@ -250,7 +250,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 4,
+        "note_id": 8,
         "note_path": "Ideas.md",
         "note_title": "Ideas"
       },
@@ -259,7 +259,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 9,
+        "note_id": 7,
         "note_path": "Learning Strategies.md",
         "note_title": "Learning Strategies"
       },
@@ -268,7 +268,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 12,
+        "note_id": 1,
         "note_path": "Pomodoro Technique.md",
         "note_title": "Pomodoro Technique"
       },
@@ -277,7 +277,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 7,
+        "note_id": 3,
         "note_path": "Projects.md",
         "note_title": "Projects"
       },
@@ -286,7 +286,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 10,
+        "note_id": 5,
         "note_path": "Software Architecture.md",
         "note_title": "Software Architecture"
       },
@@ -295,7 +295,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 11,
+        "note_id": 12,
         "note_path": "Stoicism.md",
         "note_title": "Stoicism"
       },
@@ -304,7 +304,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 8,
+        "note_id": 2,
         "note_path": "Zettelkasten Method.md",
         "note_title": "Zettelkasten Method"
       },
@@ -313,7 +313,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 2,
+        "note_id": 9,
         "note_path": "MarkDownLinks.md",
         "note_title": "MarkDownLinks"
       },
@@ -322,7 +322,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 1,
+        "note_id": 11,
         "note_path": "Daily Notes.md",
         "note_title": "Daily Notes"
       },
@@ -331,7 +331,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 5,
+        "note_id": 6,
         "note_path": "Home.md",
         "note_title": "Home"
       },
@@ -340,7 +340,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 6,
+        "note_id": 10,
         "note_path": "Book Notes.md",
         "note_title": "Book Notes"
       },
@@ -349,7 +349,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 1,
+        "note_id": 11,
         "note_path": "Daily Notes.md",
         "note_title": "Daily Notes"
       },
@@ -358,7 +358,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 3,
+        "note_id": 4,
         "note_path": "Deep Work.md",
         "note_title": "Deep Work"
       },
@@ -367,7 +367,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 4,
+        "note_id": 8,
         "note_path": "Ideas.md",
         "note_title": "Ideas"
       },
@@ -376,7 +376,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 9,
+        "note_id": 7,
         "note_path": "Learning Strategies.md",
         "note_title": "Learning Strategies"
       },
@@ -385,7 +385,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 2,
+        "note_id": 9,
         "note_path": "MarkDownLinks.md",
         "note_title": "MarkDownLinks"
       },
@@ -394,7 +394,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 12,
+        "note_id": 1,
         "note_path": "Pomodoro Technique.md",
         "note_title": "Pomodoro Technique"
       },
@@ -403,7 +403,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 7,
+        "note_id": 3,
         "note_path": "Projects.md",
         "note_title": "Projects"
       },
@@ -412,7 +412,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 11,
+        "note_id": 12,
         "note_path": "Stoicism.md",
         "note_title": "Stoicism"
       },
@@ -421,7 +421,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 8,
+        "note_id": 2,
         "note_path": "Zettelkasten Method.md",
         "note_title": "Zettelkasten Method"
       },
@@ -430,7 +430,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 6,
+        "note_id": 10,
         "note_path": "Book Notes.md",
         "note_title": "Book Notes"
       },
@@ -439,7 +439,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 1,
+        "note_id": 11,
         "note_path": "Daily Notes.md",
         "note_title": "Daily Notes"
       },
@@ -448,7 +448,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 5,
+        "note_id": 6,
         "note_path": "Home.md",
         "note_title": "Home"
       },
@@ -457,7 +457,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 9,
+        "note_id": 7,
         "note_path": "Learning Strategies.md",
         "note_title": "Learning Strategies"
       },
@@ -466,7 +466,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 12,
+        "note_id": 1,
         "note_path": "Pomodoro Technique.md",
         "note_title": "Pomodoro Technique"
       },
@@ -475,7 +475,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 7,
+        "note_id": 3,
         "note_path": "Projects.md",
         "note_title": "Projects"
       },
@@ -484,7 +484,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 11,
+        "note_id": 12,
         "note_path": "Stoicism.md",
         "note_title": "Stoicism"
       },
@@ -493,7 +493,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 8,
+        "note_id": 2,
         "note_path": "Zettelkasten Method.md",
         "note_title": "Zettelkasten Method"
       },
@@ -502,7 +502,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 6,
+        "note_id": 10,
         "note_path": "Book Notes.md",
         "note_title": "Book Notes"
       },
@@ -511,7 +511,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 1,
+        "note_id": 11,
         "note_path": "Daily Notes.md",
         "note_title": "Daily Notes"
       },
@@ -520,7 +520,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 1,
+        "note_id": 11,
         "note_path": "Daily Notes.md",
         "note_title": "Daily Notes"
       },
@@ -529,7 +529,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 3,
+        "note_id": 4,
         "note_path": "Deep Work.md",
         "note_title": "Deep Work"
       },
@@ -538,7 +538,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 5,
+        "note_id": 6,
         "note_path": "Home.md",
         "note_title": "Home"
       },
@@ -547,7 +547,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 4,
+        "note_id": 8,
         "note_path": "Ideas.md",
         "note_title": "Ideas"
       },
@@ -556,7 +556,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 4,
+        "note_id": 8,
         "note_path": "Ideas.md",
         "note_title": "Ideas"
       },
@@ -565,7 +565,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 12,
+        "note_id": 1,
         "note_path": "Pomodoro Technique.md",
         "note_title": "Pomodoro Technique"
       },
@@ -574,7 +574,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 7,
+        "note_id": 3,
         "note_path": "Projects.md",
         "note_title": "Projects"
       },
@@ -583,7 +583,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 10,
+        "note_id": 5,
         "note_path": "Software Architecture.md",
         "note_title": "Software Architecture"
       },
@@ -592,7 +592,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 11,
+        "note_id": 12,
         "note_path": "Stoicism.md",
         "note_title": "Stoicism"
       },
@@ -601,7 +601,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 8,
+        "note_id": 2,
         "note_path": "Zettelkasten Method.md",
         "note_title": "Zettelkasten Method"
       },
@@ -610,7 +610,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": "Techniques",
         "is_embed": false,
-        "note_id": 2,
+        "note_id": 9,
         "note_path": "MarkDownLinks.md",
         "note_title": "MarkDownLinks"
       },
@@ -619,7 +619,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 6,
+        "note_id": 10,
         "note_path": "Book Notes.md",
         "note_title": "Book Notes"
       },
@@ -628,7 +628,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 1,
+        "note_id": 11,
         "note_path": "Daily Notes.md",
         "note_title": "Daily Notes"
       },
@@ -637,7 +637,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 3,
+        "note_id": 4,
         "note_path": "Deep Work.md",
         "note_title": "Deep Work"
       },
@@ -646,7 +646,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 4,
+        "note_id": 8,
         "note_path": "Ideas.md",
         "note_title": "Ideas"
       },
@@ -655,7 +655,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 9,
+        "note_id": 7,
         "note_path": "Learning Strategies.md",
         "note_title": "Learning Strategies"
       },
@@ -664,7 +664,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 7,
+        "note_id": 3,
         "note_path": "Projects.md",
         "note_title": "Projects"
       },
@@ -673,7 +673,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 10,
+        "note_id": 5,
         "note_path": "Software Architecture.md",
         "note_title": "Software Architecture"
       },
@@ -682,7 +682,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 11,
+        "note_id": 12,
         "note_path": "Stoicism.md",
         "note_title": "Stoicism"
       },
@@ -691,7 +691,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 6,
+        "note_id": 10,
         "note_path": "Book Notes.md",
         "note_title": "Book Notes"
       },
@@ -700,7 +700,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 1,
+        "note_id": 11,
         "note_path": "Daily Notes.md",
         "note_title": "Daily Notes"
       },
@@ -709,7 +709,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 1,
+        "note_id": 11,
         "note_path": "Daily Notes.md",
         "note_title": "Daily Notes"
       },
@@ -718,7 +718,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 3,
+        "note_id": 4,
         "note_path": "Deep Work.md",
         "note_title": "Deep Work"
       },
@@ -727,7 +727,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 5,
+        "note_id": 6,
         "note_path": "Home.md",
         "note_title": "Home"
       },
@@ -736,7 +736,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 4,
+        "note_id": 8,
         "note_path": "Ideas.md",
         "note_title": "Ideas"
       },
@@ -745,7 +745,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 4,
+        "note_id": 8,
         "note_path": "Ideas.md",
         "note_title": "Ideas"
       },
@@ -754,7 +754,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 9,
+        "note_id": 7,
         "note_path": "Learning Strategies.md",
         "note_title": "Learning Strategies"
       },
@@ -763,7 +763,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": "block123",
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 2,
+        "note_id": 9,
         "note_path": "MarkDownLinks.md",
         "note_title": "MarkDownLinks"
       },
@@ -772,7 +772,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 12,
+        "note_id": 1,
         "note_path": "Pomodoro Technique.md",
         "note_title": "Pomodoro Technique"
       },
@@ -781,7 +781,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 10,
+        "note_id": 5,
         "note_path": "Software Architecture.md",
         "note_title": "Software Architecture"
       },
@@ -790,7 +790,7 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 11,
+        "note_id": 12,
         "note_path": "Stoicism.md",
         "note_title": "Stoicism"
       },
@@ -799,279 +799,9 @@ expression: normalize_for_snapshot(output)
         "block_ref": null,
         "heading_ref": null,
         "is_embed": false,
-        "note_id": 8,
+        "note_id": 2,
         "note_path": "Zettelkasten Method.md",
         "note_title": "Zettelkasten Method"
-      },
-      {
-        "alias": null,
-        "block_ref": null,
-        "heading_ref": null,
-        "is_embed": false,
-        "note_id": 6,
-        "note_path": "Book Notes.md",
-        "note_title": "Book Notes"
-      },
-      {
-        "alias": null,
-        "block_ref": null,
-        "heading_ref": null,
-        "is_embed": false,
-        "note_id": 1,
-        "note_path": "Daily Notes.md",
-        "note_title": "Daily Notes"
-      },
-      {
-        "alias": null,
-        "block_ref": null,
-        "heading_ref": null,
-        "is_embed": false,
-        "note_id": 5,
-        "note_path": "Home.md",
-        "note_title": "Home"
-      },
-      {
-        "alias": null,
-        "block_ref": null,
-        "heading_ref": null,
-        "is_embed": false,
-        "note_id": 4,
-        "note_path": "Ideas.md",
-        "note_title": "Ideas"
-      },
-      {
-        "alias": null,
-        "block_ref": null,
-        "heading_ref": null,
-        "is_embed": false,
-        "note_id": 4,
-        "note_path": "Ideas.md",
-        "note_title": "Ideas"
-      },
-      {
-        "alias": null,
-        "block_ref": null,
-        "heading_ref": null,
-        "is_embed": false,
-        "note_id": 4,
-        "note_path": "Ideas.md",
-        "note_title": "Ideas"
-      },
-      {
-        "alias": null,
-        "block_ref": null,
-        "heading_ref": null,
-        "is_embed": false,
-        "note_id": 9,
-        "note_path": "Learning Strategies.md",
-        "note_title": "Learning Strategies"
-      },
-      {
-        "alias": null,
-        "block_ref": null,
-        "heading_ref": null,
-        "is_embed": false,
-        "note_id": 12,
-        "note_path": "Pomodoro Technique.md",
-        "note_title": "Pomodoro Technique"
-      },
-      {
-        "alias": null,
-        "block_ref": null,
-        "heading_ref": null,
-        "is_embed": false,
-        "note_id": 7,
-        "note_path": "Projects.md",
-        "note_title": "Projects"
-      },
-      {
-        "alias": null,
-        "block_ref": null,
-        "heading_ref": null,
-        "is_embed": false,
-        "note_id": 8,
-        "note_path": "Zettelkasten Method.md",
-        "note_title": "Zettelkasten Method"
-      },
-      {
-        "alias": null,
-        "block_ref": null,
-        "heading_ref": null,
-        "is_embed": false,
-        "note_id": 6,
-        "note_path": "Book Notes.md",
-        "note_title": "Book Notes"
-      },
-      {
-        "alias": null,
-        "block_ref": null,
-        "heading_ref": null,
-        "is_embed": false,
-        "note_id": 1,
-        "note_path": "Daily Notes.md",
-        "note_title": "Daily Notes"
-      },
-      {
-        "alias": null,
-        "block_ref": null,
-        "heading_ref": null,
-        "is_embed": false,
-        "note_id": 1,
-        "note_path": "Daily Notes.md",
-        "note_title": "Daily Notes"
-      },
-      {
-        "alias": null,
-        "block_ref": null,
-        "heading_ref": null,
-        "is_embed": false,
-        "note_id": 3,
-        "note_path": "Deep Work.md",
-        "note_title": "Deep Work"
-      },
-      {
-        "alias": null,
-        "block_ref": null,
-        "heading_ref": null,
-        "is_embed": false,
-        "note_id": 5,
-        "note_path": "Home.md",
-        "note_title": "Home"
-      },
-      {
-        "alias": null,
-        "block_ref": null,
-        "heading_ref": null,
-        "is_embed": false,
-        "note_id": 4,
-        "note_path": "Ideas.md",
-        "note_title": "Ideas"
-      },
-      {
-        "alias": null,
-        "block_ref": null,
-        "heading_ref": null,
-        "is_embed": false,
-        "note_id": 4,
-        "note_path": "Ideas.md",
-        "note_title": "Ideas"
-      },
-      {
-        "alias": null,
-        "block_ref": null,
-        "heading_ref": null,
-        "is_embed": false,
-        "note_id": 9,
-        "note_path": "Learning Strategies.md",
-        "note_title": "Learning Strategies"
-      },
-      {
-        "alias": null,
-        "block_ref": null,
-        "heading_ref": null,
-        "is_embed": false,
-        "note_id": 12,
-        "note_path": "Pomodoro Technique.md",
-        "note_title": "Pomodoro Technique"
-      },
-      {
-        "alias": null,
-        "block_ref": null,
-        "heading_ref": null,
-        "is_embed": false,
-        "note_id": 7,
-        "note_path": "Projects.md",
-        "note_title": "Projects"
-      },
-      {
-        "alias": null,
-        "block_ref": null,
-        "heading_ref": null,
-        "is_embed": false,
-        "note_id": 3,
-        "note_path": "Deep Work.md",
-        "note_title": "Deep Work"
-      },
-      {
-        "alias": null,
-        "block_ref": null,
-        "heading_ref": null,
-        "is_embed": false,
-        "note_id": 12,
-        "note_path": "Pomodoro Technique.md",
-        "note_title": "Pomodoro Technique"
-      },
-      {
-        "alias": null,
-        "block_ref": null,
-        "heading_ref": null,
-        "is_embed": false,
-        "note_id": 6,
-        "note_path": "Book Notes.md",
-        "note_title": "Book Notes"
-      },
-      {
-        "alias": null,
-        "block_ref": null,
-        "heading_ref": null,
-        "is_embed": false,
-        "note_id": 1,
-        "note_path": "Daily Notes.md",
-        "note_title": "Daily Notes"
-      },
-      {
-        "alias": null,
-        "block_ref": null,
-        "heading_ref": null,
-        "is_embed": false,
-        "note_id": 5,
-        "note_path": "Home.md",
-        "note_title": "Home"
-      },
-      {
-        "alias": null,
-        "block_ref": null,
-        "heading_ref": null,
-        "is_embed": false,
-        "note_id": 4,
-        "note_path": "Ideas.md",
-        "note_title": "Ideas"
-      },
-      {
-        "alias": null,
-        "block_ref": null,
-        "heading_ref": null,
-        "is_embed": false,
-        "note_id": 4,
-        "note_path": "Ideas.md",
-        "note_title": "Ideas"
-      },
-      {
-        "alias": null,
-        "block_ref": null,
-        "heading_ref": null,
-        "is_embed": false,
-        "note_id": 9,
-        "note_path": "Learning Strategies.md",
-        "note_title": "Learning Strategies"
-      },
-      {
-        "alias": null,
-        "block_ref": null,
-        "heading_ref": null,
-        "is_embed": false,
-        "note_id": 12,
-        "note_path": "Pomodoro Technique.md",
-        "note_title": "Pomodoro Technique"
-      },
-      {
-        "alias": null,
-        "block_ref": null,
-        "heading_ref": null,
-        "is_embed": false,
-        "note_id": 7,
-        "note_path": "Projects.md",
-        "note_title": "Projects"
       },
       {
         "alias": null,
@@ -1079,6 +809,276 @@ expression: normalize_for_snapshot(output)
         "heading_ref": null,
         "is_embed": false,
         "note_id": 10,
+        "note_path": "Book Notes.md",
+        "note_title": "Book Notes"
+      },
+      {
+        "alias": null,
+        "block_ref": null,
+        "heading_ref": null,
+        "is_embed": false,
+        "note_id": 11,
+        "note_path": "Daily Notes.md",
+        "note_title": "Daily Notes"
+      },
+      {
+        "alias": null,
+        "block_ref": null,
+        "heading_ref": null,
+        "is_embed": false,
+        "note_id": 6,
+        "note_path": "Home.md",
+        "note_title": "Home"
+      },
+      {
+        "alias": null,
+        "block_ref": null,
+        "heading_ref": null,
+        "is_embed": false,
+        "note_id": 8,
+        "note_path": "Ideas.md",
+        "note_title": "Ideas"
+      },
+      {
+        "alias": null,
+        "block_ref": null,
+        "heading_ref": null,
+        "is_embed": false,
+        "note_id": 8,
+        "note_path": "Ideas.md",
+        "note_title": "Ideas"
+      },
+      {
+        "alias": null,
+        "block_ref": null,
+        "heading_ref": null,
+        "is_embed": false,
+        "note_id": 8,
+        "note_path": "Ideas.md",
+        "note_title": "Ideas"
+      },
+      {
+        "alias": null,
+        "block_ref": null,
+        "heading_ref": null,
+        "is_embed": false,
+        "note_id": 7,
+        "note_path": "Learning Strategies.md",
+        "note_title": "Learning Strategies"
+      },
+      {
+        "alias": null,
+        "block_ref": null,
+        "heading_ref": null,
+        "is_embed": false,
+        "note_id": 1,
+        "note_path": "Pomodoro Technique.md",
+        "note_title": "Pomodoro Technique"
+      },
+      {
+        "alias": null,
+        "block_ref": null,
+        "heading_ref": null,
+        "is_embed": false,
+        "note_id": 3,
+        "note_path": "Projects.md",
+        "note_title": "Projects"
+      },
+      {
+        "alias": null,
+        "block_ref": null,
+        "heading_ref": null,
+        "is_embed": false,
+        "note_id": 2,
+        "note_path": "Zettelkasten Method.md",
+        "note_title": "Zettelkasten Method"
+      },
+      {
+        "alias": null,
+        "block_ref": null,
+        "heading_ref": null,
+        "is_embed": false,
+        "note_id": 10,
+        "note_path": "Book Notes.md",
+        "note_title": "Book Notes"
+      },
+      {
+        "alias": null,
+        "block_ref": null,
+        "heading_ref": null,
+        "is_embed": false,
+        "note_id": 11,
+        "note_path": "Daily Notes.md",
+        "note_title": "Daily Notes"
+      },
+      {
+        "alias": null,
+        "block_ref": null,
+        "heading_ref": null,
+        "is_embed": false,
+        "note_id": 11,
+        "note_path": "Daily Notes.md",
+        "note_title": "Daily Notes"
+      },
+      {
+        "alias": null,
+        "block_ref": null,
+        "heading_ref": null,
+        "is_embed": false,
+        "note_id": 4,
+        "note_path": "Deep Work.md",
+        "note_title": "Deep Work"
+      },
+      {
+        "alias": null,
+        "block_ref": null,
+        "heading_ref": null,
+        "is_embed": false,
+        "note_id": 6,
+        "note_path": "Home.md",
+        "note_title": "Home"
+      },
+      {
+        "alias": null,
+        "block_ref": null,
+        "heading_ref": null,
+        "is_embed": false,
+        "note_id": 8,
+        "note_path": "Ideas.md",
+        "note_title": "Ideas"
+      },
+      {
+        "alias": null,
+        "block_ref": null,
+        "heading_ref": null,
+        "is_embed": false,
+        "note_id": 8,
+        "note_path": "Ideas.md",
+        "note_title": "Ideas"
+      },
+      {
+        "alias": null,
+        "block_ref": null,
+        "heading_ref": null,
+        "is_embed": false,
+        "note_id": 7,
+        "note_path": "Learning Strategies.md",
+        "note_title": "Learning Strategies"
+      },
+      {
+        "alias": null,
+        "block_ref": null,
+        "heading_ref": null,
+        "is_embed": false,
+        "note_id": 1,
+        "note_path": "Pomodoro Technique.md",
+        "note_title": "Pomodoro Technique"
+      },
+      {
+        "alias": null,
+        "block_ref": null,
+        "heading_ref": null,
+        "is_embed": false,
+        "note_id": 3,
+        "note_path": "Projects.md",
+        "note_title": "Projects"
+      },
+      {
+        "alias": null,
+        "block_ref": null,
+        "heading_ref": null,
+        "is_embed": false,
+        "note_id": 4,
+        "note_path": "Deep Work.md",
+        "note_title": "Deep Work"
+      },
+      {
+        "alias": null,
+        "block_ref": null,
+        "heading_ref": null,
+        "is_embed": false,
+        "note_id": 1,
+        "note_path": "Pomodoro Technique.md",
+        "note_title": "Pomodoro Technique"
+      },
+      {
+        "alias": null,
+        "block_ref": null,
+        "heading_ref": null,
+        "is_embed": false,
+        "note_id": 10,
+        "note_path": "Book Notes.md",
+        "note_title": "Book Notes"
+      },
+      {
+        "alias": null,
+        "block_ref": null,
+        "heading_ref": null,
+        "is_embed": false,
+        "note_id": 11,
+        "note_path": "Daily Notes.md",
+        "note_title": "Daily Notes"
+      },
+      {
+        "alias": null,
+        "block_ref": null,
+        "heading_ref": null,
+        "is_embed": false,
+        "note_id": 6,
+        "note_path": "Home.md",
+        "note_title": "Home"
+      },
+      {
+        "alias": null,
+        "block_ref": null,
+        "heading_ref": null,
+        "is_embed": false,
+        "note_id": 8,
+        "note_path": "Ideas.md",
+        "note_title": "Ideas"
+      },
+      {
+        "alias": null,
+        "block_ref": null,
+        "heading_ref": null,
+        "is_embed": false,
+        "note_id": 8,
+        "note_path": "Ideas.md",
+        "note_title": "Ideas"
+      },
+      {
+        "alias": null,
+        "block_ref": null,
+        "heading_ref": null,
+        "is_embed": false,
+        "note_id": 7,
+        "note_path": "Learning Strategies.md",
+        "note_title": "Learning Strategies"
+      },
+      {
+        "alias": null,
+        "block_ref": null,
+        "heading_ref": null,
+        "is_embed": false,
+        "note_id": 1,
+        "note_path": "Pomodoro Technique.md",
+        "note_title": "Pomodoro Technique"
+      },
+      {
+        "alias": null,
+        "block_ref": null,
+        "heading_ref": null,
+        "is_embed": false,
+        "note_id": 3,
+        "note_path": "Projects.md",
+        "note_title": "Projects"
+      },
+      {
+        "alias": null,
+        "block_ref": null,
+        "heading_ref": null,
+        "is_embed": false,
+        "note_id": 5,
         "note_path": "Software Architecture.md",
         "note_title": "Software Architecture"
       }

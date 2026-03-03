@@ -15,75 +15,75 @@ expression: normalize_for_snapshot(output)
   "result": {
     "items": [
       {
-        "chunk_id": 5,
+        "chunk_id": 75,
         "chunk_text": "### Productivity Metrics\n- Pomodoros completed ([[Pomodoro Technique]])\n- [[Deep Work]] hours\n- Tasks completed\n\n",
         "heading_path": "# Daily Notes > ## What I Track > ### Productivity Metrics",
-        "note_id": 1,
+        "note_id": 11,
         "note_path": "Daily Notes.md",
         "note_title": "Daily Notes",
         "rank": -3.266146659851074
       },
       {
-        "chunk_id": 61,
+        "chunk_id": 41,
         "chunk_text": "---\ntags:\n  - learning\n  - education\n  - productivity\ncreated: 2024-01-20\n---\n\n",
         "heading_path": null,
-        "note_id": 9,
+        "note_id": 7,
         "note_path": "Learning Strategies.md",
         "note_title": "Learning Strategies",
         "rank": -3.0429537296295166
       },
       {
-        "chunk_id": 81,
+        "chunk_id": 1,
         "chunk_text": "---\ntags:\n  - productivity\n  - time-management\n  - technique\ncreated: 2024-01-28\n---\n\n",
         "heading_path": null,
-        "note_id": 12,
+        "note_id": 1,
         "note_path": "Pomodoro Technique.md",
         "note_title": "Pomodoro Technique",
         "rank": -2.9702837467193604
       },
       {
-        "chunk_id": 13,
+        "chunk_id": 24,
         "chunk_text": "---\ntags:\n  - productivity\n  - focus\naliases:\n  - Deep Focus\n  - Flow State\ncreated: 2024-02-01\n---\n\n",
         "heading_path": null,
-        "note_id": 3,
+        "note_id": 4,
         "note_path": "Deep Work.md",
         "note_title": "Deep Work",
         "rank": -2.7717068195343018
       },
       {
-        "chunk_id": 31,
+        "chunk_id": 39,
         "chunk_text": "## Recent Topics\n\nI've been exploring #productivity and #learning recently. Check out my notes on [[Deep Work]] and [[Learning Strategies]].\n\n",
         "heading_path": "# Home > ## Recent Topics",
-        "note_id": 5,
+        "note_id": 6,
         "note_path": "Home.md",
         "note_title": "Home",
         "rank": -2.2260324954986572
       },
       {
-        "chunk_id": 87,
+        "chunk_id": 7,
         "chunk_text": "## Results\n\nSince implementing this consistently, my productivity has increased significantly. The data is in [[Daily Notes]].\n\nRelated: [[Time Management]] (note: this link is unresolved - need to create this note!)\n\nReturn to [[Home]].\n",
         "heading_path": "# Pomodoro Technique > ## Results",
-        "note_id": 12,
+        "note_id": 1,
         "note_path": "Pomodoro Technique.md",
         "note_title": "Pomodoro Technique",
         "rank": -1.8324713706970217
       },
       {
-        "chunk_id": 24,
-        "chunk_text": "## Thought Fragments\n\n> What if the [[Pomodoro Technique]] could be automated with AI? Adaptive time blocks based on task complexity.\n\n> Combining [[Stoicism]] with modern productivity - there's a book idea here!\n\n> Could apply [[Software Architecture]] principles to personal knowledge management?\n\n",
-        "heading_path": "# Ideas > ## Thought Fragments",
-        "note_id": 4,
-        "note_path": "Ideas.md",
-        "note_title": "Ideas",
+        "chunk_id": 13,
+        "chunk_text": "## Practical Applications\n\n- Writing projects ([[Projects]])\n- Research and study\n- Idea generation ([[Ideas]])\n- Book summaries ([[Book Notes]])\n\nThe key is consistency - I document this in my [[Daily Notes]].\n\nRelated: [[Software Architecture]] - similar principles of modularity and loose coupling.\n\n#pkm #productivity\n",
+        "heading_path": "# Zettelkasten Method > ## Practical Applications",
+        "note_id": 2,
+        "note_path": "Zettelkasten Method.md",
+        "note_title": "Zettelkasten Method",
         "rank": -1.661151885986328
       },
       {
-        "chunk_id": 60,
-        "chunk_text": "## Practical Applications\n\n- Writing projects ([[Projects]])\n- Research and study\n- Idea generation ([[Ideas]])\n- Book summaries ([[Book Notes]])\n\nThe key is consistency - I document this in my [[Daily Notes]].\n\nRelated: [[Software Architecture]] - similar principles of modularity and loose coupling.\n\n#pkm #productivity\n",
-        "heading_path": "# Zettelkasten Method > ## Practical Applications",
+        "chunk_id": 53,
+        "chunk_text": "## Thought Fragments\n\n> What if the [[Pomodoro Technique]] could be automated with AI? Adaptive time blocks based on task complexity.\n\n> Combining [[Stoicism]] with modern productivity - there's a book idea here!\n\n> Could apply [[Software Architecture]] principles to personal knowledge management?\n\n",
+        "heading_path": "# Ideas > ## Thought Fragments",
         "note_id": 8,
-        "note_path": "Zettelkasten Method.md",
-        "note_title": "Zettelkasten Method",
+        "note_path": "Ideas.md",
+        "note_title": "Ideas",
         "rank": -1.661151885986328
       }
     ],
