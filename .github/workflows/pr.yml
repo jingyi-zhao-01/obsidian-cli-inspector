@@ -102,7 +102,7 @@ jobs:
       # - name: test CLI commands
       #   run: make -C e2e test-cli
       - name: test machine contract commands
-        run: make -C e2e machine-contract
+        run: make -C tests/e2e machine-contract
 
   coverage:
     name: coverage

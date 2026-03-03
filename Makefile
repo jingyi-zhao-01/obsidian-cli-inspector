@@ -1,6 +1,6 @@
 .PHONY: build check test fmt fmt-check lint clippy run clean set-version build-release coverage
 
-# Note: E2E tests are located in e2e/Makefile
+# Note: E2E tests are located in tests/e2e/Makefile
 
 # =============================================================================
 # Build Commands
