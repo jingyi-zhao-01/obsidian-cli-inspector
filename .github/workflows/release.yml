@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - master
-      - staging
+      - alpha
 
 concurrency:
   group: release-${{ github.ref }}
