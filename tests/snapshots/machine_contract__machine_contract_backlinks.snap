@@ -10,7 +10,7 @@ expression: normalize_for_snapshot(output)
     "vault_path": "./tests/test-vault"
   },
   "params": {
-    "note": ""
+    "note": "Home"
   },
   "result": {
     "status": "success"
