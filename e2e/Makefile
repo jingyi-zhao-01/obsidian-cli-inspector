@@ -72,12 +72,26 @@ tags-sanity: build-release
 # =============================================================================
 
 # Run machine contract tests (snapshot-based validation)
-machine-contract:
+machine-contract: build
+	@echo "=== Initializing database for machine contract tests ==="
+	@cd .. && cargo run -- --config test-config.toml init init --force
+	@echo ""
+	@echo "=== Indexing vault for machine contract tests ==="
+	@cd .. && cargo run -- --config test-config.toml index index --force
+	@echo ""
+	@echo "=== Running machine contract tests ==="
 	@cd .. && cargo test --test machine_contract --all-features -- --test-threads=1
 
 # Update/generate machine contract snapshots
 # Use when machine contract JSON schema changes
-machine-contract-update:
+machine-contract-update: build
+	@echo "=== Initializing database for machine contract snapshot generation ==="
+	@cd .. && cargo run -- --config test-config.toml init init --force
+	@echo ""
+	@echo "=== Indexing vault for machine contract snapshot generation ==="
+	@cd .. && cargo run -- --config test-config.toml index index --force
+	@echo ""
+	@echo "=== Updating machine contract snapshots ==="
 	@cd .. && INSTA_UPDATE=inline cargo test --test machine_contract --all-features -- --test-threads=1
 
 # Helper targets
