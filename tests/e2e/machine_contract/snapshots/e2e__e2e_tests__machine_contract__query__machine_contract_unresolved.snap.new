@@ -1,5 +1,6 @@
 ---
 source: tests/e2e/machine_contract/query.rs
+assertion_line: 149
 expression: normalize_for_snapshot(output)
 ---
 {
