@@ -2,6 +2,26 @@ use serde_json::Value;
 use std::path::PathBuf;
 use std::process::Command;
 
+fn normalize_dynamic_ids(value: &mut Value) {
+    match value {
+        Value::Object(map) => {
+            for (key, nested_value) in map.iter_mut() {
+                if (key == "note_id" || key == "chunk_id") && nested_value.is_number() {
+                    *nested_value = Value::Number(0.into());
+                } else {
+                    normalize_dynamic_ids(nested_value);
+                }
+            }
+        }
+        Value::Array(items) => {
+            for item in items {
+                normalize_dynamic_ids(item);
+            }
+        }
+        _ => {}
+    }
+}
+
 pub fn get_test_config_path() -> PathBuf {
     PathBuf::from("test-config.toml")
 }
@@ -82,6 +102,8 @@ pub fn normalize_for_snapshot(mut json: Value) -> Value {
             meta_obj.insert("query_time_ms".to_string(), Value::Number(0.into()));
         }
     }
+
+    normalize_dynamic_ids(&mut json);
 
     json
 }
