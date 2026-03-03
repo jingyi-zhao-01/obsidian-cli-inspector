@@ -53,6 +53,35 @@ impl ResultDataBuilder {
 
                 Self::query_result(items)
             }
+            "query.semantic" => {
+                let query = params.get("query").and_then(|v| v.as_str()).unwrap_or("");
+                let limit = params.get("limit").and_then(|v| v.as_u64()).unwrap_or(20) as usize;
+
+                let results = match db
+                    .conn()
+                    .execute_query(|conn| query::semantic_search_chunks(conn, query, limit))
+                {
+                    Ok(results) => results,
+                    Err(_) => return Self::empty_query_result(),
+                };
+
+                let items = results
+                    .iter()
+                    .map(|result| {
+                        serde_json::json!({
+                            "chunk_id": result.chunk_id,
+                            "note_id": result.note_id,
+                            "note_path": result.note_path,
+                            "note_title": result.note_title,
+                            "heading_path": result.heading_path,
+                            "chunk_text": result.chunk_text,
+                            "score": result.score
+                        })
+                    })
+                    .collect();
+
+                Self::query_result(items)
+            }
             "query.backlinks" => {
                 let note = params.get("note").and_then(|v| v.as_str()).unwrap_or("");
 
@@ -247,6 +276,27 @@ mod tests {
 
         let params = serde_json::json!({});
         let result = ResultDataBuilder::build_query_result_data(&config, "query.search", &params);
+        assert_eq!(result.get("total").unwrap(), 0);
+    }
+
+    #[test]
+    fn test_build_query_result_data_semantic_no_database() {
+        let temp_dir = TempDir::new().unwrap();
+        let config = Config {
+            vault_path: temp_dir.path().to_path_buf(),
+            database_path: Some(temp_dir.path().join("nonexistent.db")),
+            log_path: None,
+            exclude: Default::default(),
+            search: Default::default(),
+            graph: Default::default(),
+            llm: None,
+        };
+
+        let params = serde_json::json!({
+            "query": "deep work",
+            "limit": 20
+        });
+        let result = ResultDataBuilder::build_query_result_data(&config, "query.semantic", &params);
         assert_eq!(result.get("total").unwrap(), 0);
     }
 

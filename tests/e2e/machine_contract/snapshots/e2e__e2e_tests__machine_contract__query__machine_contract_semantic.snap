@@ -1,0 +1,202 @@
+---
+source: tests/e2e/machine_contract/query.rs
+expression: normalize_for_snapshot(output)
+---
+{
+  "command": "query.semantic",
+  "meta": {
+    "query_time_ms": 0,
+    "vault_path": "VAULT_PATH"
+  },
+  "params": {
+    "limit": 20,
+    "query": "how to improve productivity"
+  },
+  "result": {
+    "items": [
+      {
+        "chunk_id": 29,
+        "chunk_text": "# Home\n\nWelcome to my knowledge base! This is the central hub for all my notes.\n\n",
+        "heading_path": "# Home",
+        "note_id": 4,
+        "note_path": "Home.md",
+        "note_title": "Home",
+        "score": 0.2627900540828705
+      },
+      {
+        "chunk_id": 8,
+        "chunk_text": "### How to Take Smart Notes by Sönke Ahrens\nAbout the [[Zettelkasten Method]]. This book inspired my whole PKM system!\n\n",
+        "heading_path": "# Book Notes > ## Currently Reading > ### How to Take Smart Notes by Sönke Ahrens",
+        "note_id": 1,
+        "note_path": "Book Notes.md",
+        "note_title": "Book Notes",
+        "score": 0.24253563582897184
+      },
+      {
+        "chunk_id": 48,
+        "chunk_text": "## Connection to Other Areas\n\nLearning strategies intersect with:\n- [[Stoicism]] - discipline and persistence\n- [[Projects]] - practical application\n- [[Ideas]] - generating and refining thoughts\n\nSee my [[Daily Notes]] for how I track learning progress.\n\nReturn to [[Home]].\n",
+        "heading_path": "# Learning Strategies > ## Connection to Other Areas",
+        "note_id": 6,
+        "note_path": "Learning Strategies.md",
+        "note_title": "Learning Strategies",
+        "score": 0.23725104331970215
+      },
+      {
+        "chunk_id": 40,
+        "chunk_text": "## Idea Development Process\n\n1. **Capture** - Write it down immediately\n2. **Incubate** - Let it sit for a few days\n3. **Connect** - Link to related notes\n4. **Develop** - Expand into full note or project\n5. **Execute** - Move to [[Projects]] if actionable\n\n",
+        "heading_path": "# Ideas > ## Idea Development Process",
+        "note_id": 5,
+        "note_path": "Ideas.md",
+        "note_title": "Ideas",
+        "score": 0.19828343391418457
+      },
+      {
+        "chunk_id": 58,
+        "chunk_text": "---\ntags:\n  - projects\n  - active\ncreated: 2024-01-10\n---\n\n",
+        "heading_path": null,
+        "note_id": 9,
+        "note_path": "Projects.md",
+        "note_title": "Projects",
+        "score": 0.1889822483062744
+      },
+      {
+        "chunk_id": 43,
+        "chunk_text": "---\ntags:\n  - learning\n  - education\n  - productivity\ncreated: 2024-01-20\n---\n\n",
+        "heading_path": null,
+        "note_id": 6,
+        "note_path": "Learning Strategies.md",
+        "note_title": "Learning Strategies",
+        "score": 0.1767766922712326
+      },
+      {
+        "chunk_id": 81,
+        "chunk_text": "## Recommended Reading\n\nSee my [[Book Notes]] for:\n- Meditations by Marcus Aurelius\n- Letters from a Stoic by Seneca\n- The Obstacle is the Way by Ryan Holiday\n\nReturn to [[Home]].\n",
+        "heading_path": "# Stoicism > ## Recommended Reading",
+        "note_id": 11,
+        "note_path": "Stoicism.md",
+        "note_title": "Stoicism",
+        "score": 0.17081937193870544
+      },
+      {
+        "chunk_id": 51,
+        "chunk_text": "---\ntags:\n  - productivity\n  - time-management\n  - technique\ncreated: 2024-01-28\n---\n\n",
+        "heading_path": null,
+        "note_id": 8,
+        "note_path": "Pomodoro Technique.md",
+        "note_title": "Pomodoro Technique",
+        "score": 0.1666666716337204
+      },
+      {
+        "chunk_id": 19,
+        "chunk_text": "### Reflection\n- What went well\n- What could improve\n- Gratitude practice\n\n",
+        "heading_path": "# Daily Notes > ## What I Track > ### Reflection",
+        "note_id": 2,
+        "note_path": "Daily Notes.md",
+        "note_title": "Daily Notes",
+        "score": 0.1591779887676239
+      },
+      {
+        "chunk_id": 27,
+        "chunk_text": "## Implementation\n\nI've been applying deep work principles to my [[Projects]]. The results have been remarkable - see my [[Daily Notes]] for progress tracking.\n\nBack to [[Home]].\n",
+        "heading_path": "# Deep Work > ## Implementation",
+        "note_id": 3,
+        "note_path": "Deep Work.md",
+        "note_title": "Deep Work",
+        "score": 0.15829961001873016
+      },
+      {
+        "chunk_id": 25,
+        "chunk_text": "## Key Principles\n\n1. **Work Deeply** - Schedule blocks of uninterrupted time\n2. **Embrace Boredom** - Train your brain to resist distraction\n3. **Quit Social Media** - Or at least be selective\n4. **Drain the Shallows** - Minimize low-value activities\n\n",
+        "heading_path": "# Deep Work > ## Key Principles",
+        "note_id": 3,
+        "note_path": "Deep Work.md",
+        "note_title": "Deep Work",
+        "score": 0.15430335700511932
+      },
+      {
+        "chunk_id": 39,
+        "chunk_text": "## Thought Fragments\n\n> What if the [[Pomodoro Technique]] could be automated with AI? Adaptive time blocks based on task complexity.\n\n> Combining [[Stoicism]] with modern productivity - there's a book idea here!\n\n> Could apply [[Software Architecture]] principles to personal knowledge management?\n\n",
+        "heading_path": "# Ideas > ## Thought Fragments",
+        "note_id": 5,
+        "note_path": "Ideas.md",
+        "note_title": "Ideas",
+        "score": 0.15297335386276245
+      },
+      {
+        "chunk_id": 12,
+        "chunk_text": "## Process\n\n1. Read with highlights\n2. Process highlights into atomic notes\n3. Connect to existing notes (see [[Home]] for the graph)\n4. Apply insights to [[Projects]]\n\nRelated: [[Ideas]] - many come from reading!\n\n#reading #learning\n",
+        "heading_path": "# Book Notes > ## Process",
+        "note_id": 1,
+        "note_path": "Book Notes.md",
+        "note_title": "Book Notes",
+        "score": 0.14748704433441162
+      },
+      {
+        "chunk_id": 57,
+        "chunk_text": "## Results\n\nSince implementing this consistently, my productivity has increased significantly. The data is in [[Daily Notes]].\n\nRelated: [[Time Management]] (note: this link is unresolved - need to create this note!)\n\nReturn to [[Home]].\n",
+        "heading_path": "# Pomodoro Technique > ## Results",
+        "note_id": 8,
+        "note_path": "Pomodoro Technique.md",
+        "note_title": "Pomodoro Technique",
+        "score": 0.1451767385005951
+      },
+      {
+        "chunk_id": 17,
+        "chunk_text": "### Productivity Metrics\n- Pomodoros completed ([[Pomodoro Technique]])\n- [[Deep Work]] hours\n- Tasks completed\n\n",
+        "heading_path": "# Daily Notes > ## What I Track > ### Productivity Metrics",
+        "note_id": 2,
+        "note_path": "Daily Notes.md",
+        "note_title": "Daily Notes",
+        "score": 0.1451456993818283
+      },
+      {
+        "chunk_id": 23,
+        "chunk_text": "---\ntags:\n  - productivity\n  - focus\naliases:\n  - Deep Focus\n  - Flow State\ncreated: 2024-02-01\n---\n\n",
+        "heading_path": null,
+        "note_id": 3,
+        "note_path": "Deep Work.md",
+        "note_title": "Deep Work",
+        "score": 0.13939128816127777
+      },
+      {
+        "chunk_id": 36,
+        "chunk_text": "### CLI Tools\n- Obsidian vault indexer (now in [[Projects]]! ✅)\n- Git commit message generator\n- Personal dashboard aggregator\n\n",
+        "heading_path": "# Ideas > ## Project Ideas > ### CLI Tools",
+        "note_id": 5,
+        "note_path": "Ideas.md",
+        "note_title": "Ideas",
+        "score": 0.1386750489473343
+      },
+      {
+        "chunk_id": 66,
+        "chunk_text": "## Time Management\n\nUsing [[Pomodoro Technique]] to stay focused. Each project gets dedicated time blocks.\n\n",
+        "heading_path": "# Projects > ## Time Management",
+        "note_id": 9,
+        "note_path": "Projects.md",
+        "note_title": "Projects",
+        "score": 0.1296767294406891
+      },
+      {
+        "chunk_id": 67,
+        "chunk_text": "## Reflections\n\nWeekly reviews in [[Daily Notes]] help track progress and adjust course.\n\nBack to [[Home]].\n",
+        "heading_path": "# Projects > ## Reflections",
+        "note_id": 9,
+        "note_path": "Projects.md",
+        "note_title": "Projects",
+        "score": 0.12909944355487823
+      },
+      {
+        "chunk_id": 32,
+        "chunk_text": "## Areas of Interest\n\n- Personal development\n- Software engineering ([[Software Architecture]])\n- Philosophy ([[Stoicism]])\n\nThe [[Zettelkasten Method]] has been particularly useful for connecting ideas.\n\n> \"The only way to do great work is to love what you do.\" - Steve Jobs\n\nSee also: [[Book Notes]], [[Ideas]]\n",
+        "heading_path": "# Home > ## Areas of Interest",
+        "note_id": 4,
+        "note_path": "Home.md",
+        "note_title": "Home",
+        "score": 0.1257343590259552
+      }
+    ],
+    "total": 20
+  },
+  "timestamp": "TIMESTAMP",
+  "version": "1.0"
+}

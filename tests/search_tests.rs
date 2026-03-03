@@ -77,3 +77,28 @@ fn test_search_various_terms() -> Result<()> {
 
     Ok(())
 }
+
+#[test]
+fn test_semantic_search_vault() -> Result<()> {
+    let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
+
+    initialize_database(&config, false, None)?;
+    index_vault(&config, false, false, false, None)?;
+
+    semantic_search_vault(&config, "productive work", 10, None)?;
+    semantic_search_vault(&config, "learning strategies", 10, None)?;
+
+    Ok(())
+}
+
+#[test]
+fn test_semantic_search_empty_query() -> Result<()> {
+    let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
+
+    initialize_database(&config, false, None)?;
+    index_vault(&config, false, false, false, None)?;
+
+    semantic_search_vault(&config, "", 10, None)?;
+
+    Ok(())
+}
