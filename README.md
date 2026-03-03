@@ -108,6 +108,8 @@ The CLI follows a structured command pattern. See [docs/cli-contract.md](docs/cl
 
 For agent integration, use JSON output with deterministic contracts. See [docs/machine-contract.md](docs/machine-contract.md) for full documentation.
 
+> **Testing note:** the Rust integration tests under `tests/machine_contract.rs` are marked `#[ignore]` and are treated as end‑to‑end / contract checks. Running `make test` (or `cargo test`) will skip them by default; use `make -C e2e machine-contract` to execute the full suite (the CI job already does this). This keeps the regular unit test job fast and focused while still providing a clean path for e2e validation.
+
 ## Configuration
 
 The minimum required setting is `vault_path`. Optional settings include database location, exclusions, and defaults. See [config.toml.example](config.toml.example) for a complete list.

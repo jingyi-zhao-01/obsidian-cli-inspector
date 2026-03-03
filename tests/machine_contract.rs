@@ -86,7 +86,13 @@ fn normalize_for_snapshot(mut json: Value) -> Value {
     json
 }
 
+// These tests are considered end-to-end/contract checks and can be
+// expensive (invoke the CLI binary and exercise the full database). They
+// should not run during the normal `cargo test`/`make test` invocation. The
+// `#[ignore]` attribute means they are skipped by default; the e2e Makefile
+// runs them explicitly with `--ignored`.
 #[test]
+#[ignore]
 fn test_machine_contract_init() {
     let config_path = get_test_config_path().to_string_lossy().to_string();
     let args = vec![
@@ -107,6 +113,7 @@ fn test_machine_contract_init() {
 }
 
 #[test]
+#[ignore]
 fn test_machine_contract_index() {
     let config_path = get_test_config_path().to_string_lossy().to_string();
     let args = vec![
@@ -127,6 +134,7 @@ fn test_machine_contract_index() {
 }
 
 #[test]
+#[ignore]
 fn test_machine_contract_search() {
     let config_path = get_test_config_path().to_string_lossy().to_string();
     let args = vec![
@@ -152,6 +160,7 @@ fn test_machine_contract_search() {
 }
 
 #[test]
+#[ignore]
 fn test_machine_contract_backlinks() {
     let config_path = get_test_config_path().to_string_lossy().to_string();
     let args = vec![
@@ -173,6 +182,7 @@ fn test_machine_contract_backlinks() {
 }
 
 #[test]
+#[ignore]
 fn test_machine_contract_links() {
     let config_path = get_test_config_path().to_string_lossy().to_string();
     let args = vec![
@@ -194,6 +204,7 @@ fn test_machine_contract_links() {
 }
 
 #[test]
+#[ignore]
 fn test_machine_contract_unresolved() {
     let config_path = get_test_config_path().to_string_lossy().to_string();
     let args = vec![
@@ -217,6 +228,7 @@ fn test_machine_contract_unresolved() {
 }
 
 #[test]
+#[ignore]
 fn test_machine_contract_tags() {
     let config_path = get_test_config_path().to_string_lossy().to_string();
     let args = vec![
@@ -237,6 +249,7 @@ fn test_machine_contract_tags() {
 }
 
 #[test]
+#[ignore]
 fn test_machine_contract_tags_list() {
     let config_path = get_test_config_path().to_string_lossy().to_string();
     let args = vec![
@@ -258,6 +271,7 @@ fn test_machine_contract_tags_list() {
 }
 
 #[test]
+#[ignore]
 fn test_machine_contract_bloat() {
     let config_path = get_test_config_path().to_string_lossy().to_string();
     let args = vec![
@@ -280,6 +294,7 @@ fn test_machine_contract_bloat() {
 }
 
 #[test]
+#[ignore]
 fn test_machine_contract_related() {
     let config_path = get_test_config_path().to_string_lossy().to_string();
     let args = vec![
@@ -304,6 +319,7 @@ fn test_machine_contract_related() {
 }
 
 #[test]
+#[ignore]
 fn test_machine_contract_orphans() {
     let config_path = get_test_config_path().to_string_lossy().to_string();
     let args = vec![
@@ -322,6 +338,7 @@ fn test_machine_contract_orphans() {
 }
 
 #[test]
+#[ignore]
 fn test_machine_contract_broken_links() {
     let config_path = get_test_config_path().to_string_lossy().to_string();
     let args = vec![
@@ -343,6 +360,7 @@ fn test_machine_contract_broken_links() {
 }
 
 #[test]
+#[ignore]
 fn test_machine_contract_stats() {
     let config_path = get_test_config_path().to_string_lossy().to_string();
     let args = vec![
@@ -369,6 +387,7 @@ fn test_machine_contract_stats() {
 }
 
 #[test]
+#[ignore]
 fn test_machine_contract_describe() {
     let config_path = get_test_config_path().to_string_lossy().to_string();
     let args = vec![

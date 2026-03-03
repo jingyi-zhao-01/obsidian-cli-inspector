@@ -80,7 +80,7 @@ machine-contract: build
 	@cd .. && cargo run -- --config test-config.toml index index --force
 	@echo ""
 	@echo "=== Running machine contract tests ==="
-	@cd .. && cargo test --test machine_contract --all-features -- --test-threads=1
+	@cd .. && cargo test --test machine_contract --all-features -- --ignored --test-threads=1
 
 # Update/generate machine contract snapshots
 # Use when machine contract JSON schema changes
@@ -92,7 +92,7 @@ machine-contract-update: build
 	@cd .. && cargo run -- --config test-config.toml index index --force
 	@echo ""
 	@echo "=== Updating machine contract snapshots ==="
-	@cd .. && INSTA_UPDATE=inline cargo test --test machine_contract --all-features -- --test-threads=1
+	@cd .. && INSTA_UPDATE=inline cargo test --test machine_contract --all-features -- --ignored --test-threads=1
 
 # Helper targets
 build:
