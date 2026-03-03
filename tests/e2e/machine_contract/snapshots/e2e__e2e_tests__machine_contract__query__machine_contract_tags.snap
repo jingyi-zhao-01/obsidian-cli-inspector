@@ -13,8 +13,45 @@ expression: normalize_for_snapshot(output)
     "tag": null
   },
   "result": {
-    "items": [],
-    "total": 0
+    "items": [
+      {
+        "tag": "brainstorming"
+      },
+      {
+        "tag": "creativity"
+      },
+      {
+        "tag": "daily"
+      },
+      {
+        "tag": "engineering"
+      },
+      {
+        "tag": "journal"
+      },
+      {
+        "tag": "learning"
+      },
+      {
+        "tag": "links"
+      },
+      {
+        "tag": "pkm"
+      },
+      {
+        "tag": "productivity"
+      },
+      {
+        "tag": "reading"
+      },
+      {
+        "tag": "software"
+      },
+      {
+        "tag": "testing"
+      }
+    ],
+    "total": 12
   },
   "timestamp": "TIMESTAMP",
   "version": "1.0"

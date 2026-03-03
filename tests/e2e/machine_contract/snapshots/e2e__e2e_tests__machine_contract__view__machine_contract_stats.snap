@@ -10,11 +10,11 @@ expression: normalize_for_snapshot(output)
   },
   "params": {},
   "result": {
-    "chunks": 0,
-    "links": 0,
-    "notes": 0,
-    "tags": 0,
-    "unresolved_links": 0
+    "chunks": 87,
+    "links": 119,
+    "notes": 12,
+    "tags": 12,
+    "unresolved_links": 119
   },
   "timestamp": "TIMESTAMP",
   "version": "1.0"

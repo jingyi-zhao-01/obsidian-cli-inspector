@@ -1,4 +1,4 @@
-.PHONY: test-all init-sanity search-sanity links-sanity tags-sanity contracts contracts-update machine-contract machine-contract-update
+.PHONY: test-all init-sanity search-sanity links-sanity tags-sanity bootstrap-db contracts contracts-update machine-contract machine-contract-update
 
 # =============================================================================
 # E2E Tests - End-to-end CLI tests
@@ -15,25 +15,21 @@
 #   Snapshots: tests/e2e/machine_contract/snapshots/
 # =============================================================================
 
-# Run unified contract tests (JSON + conventional output)
-contracts: build
-	@echo "=== Initializing database for contract tests ==="
+# Bootstrap test database before any e2e tests
+bootstrap-db: build
+	@echo "=== Bootstrapping e2e test database ==="
 	@cd ../.. && cargo run -- --config test-config.toml init init --force
 	@echo ""
-	@echo "=== Indexing vault for contract tests ==="
 	@cd ../.. && cargo run -- --config test-config.toml index index --force
 	@echo ""
+
+# Run unified contract tests (JSON + conventional output)
+contracts: bootstrap-db
 	@echo "=== Running unified contract tests ==="
 	@cd ../.. && cargo test --test e2e machine_contract --all-features -- --ignored --test-threads=1
 
 # Update/generate unified contract snapshots
-contracts-update: build
-	@echo "=== Initializing database for contract snapshot generation ==="
-	@cd ../.. && cargo run -- --config test-config.toml init init --force
-	@echo ""
-	@echo "=== Indexing vault for contract snapshot generation ==="
-	@cd ../.. && cargo run -- --config test-config.toml index index --force
-	@echo ""
+contracts-update: bootstrap-db
 	@echo "=== Updating contract snapshots ==="
 	@cd ../.. && INSTA_UPDATE=always cargo test --test e2e machine_contract --all-features -- --ignored --test-threads=1
 
@@ -41,6 +37,8 @@ contracts-update: build
 machine-contract: contracts
 
 machine-contract-update: contracts-update
+
+test-all: contracts
 
 
 build:

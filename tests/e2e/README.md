@@ -1,25 +1,27 @@
 # E2E Contract Tests
 
-Unified contract validation for JSON output (`--output json`) and conventional CLI output/help text. Tests are marked `#[ignore]` to keep the default unit test suite fast.
+This folder contains end-to-end checks for customer-facing CLI output (text help + JSON output).
 
 ## Tests
 
-- `machine_contract/` - Contract tests for all command groups
-- `machine_contract/snapshots/` - Snapshot files for JSON and help output
+- `machine_contract/` - Test cases
+- `machine_contract/snapshots/` - Expected output snapshots
 
 ## Run
 
 ```bash
-make -C tests/e2e contracts           # Unified contract suite
-make -C tests/e2e machine-contract    # Alias to contracts
+make -C tests/e2e contracts           # Run full e2e contract suite
+make -C tests/e2e machine-contract    # Alias
 
 # Or from root
-cargo test --test e2e machine_contract -- --ignored
+cargo test --test e2e machine_contract --all-features -- --ignored --test-threads=1
 ```
+
+`contracts` automatically initializes and indexes the test database before running tests.
 
 ## Update Snapshots
 
-When you intentionally change CLI help text or JSON output structure:
+When output intentionally changes, update snapshots:
 
 ```bash
 INSTA_UPDATE=always cargo test --test e2e machine_contract -- --ignored --test-threads=1
@@ -28,6 +30,6 @@ INSTA_UPDATE=always cargo test --test e2e machine_contract -- --ignored --test-t
 make contracts-update
 ```
 
-Then commit the updated `machine_contract/snapshots/` files.
+Then commit updated files in `machine_contract/snapshots/`.
 
-the comtracts are in [docs/machine-contract.md](../../docs/machine-contract.md)
+Contract format reference: [docs/machine-contract.md](../../docs/machine-contract.md)

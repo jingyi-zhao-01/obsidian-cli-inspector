@@ -85,3 +85,29 @@ pub fn normalize_for_snapshot(mut json: Value) -> Value {
 
     json
 }
+
+pub fn bootstrap_test_db() {
+    let config_path = get_test_config_path().to_string_lossy().to_string();
+
+    let init_args = vec![
+        "--output",
+        "json",
+        "--config",
+        &config_path,
+        "init",
+        "init",
+        "--force",
+    ];
+    run_command_json(&init_args).expect("Failed to initialize test database");
+
+    let index_args = vec![
+        "--output",
+        "json",
+        "--config",
+        &config_path,
+        "index",
+        "index",
+        "--force",
+    ];
+    run_command_json(&index_args).expect("Failed to index test database");
+}

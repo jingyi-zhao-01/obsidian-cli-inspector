@@ -70,6 +70,18 @@ obsidian-cli-inspector query tags productivity
 obsidian-cli-inspector view stats
 ```
 
+If search returns no results, run indexing again:
+
+```bash
+obsidian-cli-inspector index index --force
+```
+
+Use plain search text as the final argument. Example:
+
+```bash
+obsidian-cli-inspector query search "Notes"
+```
+
 ## Common commands
 
 ```bash
@@ -108,7 +120,13 @@ The CLI follows a structured command pattern. See [docs/cli-contract.md](docs/cl
 
 For agent integration, use JSON output with deterministic contracts. See [docs/machine-contract.md](docs/machine-contract.md) for full documentation.
 
-> **Testing note:** the Rust integration tests under `tests/machine_contract.rs` are marked `#[ignore]` and are treated as end‑to‑end / contract checks. Running `make test` (or `cargo test`) will skip them by default; use `make -C e2e machine-contract` to execute the full suite (the CI job already does this). This keeps the regular unit test job fast and focused while still providing a clean path for e2e validation.
+> **Testing note:** end-to-end contract tests are under `tests/e2e` and are skipped by default during regular `make test` runs. To run them, use:
+>
+> ```bash
+> make -C tests/e2e contracts
+> ```
+>
+> This command automatically prepares test data before running the suite.
 
 ## Configuration
 
