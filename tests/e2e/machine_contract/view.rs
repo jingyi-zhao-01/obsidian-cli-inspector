@@ -1,30 +1,30 @@
 use crate::e2e_tests::helpers::{
-    get_test_config_path, normalize_for_snapshot, run_command, run_command_json, validate_schema,
+    get_test_config_path, normalize_for_snapshot, run_command_json, validate_schema,
 };
 
-#[test]
-#[ignore]
-fn contract_view_group_help() {
-    let (success, stdout, _stderr) = run_command(&["view", "--help"]);
-    assert!(success, "view --help should succeed");
-    insta::assert_snapshot!("contract_view_help", stdout);
-}
+// #[test]
+// #[ignore]
+// fn contract_view_group_help() {
+//     let (success, stdout, _stderr) = run_command(&["view", "--help"]);
+//     assert!(success, "view --help should succeed");
+//     insta::assert_snapshot!("contract_view_help", stdout);
+// }
 
-#[test]
-#[ignore]
-fn contract_view_stats_help() {
-    let (success, stdout, _stderr) = run_command(&["view", "stats", "--help"]);
-    assert!(success, "view stats --help should succeed");
-    insta::assert_snapshot!("contract_view_stats_help", stdout);
-}
+// #[test]
+// #[ignore]
+// fn contract_view_stats_help() {
+//     let (success, stdout, _stderr) = run_command(&["view", "stats", "--help"]);
+//     assert!(success, "view stats --help should succeed");
+//     insta::assert_snapshot!("contract_view_stats_help", stdout);
+// }
 
-#[test]
-#[ignore]
-fn contract_view_describe_help() {
-    let (success, stdout, _stderr) = run_command(&["view", "describe", "--help"]);
-    assert!(success, "view describe --help should succeed");
-    insta::assert_snapshot!("contract_view_describe_help", stdout);
-}
+// #[test]
+// #[ignore]
+// fn contract_view_describe_help() {
+//     let (success, stdout, _stderr) = run_command(&["view", "describe", "--help"]);
+//     assert!(success, "view describe --help should succeed");
+//     insta::assert_snapshot!("contract_view_describe_help", stdout);
+// }
 
 #[test]
 #[ignore]

@@ -1,81 +1,94 @@
-# Machine Contracts
+# Machine Contract
 
-> Available in v1.1.0+
+For agent integration, use JSON mode via `-o json` or `--output json`.
 
-For agent integration, use JSON output with deterministic contracts.
-
-## JSON Output
+## Enable JSON Mode
 
 ```bash
 # Human output (default)
 obsidian-cli-inspector query search rust
 
-# JSON output
-obsidian-cli-inspector --json query search rust
+# JSON mode
 obsidian-cli-inspector -o json query search rust
+obsidian-cli-inspector --output json query search rust
 ```
 
-## JSON Response Schema
+Notes:
+- `--json` is not currently supported.
+- Some commands may print human-readable lines before the JSON payload. The canonical machine payload is the final JSON object written for the command.
 
-All commands return a consistent JSON structure:
+## Response Envelope (Current)
+
+Successful JSON-mode commands produce this envelope:
 
 ```json
 {
   "version": "1.0",
   "command": "query.search",
-  "timestamp": "2026-02-28T20:26:00Z",
+  "timestamp": "2026-03-02T20:26:00Z",
   "params": {
     "query": "rust",
     "limit": 20
   },
   "result": {
-    "total": 5,
-    "items": [...]
+    "total": 0,
+    "items": []
   },
   "meta": {
-    "query_time_ms": 12,
-    "vault_path": "/path/to/vault"
+    "query_time_ms": 1,
+    "vault_path": "./tests/test-vault"
   }
 }
 ```
 
-## Stable Note Identifiers
+Guaranteed envelope fields:
+- `version` is `"1.0"`
+- `command` is the fully-qualified command name (for example, `query.search`)
+- `timestamp` is an RFC 3339 timestamp string
+- `params` is an object
+- `result` is an object
+- `meta.query_time_ms` is numeric
+- `meta.vault_path` is a string
 
-Notes have a persistent UUID (`stable_id`) that survives renames:
+## Result Shape
+
+All `query.*` commands return:
 
 ```json
-{
-  "notes": [
-    {
-      "stable_id": "550e8400-e29b-41d4-a716-446655440000",
-      "path": "folder/note.md",
-      "title": "Note Title"
-    }
-  ]
+"result": {
+  "total": 0,
+  "items": []
 }
 ```
 
-## Exit Codes
+`items` entry shape is command-specific (`query.search`, `query.backlinks`, `query.links`, `query.unresolved`, `query.tags`).
 
-| Code | Meaning |
-|------|---------|
-| 0 | Success |
-| 1 | General error |
-| 2 | Invalid arguments |
-| 3 | Database error |
-| 4 | Vault not found |
-| 5 | Not initialized |
+Non-query commands may use command-specific result objects (for example, `view.stats`).
 
-In JSON mode, errors return structured response:
+## Error Behavior (Current)
+
+Two error paths exist:
+
+1. Argument parsing errors (for example, missing required args)
+   - Exit code: `2`
+   - Output: clap-generated plain text on stderr (not JSON)
+
+2. Runtime command errors after parsing succeeds
+   - Exit code: `1`
+   - JSON-mode output includes:
+
 ```json
 {
   "error": {
-    "code": 2,
-    "message": "Invalid arguments: --limit must be positive"
+    "code": 1,
+    "message": "..."
   }
 }
 ```
 
-## Deterministic Sorting
+## Non-Goals in Current Contract
 
-All lists are sorted by primary field, then by `stable_id` as tie-breaker.
+The following are not currently guaranteed by implementation:
+- Stable per-note `stable_id` in machine responses
+- Deterministic sort tie-breaking by `stable_id`
+- Distinct runtime exit codes beyond `1` and parse-time `2`

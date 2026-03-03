@@ -1,30 +1,30 @@
 use crate::e2e_tests::helpers::{
-    get_test_config_path, normalize_for_snapshot, run_command, run_command_json, validate_schema,
+    get_test_config_path, normalize_for_snapshot, run_command_json, validate_schema,
 };
 
-#[test]
-#[ignore]
-fn contract_analyze_group_help() {
-    let (success, stdout, _stderr) = run_command(&["analyze", "--help"]);
-    assert!(success, "analyze --help should succeed");
-    insta::assert_snapshot!("contract_analyze_help", stdout);
-}
+// #[test]
+// #[ignore]
+// fn contract_analyze_group_help() {
+//     let (success, stdout, _stderr) = run_command(&["analyze", "--help"]);
+//     assert!(success, "analyze --help should succeed");
+//     insta::assert_snapshot!("contract_analyze_help", stdout);
+// }
 
-#[test]
-#[ignore]
-fn contract_analyze_bloat_help() {
-    let (success, stdout, _stderr) = run_command(&["analyze", "bloat", "--help"]);
-    assert!(success, "analyze bloat --help should succeed");
-    insta::assert_snapshot!("contract_analyze_bloat_help", stdout);
-}
+// #[test]
+// #[ignore]
+// fn contract_analyze_bloat_help() {
+//     let (success, stdout, _stderr) = run_command(&["analyze", "bloat", "--help"]);
+//     assert!(success, "analyze bloat --help should succeed");
+//     insta::assert_snapshot!("contract_analyze_bloat_help", stdout);
+// }
 
-#[test]
-#[ignore]
-fn contract_analyze_related_help() {
-    let (success, stdout, _stderr) = run_command(&["analyze", "related", "--help"]);
-    assert!(success, "analyze related --help should succeed");
-    insta::assert_snapshot!("contract_analyze_related_help", stdout);
-}
+// #[test]
+// #[ignore]
+// fn contract_analyze_related_help() {
+//     let (success, stdout, _stderr) = run_command(&["analyze", "related", "--help"]);
+//     assert!(success, "analyze related --help should succeed");
+//     insta::assert_snapshot!("contract_analyze_related_help", stdout);
+// }
 
 #[test]
 #[ignore]

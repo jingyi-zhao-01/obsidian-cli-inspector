@@ -7,10 +7,10 @@ use obsidian_cli_inspector::{
     },
     commands::*,
     config::Config,
-    db::Database,
     logger::Logger,
-    query,
+    machine_contract::ResultDataBuilder,
 };
+use serde_json::Value;
 use std::path::PathBuf;
 use std::time::Instant;
 
@@ -38,6 +38,7 @@ fn main() -> Result<()> {
     };
 
     let start = Instant::now();
+    let mut query_result_override: Option<Value> = None;
     let (metadata, result) = match cli.command {
         // ============================================================================
         // INIT Commands
@@ -96,66 +97,111 @@ fn main() -> Result<()> {
             if let Some(ref log) = logger {
                 let _ = log.log_section("query.search", "Starting Search Command");
             }
-            (
-                CommandMetadata {
-                    name: "query.search".to_string(),
-                    params: serde_json::json!({"query": query, "limit": limit}),
-                },
-                search_vault(&config, &query, limit, logger.as_ref()),
-            )
+            let metadata = CommandMetadata {
+                name: "query.search".to_string(),
+                params: serde_json::json!({"query": query, "limit": limit}),
+            };
+
+            if is_json {
+                query_result_override = Some(ResultDataBuilder::build_query_result_data(
+                    &config,
+                    &metadata.name,
+                    &metadata.params,
+                ));
+                (metadata, Ok(()))
+            } else {
+                (
+                    metadata,
+                    search_vault(&config, &query, limit, logger.as_ref()),
+                )
+            }
         }
         Commands::Query(QueryCommands::Backlinks { note }) => {
             let config = load_config(cli.config)?;
             if let Some(ref log) = logger {
                 let _ = log.log_section("query.backlinks", "Starting Backlinks Command");
             }
-            (
-                CommandMetadata {
-                    name: "query.backlinks".to_string(),
-                    params: serde_json::json!({"note": note}),
-                },
-                get_backlinks(&config, &note, logger.as_ref()),
-            )
+            let metadata = CommandMetadata {
+                name: "query.backlinks".to_string(),
+                params: serde_json::json!({"note": note}),
+            };
+
+            if is_json {
+                query_result_override = Some(ResultDataBuilder::build_query_result_data(
+                    &config,
+                    &metadata.name,
+                    &metadata.params,
+                ));
+                (metadata, Ok(()))
+            } else {
+                (metadata, get_backlinks(&config, &note, logger.as_ref()))
+            }
         }
         Commands::Query(QueryCommands::Links { note }) => {
             let config = load_config(cli.config)?;
             if let Some(ref log) = logger {
                 let _ = log.log_section("query.links", "Starting Links Command");
             }
-            (
-                CommandMetadata {
-                    name: "query.links".to_string(),
-                    params: serde_json::json!({"note": note}),
-                },
-                get_forward_links(&config, &note, logger.as_ref()),
-            )
+            let metadata = CommandMetadata {
+                name: "query.links".to_string(),
+                params: serde_json::json!({"note": note}),
+            };
+
+            if is_json {
+                query_result_override = Some(ResultDataBuilder::build_query_result_data(
+                    &config,
+                    &metadata.name,
+                    &metadata.params,
+                ));
+                (metadata, Ok(()))
+            } else {
+                (metadata, get_forward_links(&config, &note, logger.as_ref()))
+            }
         }
         Commands::Query(QueryCommands::Unresolved) => {
             let config = load_config(cli.config)?;
             if let Some(ref log) = logger {
                 let _ = log.log_section("query.unresolved", "Starting Unresolved Links Command");
             }
-            (
-                CommandMetadata {
-                    name: "query.unresolved".to_string(),
-                    params: serde_json::json!({}),
-                },
-                list_unresolved_links(&config, logger.as_ref()),
-            )
+            let metadata = CommandMetadata {
+                name: "query.unresolved".to_string(),
+                params: serde_json::json!({}),
+            };
+
+            if is_json {
+                query_result_override = Some(ResultDataBuilder::build_query_result_data(
+                    &config,
+                    &metadata.name,
+                    &metadata.params,
+                ));
+                (metadata, Ok(()))
+            } else {
+                (metadata, list_unresolved_links(&config, logger.as_ref()))
+            }
         }
         Commands::Query(QueryCommands::Tags { tag, list }) => {
             let config = load_config(cli.config)?;
             if let Some(ref log) = logger {
                 let _ = log.log_section("query.tags", "Starting Tags Command");
             }
-            // Convert `list` flag to `all` for the underlying function
-            (
-                CommandMetadata {
-                    name: "query.tags".to_string(),
-                    params: serde_json::json!({"tag": tag, "list": list}),
-                },
-                list_notes_by_tag(&config, &tag, list, logger.as_ref()),
-            )
+            let metadata = CommandMetadata {
+                name: "query.tags".to_string(),
+                params: serde_json::json!({"tag": tag, "list": list}),
+            };
+
+            if is_json {
+                query_result_override = Some(ResultDataBuilder::build_query_result_data(
+                    &config,
+                    &metadata.name,
+                    &metadata.params,
+                ));
+                (metadata, Ok(()))
+            } else {
+                (
+                    metadata,
+                    list_notes_by_tag(&config, &tag, list, logger.as_ref()),
+                )
+            }
         }
 
         // ============================================================================
@@ -282,87 +328,16 @@ fn main() -> Result<()> {
             .map(|c| c.vault_path.to_string_lossy().to_string())
             .unwrap_or_default();
 
-        // Build result based on command type
-        let result_data = if metadata.name == "query.search" {
-            // Try to get search results from the database
-            if let Some(ref cfg) = config {
-                let db_path = cfg.database_path();
-                if db_path.exists() {
-                    if let Ok(db) = Database::open(&db_path) {
-                        // Get query parameter from params
-                        let query = metadata
-                            .params
-                            .get("query")
-                            .and_then(|v| v.as_str())
-                            .unwrap_or("productivity");
-                        let limit = metadata
-                            .params
-                            .get("limit")
-                            .and_then(|v| v.as_u64())
-                            .unwrap_or(20) as usize;
-
-                        if let Ok(results) = db
-                            .conn()
-                            .execute_query(|conn| query::search_chunks(conn, query, limit))
-                        {
-                            let items: Vec<serde_json::Value> = results
-                                .iter()
-                                .map(|r| {
-                                    serde_json::json!({
-                                        "chunk_id": r.chunk_id,
-                                        "note_id": r.note_id,
-                                        "note_path": r.note_path,
-                                        "note_title": r.note_title,
-                                        "heading_path": r.heading_path,
-                                        "chunk_text": r.chunk_text,
-                                        "rank": r.rank
-                                    })
-                                })
-                                .collect();
-                            serde_json::json!({
-                                "total": results.len(),
-                                "items": items
-                            })
-                        } else {
-                            serde_json::json!({"status": "success"})
-                        }
-                    } else {
-                        serde_json::json!({"status": "success"})
-                    }
-                } else {
-                    serde_json::json!({"status": "success"})
-                }
-            } else {
-                serde_json::json!({"status": "success"})
-            }
+        let result_data = if let Some(query_result) = query_result_override {
+            query_result
         } else if metadata.name == "view.stats" {
-            // Try to get stats from database
             if let Some(ref cfg) = config {
-                let db_path = cfg.database_path();
-                if db_path.exists() {
-                    if let Ok(db) = Database::open(&db_path) {
-                        if let Ok(stats) = db.get_stats() {
-                            serde_json::json!({
-                                "notes": stats.note_count,
-                                "links": stats.link_count,
-                                "tags": stats.tag_count,
-                                "chunks": stats.chunk_count,
-                                "unresolved_links": stats.unresolved_links
-                            })
-                        } else {
-                            serde_json::json!({"status": "success"})
-                        }
-                    } else {
-                        serde_json::json!({"status": "success"})
-                    }
-                } else {
-                    serde_json::json!({"status": "success"})
-                }
+                ResultDataBuilder::build_view_stats_result_data(cfg)
             } else {
-                serde_json::json!({"status": "success"})
+                serde_json::json!({ "status": "success" })
             }
         } else {
-            serde_json::json!({"status": "success"})
+            serde_json::json!({ "status": "success" })
         };
 
         let response = serde_json::json!({

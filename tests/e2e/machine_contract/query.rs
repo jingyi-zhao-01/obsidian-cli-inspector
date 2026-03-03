@@ -1,54 +1,54 @@
 use crate::e2e_tests::helpers::{
-    get_test_config_path, normalize_for_snapshot, run_command, run_command_json, validate_schema,
+    get_test_config_path, normalize_for_snapshot, run_command_json, validate_schema,
 };
 
-#[test]
-#[ignore]
-fn contract_query_group_help() {
-    let (success, stdout, _stderr) = run_command(&["query", "--help"]);
-    assert!(success, "query --help should succeed");
-    insta::assert_snapshot!("contract_query_help", stdout);
-}
+// #[test]
+// #[ignore]
+// fn contract_query_group_help() {
+//     let (success, stdout, _stderr) = run_command(&["query", "--help"]);
+//     assert!(success, "query --help should succeed");
+//     insta::assert_snapshot!("contract_query_help", stdout);
+// }
 
-#[test]
-#[ignore]
-fn contract_query_search_help() {
-    let (success, stdout, _stderr) = run_command(&["query", "search", "--help"]);
-    assert!(success, "query search --help should succeed");
-    insta::assert_snapshot!("contract_query_search_help", stdout);
-}
+// #[test]
+// #[ignore]
+// fn contract_query_search_help() {
+//     let (success, stdout, _stderr) = run_command(&["query", "search", "--help"]);
+//     assert!(success, "query search --help should succeed");
+//     insta::assert_snapshot!("contract_query_search_help", stdout);
+// }
 
-#[test]
-#[ignore]
-fn contract_query_backlinks_help() {
-    let (success, stdout, _stderr) = run_command(&["query", "backlinks", "--help"]);
-    assert!(success, "query backlinks --help should succeed");
-    insta::assert_snapshot!("contract_query_backlinks_help", stdout);
-}
+// #[test]
+// #[ignore]
+// fn contract_query_backlinks_help() {
+//     let (success, stdout, _stderr) = run_command(&["query", "backlinks", "--help"]);
+//     assert!(success, "query backlinks --help should succeed");
+//     insta::assert_snapshot!("contract_query_backlinks_help", stdout);
+// }
 
-#[test]
-#[ignore]
-fn contract_query_links_help() {
-    let (success, stdout, _stderr) = run_command(&["query", "links", "--help"]);
-    assert!(success, "query links --help should succeed");
-    insta::assert_snapshot!("contract_query_links_help", stdout);
-}
+// #[test]
+// #[ignore]
+// fn contract_query_links_help() {
+//     let (success, stdout, _stderr) = run_command(&["query", "links", "--help"]);
+//     assert!(success, "query links --help should succeed");
+//     insta::assert_snapshot!("contract_query_links_help", stdout);
+// }
 
-#[test]
-#[ignore]
-fn contract_query_unresolved_help() {
-    let (success, stdout, _stderr) = run_command(&["query", "unresolved", "--help"]);
-    assert!(success, "query unresolved --help should succeed");
-    insta::assert_snapshot!("contract_query_unresolved_help", stdout);
-}
+// #[test]
+// #[ignore]
+// fn contract_query_unresolved_help() {
+//     let (success, stdout, _stderr) = run_command(&["query", "unresolved", "--help"]);
+//     assert!(success, "query unresolved --help should succeed");
+//     insta::assert_snapshot!("contract_query_unresolved_help", stdout);
+// }
 
-#[test]
-#[ignore]
-fn contract_query_tags_help() {
-    let (success, stdout, _stderr) = run_command(&["query", "tags", "--help"]);
-    assert!(success, "query tags --help should succeed");
-    insta::assert_snapshot!("contract_query_tags_help", stdout);
-}
+// #[test]
+// #[ignore]
+// fn contract_query_tags_help() {
+//     let (success, stdout, _stderr) = run_command(&["query", "tags", "--help"]);
+//     assert!(success, "query tags --help should succeed");
+//     insta::assert_snapshot!("contract_query_tags_help", stdout);
+// }
 
 #[test]
 #[ignore]

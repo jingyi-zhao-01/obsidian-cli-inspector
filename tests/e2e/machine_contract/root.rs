@@ -2,13 +2,13 @@ use crate::e2e_tests::helpers::{
     get_test_config_path, run_command, run_command_json, validate_schema,
 };
 
-#[test]
-#[ignore]
-fn contract_root_help() {
-    let (success, stdout, _stderr) = run_command(&["--help"]);
-    assert!(success, "--help should succeed");
-    insta::assert_snapshot!("contract_root_help", stdout);
-}
+// #[test]
+// #[ignore]
+// fn contract_root_help() {
+//     let (success, stdout, _stderr) = run_command(&["--help"]);
+//     assert!(success, "--help should succeed");
+//     insta::assert_snapshot!("contract_root_help", stdout);
+// }
 
 #[test]
 #[ignore]

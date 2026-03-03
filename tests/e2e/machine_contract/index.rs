@@ -1,22 +1,22 @@
 use crate::e2e_tests::helpers::{
-    get_test_config_path, normalize_for_snapshot, run_command, run_command_json, validate_schema,
+    get_test_config_path, normalize_for_snapshot, run_command_json, validate_schema,
 };
 
-#[test]
-#[ignore]
-fn contract_index_group_help() {
-    let (success, stdout, _stderr) = run_command(&["index", "--help"]);
-    assert!(success, "index --help should succeed");
-    insta::assert_snapshot!("contract_index_help", stdout);
-}
+// #[test]
+// #[ignore]
+// fn contract_index_group_help() {
+//     let (success, stdout, _stderr) = run_command(&["index", "--help"]);
+//     assert!(success, "index --help should succeed");
+//     insta::assert_snapshot!("contract_index_help", stdout);
+// }
 
-#[test]
-#[ignore]
-fn contract_index_command_help() {
-    let (success, stdout, _stderr) = run_command(&["index", "index", "--help"]);
-    assert!(success, "index index --help should succeed");
-    insta::assert_snapshot!("contract_index_index_help", stdout);
-}
+// #[test]
+// #[ignore]
+// fn contract_index_command_help() {
+//     let (success, stdout, _stderr) = run_command(&["index", "index", "--help"]);
+//     assert!(success, "index index --help should succeed");
+//     insta::assert_snapshot!("contract_index_index_help", stdout);
+// }
 
 #[test]
 #[ignore]

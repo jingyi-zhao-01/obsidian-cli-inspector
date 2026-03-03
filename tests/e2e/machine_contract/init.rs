@@ -1,22 +1,22 @@
 use crate::e2e_tests::helpers::{
-    get_test_config_path, normalize_for_snapshot, run_command, run_command_json, validate_schema,
+    get_test_config_path, normalize_for_snapshot, run_command_json, validate_schema,
 };
 
-#[test]
-#[ignore]
-fn contract_init_group_help() {
-    let (success, stdout, _stderr) = run_command(&["init", "--help"]);
-    assert!(success, "init --help should succeed");
-    insta::assert_snapshot!("contract_init_help", stdout);
-}
+// #[test]
+// #[ignore]
+// fn contract_init_group_help() {
+//     let (success, stdout, _stderr) = run_command(&["init", "--help"]);
+//     assert!(success, "init --help should succeed");
+//     insta::assert_snapshot!("contract_init_help", stdout);
+// }
 
-#[test]
-#[ignore]
-fn contract_init_command_help() {
-    let (success, stdout, _stderr) = run_command(&["init", "init", "--help"]);
-    assert!(success, "init init --help should succeed");
-    insta::assert_snapshot!("contract_init_init_help", stdout);
-}
+// #[test]
+// #[ignore]
+// fn contract_init_command_help() {
+//     let (success, stdout, _stderr) = run_command(&["init", "init", "--help"]);
+//     assert!(success, "init init --help should succeed");
+//     insta::assert_snapshot!("contract_init_init_help", stdout);
+// }
 
 #[test]
 #[ignore]

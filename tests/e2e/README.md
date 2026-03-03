@@ -29,3 +29,5 @@ make contracts-update
 ```
 
 Then commit the updated `machine_contract/snapshots/` files.
+
+the comtracts are in [docs/machine-contract.md](../../docs/machine-contract.md)
