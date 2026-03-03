@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/jingyi-zhao-01/obsidian-cli-inspector/compare/v0.2.2...v0.3.0) (2026-03-03)
+
+
+### Features
+
+* add release workflow and configuration for master and staging branches ([f7fe8f9](https://github.com/jingyi-zhao-01/obsidian-cli-inspector/commit/f7fe8f98427d4553ede9ce1e7cad3f15ff7a6174))
+
 ## [0.2.2](https://github.com/jingyi-zhao-01/obsidian-cli-inspector/compare/v0.2.1...v0.2.2) (2026-03-01)
 
 
