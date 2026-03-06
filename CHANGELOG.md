@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0-alpha](https://github.com/jingyi-zhao-01/obsidian-cli-inspector/compare/obsidian-cli-inspector-v1.0.0...obsidian-cli-inspector-v1.1.0-alpha) (2026-03-06)
+
+
+### Features
+
+* add versioning configuration for prerelease in release-please config ([bd995ce](https://github.com/jingyi-zhao-01/obsidian-cli-inspector/commit/bd995ce563b9fb87694b3a81f994ac09c2e0edd3))
+
 ## [1.0.0](https://github.com/jingyi-zhao-01/obsidian-cli-inspector/compare/obsidian-cli-inspector-v0.2.2...obsidian-cli-inspector-v1.0.0) (2026-03-06)
 
 
