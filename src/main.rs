@@ -116,6 +116,30 @@ fn main() -> Result<()> {
                 )
             }
         }
+        Commands::Query(QueryCommands::Semantic { query, limit }) => {
+            let config = load_config(cli.config)?;
+            if let Some(ref log) = logger {
+                let _ = log.log_section("query.semantic", "Starting Semantic Search Command");
+            }
+            let metadata = CommandMetadata {
+                name: "query.semantic".to_string(),
+                params: serde_json::json!({"query": query, "limit": limit}),
+            };
+
+            if is_json {
+                query_result_override = Some(ResultDataBuilder::build_query_result_data(
+                    &config,
+                    &metadata.name,
+                    &metadata.params,
+                ));
+                (metadata, Ok(()))
+            } else {
+                (
+                    metadata,
+                    semantic_search_vault(&config, &query, limit, logger.as_ref()),
+                )
+            }
+        }
         Commands::Query(QueryCommands::Backlinks { note }) => {
             let config = load_config(cli.config)?;
             if let Some(ref log) = logger {

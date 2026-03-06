@@ -167,6 +167,16 @@ pub enum QueryCommands {
         limit: usize,
     },
 
+    /// Search notes using semantic-style matching over SQLite FTS
+    Semantic {
+        /// Semantic search query
+        query: String,
+
+        /// Maximum number of results
+        #[arg(short, long, default_value = "20")]
+        limit: usize,
+    },
+
     /// List backlinks to a note
     Backlinks {
         /// Note path or title

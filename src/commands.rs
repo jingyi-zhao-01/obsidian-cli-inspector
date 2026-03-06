@@ -4,6 +4,7 @@ pub mod init;
 pub mod query_backlinks;
 pub mod query_links;
 pub mod query_search;
+pub mod query_semantic;
 pub mod query_tags;
 pub mod query_unresolved;
 
@@ -24,6 +25,7 @@ pub use init::initialize_database;
 pub use query_backlinks::get_backlinks;
 pub use query_links::get_forward_links;
 pub use query_search::search_vault;
+pub use query_semantic::semantic_search_vault;
 pub use query_tags::list_notes_by_tag;
 pub use query_unresolved::list_unresolved_links;
 
