@@ -3,7 +3,5 @@
   "release-type": "rust",
   "packages": {
     ".": {}
-  },
-  "prerelease": true,
-  "prerelease-type": "alpha"
+  }
 }

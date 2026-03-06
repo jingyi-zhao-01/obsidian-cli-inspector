@@ -25,12 +25,21 @@ jobs:
       tag_name: ${{ steps.release.outputs.tag_name }}
 
     steps:
+      - name: Determine config file
+        id: config
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/alpha" ]]; then
+            echo "config_file=.release-please-config.json" >> $GITHUB_OUTPUT
+          else
+            echo "config_file=.release-please-config-master.json" >> $GITHUB_OUTPUT
+          fi
+
       - name: Run release-please
         id: release
         uses: googleapis/release-please-action@v4
         with:
-          token : ${{ secrets.RELEASE_TOKEN }}
-          config-file: .release-please-config.json
+          token: ${{ secrets.RELEASE_TOKEN }}
+          config-file: ${{ steps.config.outputs.config_file }}
           manifest-file: .release-please-manifest.json
 
   crate-publish:
