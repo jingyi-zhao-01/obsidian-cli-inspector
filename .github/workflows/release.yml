@@ -25,10 +25,12 @@ jobs:
       tag_name: ${{ steps.release.outputs.tag_name }}
 
     steps:
-      - name: Determine config file
+      - name: Determine config file and target branch
         id: config
         run: |
-          if [[ "${{ github.ref }}" == "refs/heads/alpha" ]]; then
+          BRANCH="${GITHUB_REF#refs/heads/}"
+          echo "target_branch=$BRANCH" >> $GITHUB_OUTPUT
+          if [[ "$BRANCH" == "alpha" ]]; then
             echo "config_file=.release-please-config.json" >> $GITHUB_OUTPUT
           else
             echo "config_file=.release-please-config-master.json" >> $GITHUB_OUTPUT
@@ -41,6 +43,7 @@ jobs:
           token: ${{ secrets.RELEASE_TOKEN }}
           config-file: ${{ steps.config.outputs.config_file }}
           manifest-file: .release-please-manifest.json
+          target-branch: ${{ steps.config.outputs.target_branch }}
 
   crate-publish:
     name: Publish to crates.io
