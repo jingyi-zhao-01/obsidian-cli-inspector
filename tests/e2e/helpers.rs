@@ -31,18 +31,32 @@ pub fn run_command_json(args: &[&str]) -> Result<Value, String> {
     }
 
     let stdout = String::from_utf8_lossy(&output.stdout);
+    parse_json_output(&stdout)
+}
+
+fn parse_json_output(stdout: &str) -> Result<Value, String> {
+    // Find the first line that starts with '{' and parse from there
+    // This handles pretty-printed JSON that may be preceded by non-JSON output
     let lines: Vec<&str> = stdout.lines().collect();
-    if let Some(last_line) = lines.last() {
-        if last_line.trim_start().starts_with('{') {
-            return serde_json::from_str(last_line)
+    for (i, line) in lines.iter().enumerate() {
+        let trimmed = line.trim_start();
+        if trimmed.starts_with('{') {
+            // Join all lines from this point to reconstruct the JSON
+            let json_str = lines[i..].join("\n");
+            return serde_json::from_str(&json_str)
                 .map_err(|e| format!("Failed to parse JSON: {e:?}"));
         }
+    }
 
-        if let Some(json_end) = last_line.rfind('}') {
-            if let Some(json_start) = last_line[..=json_end].rfind('{') {
-                let json_str = &last_line[json_start..=json_end];
-                return serde_json::from_str(json_str)
-                    .map_err(|e| format!("Failed to parse JSON: {e:?}"));
+    // Fallback: try to find JSON within a line (for compact JSON embedded in other text)
+    for line in &lines {
+        if let Some(json_start) = line.find('{') {
+            if let Some(json_end) = line.rfind('}') {
+                if json_start < json_end {
+                    let json_str = &line[json_start..=json_end];
+                    return serde_json::from_str(json_str)
+                        .map_err(|e| format!("Failed to parse JSON: {e:?}"));
+                }
             }
         }
     }
@@ -109,4 +123,55 @@ pub fn bootstrap_test_db() {
         "--force",
     ];
     run_command_json(&index_args).expect("Failed to index test database");
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{parse_json_output, run_command_json};
+
+    #[test]
+    fn parse_json_output_pretty_with_prefix() {
+        let stdout = "Starting...\n  {\n    \"command\": \"query.search\",\n    \"result\": {\"status\": \"ok\"}\n  }\n";
+        let parsed = parse_json_output(stdout).expect("should parse pretty JSON");
+        assert_eq!(parsed["command"], "query.search");
+        assert_eq!(parsed["result"]["status"], "ok");
+    }
+
+    #[test]
+    fn parse_json_output_inline_json() {
+        let stdout = "log: {\"command\":\"view.stats\",\"result\":{\"status\":\"ok\"}}";
+        let parsed = parse_json_output(stdout).expect("should parse inline JSON");
+        assert_eq!(parsed["command"], "view.stats");
+    }
+
+    #[test]
+    fn parse_json_output_returns_error_when_missing() {
+        let error = parse_json_output("no json here").expect_err("should fail without JSON");
+        assert!(error.contains("No valid JSON"));
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn run_command_json_parses_stub_binary_output() {
+        use std::fs;
+        use std::os::unix::fs::PermissionsExt;
+
+        let bin_dir = std::path::Path::new("target/debug");
+        fs::create_dir_all(bin_dir).expect("failed to create binary directory");
+
+        let bin_path = bin_dir.join("obsidian-cli-inspector");
+        let script = "#!/bin/sh\necho '{\"command\":\"stub\",\"result\":{\"status\":\"ok\"}}'\n";
+        fs::write(&bin_path, script).expect("failed to write stub binary");
+
+        let mut perms = fs::metadata(&bin_path)
+            .expect("failed to read stub metadata")
+            .permissions();
+        perms.set_mode(0o755);
+        fs::set_permissions(&bin_path, perms).expect("failed to set stub permissions");
+
+        let parsed = run_command_json(&[]).expect("should parse stub output");
+        assert_eq!(parsed["command"], "stub");
+
+        let _ = fs::remove_file(&bin_path);
+    }
 }

@@ -353,7 +353,10 @@ fn main() -> Result<()> {
 
         match result {
             Ok(_) => {
-                println!("{}", serde_json::to_string(&response).unwrap_or_default());
+                println!(
+                    "{}",
+                    serde_json::to_string_pretty(&response).unwrap_or_default()
+                );
             }
             Err(e) => {
                 let error = serde_json::json!({
@@ -362,7 +365,10 @@ fn main() -> Result<()> {
                         "message": e.to_string()
                     }
                 });
-                eprintln!("{}", serde_json::to_string(&error).unwrap_or_default());
+                eprintln!(
+                    "{}",
+                    serde_json::to_string_pretty(&error).unwrap_or_default()
+                );
                 std::process::exit(1);
             }
         }
