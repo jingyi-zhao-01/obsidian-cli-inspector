@@ -46,7 +46,8 @@ generate-srcinfo-git:
 	    useradd -m builder && \
 	    find /pkg -not -path '*/.git*' -exec chown builder:builder {} \; && \
 	    git config --global --add safe.directory /pkg && \
-	    su builder -s /bin/bash -c 'cd /pkg && makepkg --printsrcinfo'\
+	    git config --global --add safe.directory /pkg/.git && \
+	    su builder -s /bin/bash -c 'git config --global --add safe.directory /pkg && git config --global --add safe.directory /pkg/.git && cd /pkg && makepkg --printsrcinfo'\
 	  " > .SRCINFO; \
 	else \
 	  echo "ERROR: makepkg not found and Docker unavailable."; \
