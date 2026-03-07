@@ -1,5 +1,6 @@
 use crate::e2e_tests::helpers::{
-    get_test_config_path, normalize_for_snapshot, run_command_json, validate_schema,
+    bootstrap_test_db, get_test_config_path, normalize_for_snapshot, run_command_json,
+    validate_schema,
 };
 
 // #[test]
@@ -29,6 +30,8 @@ use crate::e2e_tests::helpers::{
 #[test]
 #[ignore]
 fn machine_contract_stats() {
+    bootstrap_test_db();
+
     let config_path = get_test_config_path().to_string_lossy().to_string();
     let args = vec![
         "--output",

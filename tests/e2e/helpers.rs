@@ -31,18 +31,29 @@ pub fn run_command_json(args: &[&str]) -> Result<Value, String> {
     }
 
     let stdout = String::from_utf8_lossy(&output.stdout);
+
+    // Find the first line that starts with '{' and parse from there
+    // This handles pretty-printed JSON that may be preceded by non-JSON output
     let lines: Vec<&str> = stdout.lines().collect();
-    if let Some(last_line) = lines.last() {
-        if last_line.trim_start().starts_with('{') {
-            return serde_json::from_str(last_line)
+    for (i, line) in lines.iter().enumerate() {
+        let trimmed = line.trim_start();
+        if trimmed.starts_with('{') {
+            // Join all lines from this point to reconstruct the JSON
+            let json_str = lines[i..].join("\n");
+            return serde_json::from_str(&json_str)
                 .map_err(|e| format!("Failed to parse JSON: {e:?}"));
         }
+    }
 
-        if let Some(json_end) = last_line.rfind('}') {
-            if let Some(json_start) = last_line[..=json_end].rfind('{') {
-                let json_str = &last_line[json_start..=json_end];
-                return serde_json::from_str(json_str)
-                    .map_err(|e| format!("Failed to parse JSON: {e:?}"));
+    // Fallback: try to find JSON within a line (for compact JSON embedded in other text)
+    for line in &lines {
+        if let Some(json_start) = line.find('{') {
+            if let Some(json_end) = line.rfind('}') {
+                if json_start < json_end {
+                    let json_str = &line[json_start..=json_end];
+                    return serde_json::from_str(json_str)
+                        .map_err(|e| format!("Failed to parse JSON: {e:?}"));
+                }
             }
         }
     }
