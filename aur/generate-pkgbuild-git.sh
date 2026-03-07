@@ -11,7 +11,7 @@ build_pkgbuild_git() {
 
     printf '%s\n' \
         "pkgname=${pkgname}-git" \
-        'pkgver=$(git describe --long --tags | sed "s/^v//;s/-/.r/;s/-/.g/")' \
+        "pkgver=0" \
         "pkgrel=1" \
         'pkgdesc="Local-first CLI/TUI for indexing and querying Obsidian vaults (unstable git version)"' \
         "arch=('x86_64')" \

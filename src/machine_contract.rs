@@ -115,10 +115,10 @@ impl ResultDataBuilder {
                 Ok(Self::query_result(items))
             }
             "search.unresolved" => {
-                let results = match db.conn().execute_query(query::get_unresolved_links) {
-                    Ok(results) => results,
-                    Err(_) => return Self::empty_query_result(),
-                };
+                let results = db
+                    .conn()
+                    .execute_query(query::get_unresolved_links)
+                    .context("Failed to get unresolved links")?;
 
                 let items = results
                     .iter()
@@ -249,7 +249,15 @@ mod tests {
 
         let params = serde_json::json!({});
         let result = ResultDataBuilder::build_query_result_data(&config, "search.notes", &params);
-        assert_eq!(result.get("total").unwrap(), 0);
+        assert!(
+            result.is_err(),
+            "Should return error when database doesn't exist"
+        );
+        let err_msg = result.unwrap_err().to_string();
+        assert!(
+            err_msg.contains("Database not found"),
+            "Error should mention database not found"
+        );
     }
 
     #[test]
