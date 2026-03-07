@@ -8,6 +8,7 @@
 [![Crates.io](https://img.shields.io/crates/v/obsidian-cli-inspector.svg)](https://crates.io/crates/obsidian-cli-inspector)
 [![AUR stable version](https://img.shields.io/aur/version/obsidian-cli-inspector?logo=arch-linux)](https://aur.archlinux.org/packages/obsidian-cli-inspector)
 [![AUR unstable version](https://img.shields.io/aur/version/obsidian-cli-inspector-git?logo=arch-linux)](https://aur.archlinux.org/packages/obsidian-cli-inspector-git)
+[![AUR git version](https://img.shields.io/aur/version/obsidian-cli-inspector?logo=arch-linux)](https://aur.archlinux.org/packages/obsidian-cli-inspector-git)
 [![AUR maintainer](https://img.shields.io/aur/maintainer/obsidian-cli-inspector?logo=arch-linux)](https://aur.archlinux.org/packages/obsidian-cli-inspector)
 [![codecov](https://codecov.io/gh/jingyi-zhao-01/obsidian-cli-inspector/branch/master/graph/badge.svg?token=4C0B7CEC8C)](https://codecov.io/gh/jingyi-zhao-01/obsidian-cli-inspector)
 
