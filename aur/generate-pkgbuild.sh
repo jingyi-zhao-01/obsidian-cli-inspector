@@ -21,7 +21,7 @@ build_pkgbuild() {
         "license=('Apache-2.0')" \
         "depends=('sqlite')" \
         "makedepends=('cargo' 'gcc' 'pkgconf')" \
-        "options=('!lto')" \
+        "options=('!lto' '!debug')" \
         "source=(\"\${pkgname}-\${pkgver}.tar.gz::https://github.com/${repo_owner}/${repo_name}/archive/refs/tags/v\${pkgver}.tar.gz\")" \
         "sha256sums=(\"${sha256}\")" \
         '' \
