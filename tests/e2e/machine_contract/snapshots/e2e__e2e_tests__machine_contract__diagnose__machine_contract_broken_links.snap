@@ -12,6 +12,5 @@ expression: normalize_for_snapshot(output)
   "result": {
     "status": "success"
   },
-  "timestamp": "TIMESTAMP",
-  "version": "1.0"
+  "timestamp": "TIMESTAMP"
 }

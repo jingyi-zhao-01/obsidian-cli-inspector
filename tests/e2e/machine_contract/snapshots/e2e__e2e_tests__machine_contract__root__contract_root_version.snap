@@ -1,5 +1,0 @@
----
-source: tests/e2e/machine_contract/root.rs
-expression: stdout
----
-obsidian-cli-inspector 0.2.2

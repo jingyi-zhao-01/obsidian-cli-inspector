@@ -15,6 +15,5 @@ expression: normalize_for_snapshot(output)
     "items": [],
     "total": 0
   },
-  "timestamp": "TIMESTAMP",
-  "version": "1.0"
+  "timestamp": "TIMESTAMP"
 }

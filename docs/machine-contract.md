@@ -23,7 +23,6 @@ Successful JSON-mode commands produce this envelope:
 
 ```json
 {
-  "version": "1.0",
   "command": "query.search",
   "timestamp": "2026-03-02T20:26:00Z",
   "params": {
@@ -42,7 +41,6 @@ Successful JSON-mode commands produce this envelope:
 ```
 
 Guaranteed envelope fields:
-- `version` is `"1.0"`
 - `command` is the fully-qualified command name (for example, `query.search`)
 - `timestamp` is an RFC 3339 timestamp string
 - `params` is an object

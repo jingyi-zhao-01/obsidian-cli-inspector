@@ -12,14 +12,6 @@ use crate::e2e_tests::helpers::{
 
 #[test]
 #[ignore]
-fn contract_version_flag() {
-    let (success, stdout, _stderr) = run_command(&["--version"]);
-    assert!(success, "--version should succeed");
-    insta::assert_snapshot!("contract_root_version", stdout);
-}
-
-#[test]
-#[ignore]
 fn contract_invalid_command() {
     let (success, _stdout, stderr) = run_command(&["invalid-command"]);
     assert!(!success, "Invalid command should fail");
