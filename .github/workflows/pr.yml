@@ -169,8 +169,17 @@ jobs:
       - name: Verify crate can be published
         run: cargo publish --dry-run --locked
 
-  aur-dry-run:
+  aur-publish-dry-run:
     name: AUR Build
     needs: [coverage]
     if: github.event.pull_request.draft == false && !contains(github.event.pull_request.labels.*.name, 'autorelease:pending')
     uses: ./.github/workflows/aur-build.yml
+
+  aur-unstable-git-dry-run:
+    name: AUR Unstable Git Build (Dry Run)
+    needs: [coverage]
+    if: github.event.pull_request.draft == false && !contains(github.event.pull_request.labels.*.name, 'autorelease:pending')
+    uses: ./.github/workflows/aur-unstable-git-build.yml
+    with:
+      ref: ${{ github.head_ref }}
+      publish: false

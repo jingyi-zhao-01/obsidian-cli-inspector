@@ -1,0 +1,101 @@
+name: AUR Unstable Git Build
+
+on:
+  workflow_call:
+    inputs:
+      ref:
+        description: 'Git ref to checkout (branch, tag, or SHA)'
+        required: false
+        type: string
+        default: 'master'
+      publish:
+        description: 'Whether to publish to AUR after building'
+        required: false
+        type: boolean
+        default: false
+      commit_message:
+        description: 'Custom commit message for AUR (if publishing)'
+        required: false
+        type: string
+        default: 'Update unstable git version'
+
+jobs:
+  aur-unstable-git-build:
+    name: Build AUR Unstable Git Package
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      # ----------------------------------------------------------------
+      # 1) Checkout
+      # ----------------------------------------------------------------
+      - name: Checkout ref
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+          fetch-depth: 0
+
+      # ----------------------------------------------------------------
+      # 2) Generate PKGBUILD for git variant
+      # ----------------------------------------------------------------
+      - name: Generate PKGBUILD for git variant
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd aur
+          chmod +x generate-pkgbuild-git.sh
+          make -f Makefile.git all
+
+      # ----------------------------------------------------------------
+      # 3) Verify artifacts
+      # ----------------------------------------------------------------
+      - name: Verify artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f aur/PKGBUILD || (echo "PKGBUILD missing" && exit 1)
+          test -f aur/.SRCINFO || (echo ".SRCINFO missing" && exit 1)
+
+      # ----------------------------------------------------------------
+      # 4) PKGBUILD syntax check
+      # ----------------------------------------------------------------
+      - name: PKGBUILD syntax check
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker run --rm \
+            -v "${GITHUB_WORKSPACE}:/work" \
+            -w /work/aur \
+            archlinux:latest bash -lc '
+              set -euo pipefail
+              pacman -Sy --noconfirm --needed base-devel cargo git >/dev/null
+              useradd -m builder
+              chown -R builder:builder /work
+              su builder -s /bin/bash -c "cd /work/aur && makepkg --check"
+            '
+
+      # ----------------------------------------------------------------
+      # 5) Upload artifacts for use in publish job
+      # ----------------------------------------------------------------
+      - name: Upload PKGBUILD artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: aur-unstable-git-package
+          path: aur/
+          retention-days: 1
+
+      # ----------------------------------------------------------------
+      # 6) Publish to AUR (if enabled)
+      # ----------------------------------------------------------------
+      - name: Publish to AUR (-git)
+        if: ${{ inputs.publish == true }}
+        uses: KSXGitHub/github-actions-deploy-aur@v2.3.0
+        with:
+          pkgname: obsidian-cli-inspector-git
+          pkgbuild: ./aur/PKGBUILD
+          commit_username: ${{ secrets.AUR_USERNAME }}
+          commit_email: ${{ secrets.AUR_EMAIL }}
+          ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
+          commit_message: ${{ inputs.commit_message }}
+          ssh_keyscan_types: rsa,ecdsa,ed25519
