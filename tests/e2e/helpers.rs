@@ -131,9 +131,9 @@ mod tests {
 
     #[test]
     fn parse_json_output_pretty_with_prefix() {
-        let stdout = "Starting...\n  {\n    \"command\": \"query.search\",\n    \"result\": {\"status\": \"ok\"}\n  }\n";
+        let stdout = "Starting...\n  {\n    \"command\": \"search.notes\",\n    \"result\": {\"status\": \"ok\"}\n  }\n";
         let parsed = parse_json_output(stdout).expect("should parse pretty JSON");
-        assert_eq!(parsed["command"], "query.search");
+        assert_eq!(parsed["command"], "search.notes");
         assert_eq!(parsed["result"]["status"], "ok");
     }
 

@@ -21,7 +21,7 @@ fn contract_invalid_command() {
 #[test]
 #[ignore]
 fn contract_missing_required_arg() {
-    let (success, _stdout, _stderr) = run_command(&["query", "search"]);
+    let (success, _stdout, _stderr) = run_command(&["search", "notes"]);
     assert!(!success, "search without query should fail");
 }
 
@@ -49,13 +49,13 @@ fn contract_json_output_mode() {
         "json",
         "--config",
         &config_path,
-        "query",
         "search",
+        "notes",
         "test",
     ];
 
-    let output = run_command_json(&args).expect("query search with JSON output should succeed");
-    validate_schema(&output, "query.search");
+    let output = run_command_json(&args).expect("search notes with JSON output should succeed");
+    validate_schema(&output, "search.notes");
 }
 
 #[test]
