@@ -16,6 +16,5 @@ expression: normalize_for_snapshot(output)
     "tags": 12,
     "unresolved_links": 119
   },
-  "timestamp": "TIMESTAMP",
-  "version": "1.0"
+  "timestamp": "TIMESTAMP"
 }
