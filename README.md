@@ -65,9 +65,9 @@ obsidian-cli-inspector index index
 3) Explore your notes:
 
 ```bash
-obsidian-cli-inspector query search "your query"
-obsidian-cli-inspector query backlinks "Note Name"
-obsidian-cli-inspector query tags productivity
+obsidian-cli-inspector search notes "your query"
+obsidian-cli-inspector search backlinks "Note Name"
+obsidian-cli-inspector search tags productivity
 obsidian-cli-inspector view stats
 ```
 
@@ -80,7 +80,7 @@ obsidian-cli-inspector index index --force
 Use plain search text as the final argument. Example:
 
 ```bash
-obsidian-cli-inspector query search "Notes"
+obsidian-cli-inspector search notes "Notes"
 ```
 
 ## Common commands
@@ -90,12 +90,12 @@ obsidian-cli-inspector query search "Notes"
 obsidian-cli-inspector init init [--force]
 obsidian-cli-inspector index index [--dry-run] [--force] [--verbose]
 
-# Query
-obsidian-cli-inspector query search "query" [--limit 20]
-obsidian-cli-inspector query backlinks "Note Name"
-obsidian-cli-inspector query links "Note Name"
-obsidian-cli-inspector query unresolved
-obsidian-cli-inspector query tags [tag-name] [--list]
+# Search
+obsidian-cli-inspector search notes "query" [--limit 20]
+obsidian-cli-inspector search backlinks "Note Name"
+obsidian-cli-inspector search links "Note Name"
+obsidian-cli-inspector search unresolved
+obsidian-cli-inspector search tags [tag-name] [--list]
 
 # Analyze
 obsidian-cli-inspector analyze related "Note Name" [--limit 10]

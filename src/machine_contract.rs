@@ -24,7 +24,7 @@ impl ResultDataBuilder {
         };
 
         match command {
-            "query.search" => {
+            "search.notes" => {
                 let query = params.get("query").and_then(|v| v.as_str()).unwrap_or("");
                 let limit = params.get("limit").and_then(|v| v.as_u64()).unwrap_or(20) as usize;
 
@@ -53,7 +53,7 @@ impl ResultDataBuilder {
 
                 Self::query_result(items)
             }
-            "query.backlinks" => {
+            "search.backlinks" => {
                 let note = params.get("note").and_then(|v| v.as_str()).unwrap_or("");
 
                 let results = match db
@@ -81,7 +81,7 @@ impl ResultDataBuilder {
 
                 Self::query_result(items)
             }
-            "query.links" => {
+            "search.links" => {
                 let note = params.get("note").and_then(|v| v.as_str()).unwrap_or("");
 
                 let results = match db
@@ -109,7 +109,7 @@ impl ResultDataBuilder {
 
                 Self::query_result(items)
             }
-            "query.unresolved" => {
+            "search.unresolved" => {
                 let results = match db.conn().execute_query(query::get_unresolved_links) {
                     Ok(results) => results,
                     Err(_) => return Self::empty_query_result(),
@@ -132,7 +132,7 @@ impl ResultDataBuilder {
 
                 Self::query_result(items)
             }
-            "query.tags" => {
+            "search.tags" => {
                 let list_all = params
                     .get("list")
                     .and_then(|v| v.as_bool())
@@ -246,7 +246,7 @@ mod tests {
         };
 
         let params = serde_json::json!({});
-        let result = ResultDataBuilder::build_query_result_data(&config, "query.search", &params);
+        let result = ResultDataBuilder::build_query_result_data(&config, "search.notes", &params);
         assert_eq!(result.get("total").unwrap(), 0);
     }
 

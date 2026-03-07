@@ -3,7 +3,7 @@ use clap::Parser;
 use obsidian_cli_inspector::{
     cli::{
         AnalyzeCommands, Cli, Commands, DiagnoseCommands, IndexCommands, InitCommands,
-        QueryCommands, ViewCommands,
+        SearchCommands, ViewCommands,
     },
     commands::*,
     config::Config,
@@ -90,15 +90,15 @@ fn main() -> Result<()> {
         }
 
         // ============================================================================
-        // QUERY Commands
+        // SEARCH Commands
         // ============================================================================
-        Commands::Query(QueryCommands::Search { query, limit }) => {
+        Commands::Search(SearchCommands::Notes { query, limit }) => {
             let config = load_config(cli.config)?;
             if let Some(ref log) = logger {
-                let _ = log.log_section("query.search", "Starting Search Command");
+                let _ = log.log_section("search.notes", "Starting Search Command");
             }
             let metadata = CommandMetadata {
-                name: "query.search".to_string(),
+                name: "search.notes".to_string(),
                 params: serde_json::json!({"query": query, "limit": limit}),
             };
 
@@ -116,13 +116,13 @@ fn main() -> Result<()> {
                 )
             }
         }
-        Commands::Query(QueryCommands::Backlinks { note }) => {
+        Commands::Search(SearchCommands::Backlinks { note }) => {
             let config = load_config(cli.config)?;
             if let Some(ref log) = logger {
-                let _ = log.log_section("query.backlinks", "Starting Backlinks Command");
+                let _ = log.log_section("search.backlinks", "Starting Backlinks Command");
             }
             let metadata = CommandMetadata {
-                name: "query.backlinks".to_string(),
+                name: "search.backlinks".to_string(),
                 params: serde_json::json!({"note": note}),
             };
 
@@ -137,13 +137,13 @@ fn main() -> Result<()> {
                 (metadata, get_backlinks(&config, &note, logger.as_ref()))
             }
         }
-        Commands::Query(QueryCommands::Links { note }) => {
+        Commands::Search(SearchCommands::Links { note }) => {
             let config = load_config(cli.config)?;
             if let Some(ref log) = logger {
-                let _ = log.log_section("query.links", "Starting Links Command");
+                let _ = log.log_section("search.links", "Starting Links Command");
             }
             let metadata = CommandMetadata {
-                name: "query.links".to_string(),
+                name: "search.links".to_string(),
                 params: serde_json::json!({"note": note}),
             };
 
@@ -158,13 +158,13 @@ fn main() -> Result<()> {
                 (metadata, get_forward_links(&config, &note, logger.as_ref()))
             }
         }
-        Commands::Query(QueryCommands::Unresolved) => {
+        Commands::Search(SearchCommands::Unresolved) => {
             let config = load_config(cli.config)?;
             if let Some(ref log) = logger {
-                let _ = log.log_section("query.unresolved", "Starting Unresolved Links Command");
+                let _ = log.log_section("search.unresolved", "Starting Unresolved Links Command");
             }
             let metadata = CommandMetadata {
-                name: "query.unresolved".to_string(),
+                name: "search.unresolved".to_string(),
                 params: serde_json::json!({}),
             };
 
@@ -179,13 +179,13 @@ fn main() -> Result<()> {
                 (metadata, list_unresolved_links(&config, logger.as_ref()))
             }
         }
-        Commands::Query(QueryCommands::Tags { tag, list }) => {
+        Commands::Search(SearchCommands::Tags { tag, list }) => {
             let config = load_config(cli.config)?;
             if let Some(ref log) = logger {
-                let _ = log.log_section("query.tags", "Starting Tags Command");
+                let _ = log.log_section("search.tags", "Starting Tags Command");
             }
             let metadata = CommandMetadata {
-                name: "query.tags".to_string(),
+                name: "search.tags".to_string(),
                 params: serde_json::json!({"tag": tag, "list": list}),
             };
 
