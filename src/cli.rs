@@ -61,10 +61,14 @@ CONFIG:
   Specify vault path and database location there.
 "#;
 
+const HELP_TEMPLATE: &str =
+    "{about-with-newline}Version: {version}\n\nUsage: {usage}\n\n{all-args}{after-help}";
+
 #[derive(Parser)]
 #[command(name = "obsidian-cli-inspector")]
 #[command(author, version)]
-#[command(about = "Local-first CLI/TUI for indexing and searching Obsidian vaults")]
+#[command(help_template = HELP_TEMPLATE)]
+#[command(about = "Local-first CLI/TUI for indexing and gain insight in Obsidian vaults")]
 #[command(long_about = LONG_ABOUT)]
 pub struct Cli {
     /// Path to config file
