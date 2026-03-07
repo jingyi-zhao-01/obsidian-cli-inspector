@@ -1085,6 +1085,5 @@ expression: normalize_for_snapshot(output)
     ],
     "total": 119
   },
-  "timestamp": "TIMESTAMP",
-  "version": "1.0"
+  "timestamp": "TIMESTAMP"
 }
