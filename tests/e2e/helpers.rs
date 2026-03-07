@@ -53,7 +53,6 @@ pub fn run_command_json(args: &[&str]) -> Result<Value, String> {
 pub fn validate_schema(json: &Value, expected_command: &str) {
     assert!(json.is_object(), "Response must be a JSON object");
 
-    assert_eq!(json["version"], "1.0", "Schema version must be 1.0");
     assert_eq!(json["command"], expected_command, "Command name mismatch");
     assert!(
         json["timestamp"].is_string(),

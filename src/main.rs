@@ -341,7 +341,6 @@ fn main() -> Result<()> {
         };
 
         let response = serde_json::json!({
-            "version": "1.0",
             "command": metadata.name,
             "timestamp": chrono::Utc::now().to_rfc3339(),
             "params": metadata.params,
