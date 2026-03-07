@@ -17,6 +17,14 @@ pub fn list_unresolved_links(config: &Config, logger: Option<&Logger>) -> Result
     let db = Database::open(&db_path)
         .with_context(|| format!("Failed to open database: {}", db_path.display()))?;
 
+    // Check if database has been indexed
+    let stats = db.get_stats().context("Failed to get database stats")?;
+    if stats.note_count == 0 {
+        anyhow::bail!(
+            "Database is empty. Run 'obsidian-cli-inspector index' to index your vault first"
+        );
+    }
+
     let unresolved = db
         .conn()
         .execute_query(query::get_unresolved_links)

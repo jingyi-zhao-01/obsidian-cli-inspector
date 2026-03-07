@@ -70,7 +70,11 @@ obsidian-cli-inspector query tags productivity
 obsidian-cli-inspector view stats
 ```
 
-If search returns no results, run indexing again:
+**Note:** If you try to run query commands before indexing, you'll get a clear error message:
+- `Database not found` - Run `obsidian-cli-inspector init init` first
+- `Database is empty` - Run `obsidian-cli-inspector index index` to index your vault
+
+If search returns no results after indexing, run indexing again:
 
 ```bash
 obsidian-cli-inspector index index --force

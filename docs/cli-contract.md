@@ -53,6 +53,8 @@ obsidian-cli-inspector index index [--dry-run] [--force] [--verbose]
 
 Search and retrieval commands.
 
+**Prerequisites:** These commands require the database to be initialized and indexed. If the database doesn't exist or is empty, you'll receive an error with instructions to run `obsidian-cli-inspector init init` and/or `obsidian-cli-inspector index index`.
+
 ```bash
 # Search notes using full-text search
 obsidian-cli-inspector query search <query> [--limit <n>]
@@ -96,6 +98,8 @@ obsidian-cli-inspector analyze related <note> [--limit <n>]
 
 Diagnostic commands.
 
+**Prerequisites:** These commands require the database to be initialized and indexed.
+
 ```bash
 # Diagnose orphan notes
 obsidian-cli-inspector diagnose orphans [--exclude-templates] [--exclude-daily]
@@ -112,6 +116,8 @@ obsidian-cli-inspector diagnose broken-links
 ### view
 
 Display commands.
+
+**Prerequisites:** These commands require the database to be initialized and indexed.
 
 ```bash
 # Show statistics about the vault

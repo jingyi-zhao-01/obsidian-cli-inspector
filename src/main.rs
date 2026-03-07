@@ -103,12 +103,17 @@ fn main() -> Result<()> {
             };
 
             if is_json {
-                query_result_override = Some(ResultDataBuilder::build_query_result_data(
+                match ResultDataBuilder::build_query_result_data(
                     &config,
                     &metadata.name,
                     &metadata.params,
-                ));
-                (metadata, Ok(()))
+                ) {
+                    Ok(result_data) => {
+                        query_result_override = Some(result_data);
+                        (metadata, Ok(()))
+                    }
+                    Err(e) => (metadata, Err(e)),
+                }
             } else {
                 (
                     metadata,
@@ -127,12 +132,17 @@ fn main() -> Result<()> {
             };
 
             if is_json {
-                query_result_override = Some(ResultDataBuilder::build_query_result_data(
+                match ResultDataBuilder::build_query_result_data(
                     &config,
                     &metadata.name,
                     &metadata.params,
-                ));
-                (metadata, Ok(()))
+                ) {
+                    Ok(result_data) => {
+                        query_result_override = Some(result_data);
+                        (metadata, Ok(()))
+                    }
+                    Err(e) => (metadata, Err(e)),
+                }
             } else {
                 (metadata, get_backlinks(&config, &note, logger.as_ref()))
             }
@@ -148,12 +158,17 @@ fn main() -> Result<()> {
             };
 
             if is_json {
-                query_result_override = Some(ResultDataBuilder::build_query_result_data(
+                match ResultDataBuilder::build_query_result_data(
                     &config,
                     &metadata.name,
                     &metadata.params,
-                ));
-                (metadata, Ok(()))
+                ) {
+                    Ok(result_data) => {
+                        query_result_override = Some(result_data);
+                        (metadata, Ok(()))
+                    }
+                    Err(e) => (metadata, Err(e)),
+                }
             } else {
                 (metadata, get_forward_links(&config, &note, logger.as_ref()))
             }
@@ -169,12 +184,17 @@ fn main() -> Result<()> {
             };
 
             if is_json {
-                query_result_override = Some(ResultDataBuilder::build_query_result_data(
+                match ResultDataBuilder::build_query_result_data(
                     &config,
                     &metadata.name,
                     &metadata.params,
-                ));
-                (metadata, Ok(()))
+                ) {
+                    Ok(result_data) => {
+                        query_result_override = Some(result_data);
+                        (metadata, Ok(()))
+                    }
+                    Err(e) => (metadata, Err(e)),
+                }
             } else {
                 (metadata, list_unresolved_links(&config, logger.as_ref()))
             }
@@ -190,12 +210,17 @@ fn main() -> Result<()> {
             };
 
             if is_json {
-                query_result_override = Some(ResultDataBuilder::build_query_result_data(
+                match ResultDataBuilder::build_query_result_data(
                     &config,
                     &metadata.name,
                     &metadata.params,
-                ));
-                (metadata, Ok(()))
+                ) {
+                    Ok(result_data) => {
+                        query_result_override = Some(result_data);
+                        (metadata, Ok(()))
+                    }
+                    Err(e) => (metadata, Err(e)),
+                }
             } else {
                 (
                     metadata,
