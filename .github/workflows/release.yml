@@ -60,7 +60,7 @@ jobs:
   aur-build:
     name: Build AUR Package
     needs: [release, crate-publish]
-    if: ${{ needs.release.outputs.release_created == 'true' && github.ref == 'refs/heads/master' }}
+    if: ${{ needs.release.outputs.release_created == 'true' && github.ref == 'refs/heads/master' && !contains(github.event.pull_request.labels.*.name, 'autorelease:pending') }}
     uses: ./.github/workflows/aur-build.yml
     with:
       ref: ${{ needs.release.outputs.tag_name }}
