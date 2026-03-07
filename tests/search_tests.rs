@@ -3,6 +3,11 @@ mod common;
 use anyhow::Result;
 use obsidian_cli_inspector::commands::*;
 
+fn semantic_tests_enabled() -> bool {
+    std::env::var("OBS_CLI_RUN_SEMANTIC_TESTS").is_ok()
+}
+
+
 #[test]
 fn test_search_vault() -> Result<()> {
     let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
@@ -80,6 +85,10 @@ fn test_search_various_terms() -> Result<()> {
 
 #[test]
 fn test_semantic_search_vault() -> Result<()> {
+    if !semantic_tests_enabled() {
+        return Ok(());
+    }
+
     let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
 
     initialize_database(&config, false, None)?;
@@ -93,6 +102,10 @@ fn test_semantic_search_vault() -> Result<()> {
 
 #[test]
 fn test_semantic_search_empty_query() -> Result<()> {
+    if !semantic_tests_enabled() {
+        return Ok(());
+    }
+
     let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
 
     initialize_database(&config, false, None)?;

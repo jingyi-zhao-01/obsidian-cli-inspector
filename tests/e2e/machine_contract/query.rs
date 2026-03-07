@@ -89,13 +89,13 @@ fn machine_contract_semantic() {
         "json",
         "--config",
         &config_path,
+        "search",
         "query",
-        "semantic",
         "how to improve productivity",
     ];
 
     let output = run_command_json(&args).expect("Failed to run semantic command");
-    validate_schema(&output, "query.semantic");
+    validate_schema(&output, "search.query");
 
     assert_eq!(output["params"]["query"], "how to improve productivity");
     assert_eq!(output["params"]["limit"], 20);

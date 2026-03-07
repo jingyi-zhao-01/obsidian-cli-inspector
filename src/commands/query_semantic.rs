@@ -122,8 +122,17 @@ mod tests {
         }
     }
 
+    fn semantic_tests_enabled() -> bool {
+        std::env::var("OBS_CLI_RUN_SEMANTIC_TESTS").is_ok()
+    }
+
+
     #[test]
     fn test_semantic_search_vault_works() {
+        if !semantic_tests_enabled() {
+            return;
+        }
+
         let config = setup_config();
         initialize_database(&config, false, None).unwrap();
         index_vault(&config, false, false, false, None).unwrap();

@@ -57,6 +57,9 @@ Search and retrieval commands.
 # Search notes using full-text search
 obsidian-cli-inspector search notes <query> [--limit <n>]
 
+# Search notes using semantic embeddings
+obsidian-cli-inspector search query <query> [--limit <n>]
+
 # List backlinks to a note
 obsidian-cli-inspector search backlinks <note>
 
@@ -138,6 +141,7 @@ obsidian-cli-inspector index index
 
 # Search for notes
 obsidian-cli-inspector search notes rust --limit 10
+obsidian-cli-inspector search query "semantic prompt" --limit 10
 obsidian-cli-inspector search backlinks "Project Ideas"
 obsidian-cli-inspector search tags work
 obsidian-cli-inspector search tags --list

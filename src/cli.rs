@@ -30,7 +30,7 @@ CLI STRUCTURE:
   Groups:
     init     - Database initialization
     index    - Vault indexing (scan, status)
-    search   - Search and retrieval (notes, backlinks, links, tags, unresolved)
+    search   - Search and retrieval (notes, query, backlinks, links, tags, unresolved)
     graph    - Graph operations (neighbors, paths, centrality, components)
     analyze  - Content analysis (bloat, related, similar, quality)
     diagnose - Diagnostics (orphans, broken-links, conflicts)
@@ -43,6 +43,9 @@ EXAMPLES:
 
   # Search for notes containing 'rust'
   obsidian-cli-inspector search notes rust --limit 10
+
+  # Semantic search across note content
+  obsidian-cli-inspector search query "deep work productivity" --limit 10
 
   # Find all notes linking to 'Project Ideas'
   obsidian-cli-inspector search backlinks "Project Ideas"
@@ -171,8 +174,8 @@ pub enum SearchCommands {
         limit: usize,
     },
 
-    /// Search notes using semantic-style matching over SQLite FTS
-    Semantic {
+    /// Search notes using semantic embeddings
+    Query {
         /// Semantic search query
         query: String,
 
