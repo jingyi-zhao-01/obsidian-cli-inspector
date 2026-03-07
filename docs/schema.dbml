@@ -1,0 +1,87 @@
+// Database Schema for Obsidian CLI Inspector
+// This DBML defines the SQLite database structure
+
+// Notes table - central table storing all vault notes
+Table notes {
+    id integer [pk, auto_increment]
+    path text [unique, not null]
+    title text [not null]
+    mtime integer [not null]
+    hash text [not null]
+    frontmatter_json text
+    created_at text [not null, default: 'CURRENT_TIMESTAMP']
+    updated_at text [not null, default: 'CURRENT_TIMESTAMP']
+    
+    indexes {
+        path [name: 'idx_notes_path']
+        mtime [name: 'idx_notes_mtime']
+    }
+}
+
+// Links table - stores all links between notes
+Table links {
+    id integer [pk, auto_increment]
+    src_note_id integer [not null, ref: > notes.id]
+    dst_text text [not null]
+    dst_note_id integer [ref: > notes.id]
+    kind text [not null]
+    is_embed integer [not null, default: 0]
+    alias text
+    heading_ref text
+    block_ref text
+    
+    indexes {
+        src_note_id [name: 'idx_links_src']
+        dst_note_id [name: 'idx_links_dst']
+        dst_text [name: 'idx_links_dst_text']
+    }
+}
+
+// Tags table - stores tags extracted from notes
+Table tags {
+    id integer [pk, auto_increment]
+    note_id integer [not null, ref: > notes.id]
+    tag text [not null]
+    
+    indexes {
+        note_id [name: 'idx_tags_note']
+        tag [name: 'idx_tags_tag']
+    }
+    
+    indexes {
+        (note_id, tag) [unique, name: 'note_id_tag_unique']
+    }
+}
+
+// Chunks table - content chunks for semantic search
+Table chunks {
+    id integer [pk, auto_increment]
+    note_id integer [not null, ref: > notes.id]
+    heading_path text
+    text text [not null]
+    byte_offset integer [not null]
+    byte_length integer [not null]
+    
+    indexes {
+        note_id [name: 'idx_chunks_note']
+    }
+}
+
+// FTS5 virtual table - full-text search (SQLite specific)
+// Note: This is a virtual table, not a regular table
+// Synchronized with chunks table via triggers:
+//   - chunks_ai: After INSERT on chunks
+//   - chunks_ad: After DELETE on chunks  
+//   - chunks_au: After UPDATE on chunks
+Table fts_chunks [virtual] {
+    rowid integer
+    note_id integer
+    heading_path text
+    text text
+}
+
+// Relationships
+Ref: links.src_note_id > notes.id [delete: cascade]
+Ref: links.dst_note_id > notes.id [delete: set_null]
+Ref: tags.note_id > notes.id [delete: cascade]
+Ref: chunks.note_id > notes.id [delete: cascade]
