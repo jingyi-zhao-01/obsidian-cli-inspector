@@ -6,11 +6,11 @@ For agent integration, use JSON mode via `-o json` or `--output json`.
 
 ```bash
 # Human output (default)
-obsidian-cli-inspector query search rust
+obsidian-cli-inspector search notes rust
 
 # JSON mode
-obsidian-cli-inspector -o json query search rust
-obsidian-cli-inspector --output json query search rust
+obsidian-cli-inspector -o json search notes rust
+obsidian-cli-inspector --output json search notes rust
 ```
 
 Notes:
@@ -23,7 +23,7 @@ Successful JSON-mode commands produce this envelope:
 
 ```json
 {
-  "command": "query.search",
+  "command": "search.notes",
   "timestamp": "2026-03-02T20:26:00Z",
   "params": {
     "query": "rust",
@@ -41,7 +41,7 @@ Successful JSON-mode commands produce this envelope:
 ```
 
 Guaranteed envelope fields:
-- `command` is the fully-qualified command name (for example, `query.search`)
+- `command` is the fully-qualified command name (for example, `search.notes`)
 - `timestamp` is an RFC 3339 timestamp string
 - `params` is an object
 - `result` is an object
@@ -50,7 +50,7 @@ Guaranteed envelope fields:
 
 ## Result Shape
 
-All `query.*` commands return:
+All `search.*` commands return:
 
 ```json
 "result": {
@@ -59,9 +59,9 @@ All `query.*` commands return:
 }
 ```
 
-`items` entry shape is command-specific (`query.search`, `query.backlinks`, `query.links`, `query.unresolved`, `query.tags`).
+`items` entry shape is command-specific (`search.notes`, `search.backlinks`, `search.links`, `search.unresolved`, `search.tags`).
 
-Non-query commands may use command-specific result objects (for example, `view.stats`).
+Non-search commands may use command-specific result objects (for example, `view.stats`).
 
 ## Error Behavior (Current)
 

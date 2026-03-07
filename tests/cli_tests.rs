@@ -73,7 +73,7 @@ fn test_cli_help_contains_workflow_steps() {
 
     assert!(help_text.contains("1. Run 'init init'"));
     assert!(help_text.contains("2. Run 'index index'"));
-    assert!(help_text.contains("3. Use query commands"));
+    assert!(help_text.contains("3. Use search commands"));
 }
 
 #[test]
@@ -85,9 +85,9 @@ fn test_cli_help_contains_example_commands() {
     // New grouped CLI format
     assert!(help_text.contains("obsidian-cli-inspector init init"));
     assert!(help_text.contains("obsidian-cli-inspector index index"));
-    assert!(help_text.contains("obsidian-cli-inspector query search"));
-    assert!(help_text.contains("obsidian-cli-inspector query backlinks"));
-    assert!(help_text.contains("obsidian-cli-inspector query tags"));
+    assert!(help_text.contains("obsidian-cli-inspector search notes"));
+    assert!(help_text.contains("obsidian-cli-inspector search backlinks"));
+    assert!(help_text.contains("obsidian-cli-inspector search tags"));
     assert!(help_text.contains("obsidian-cli-inspector analyze bloat"));
     assert!(help_text.contains("obsidian-cli-inspector tui"));
 }
@@ -134,7 +134,7 @@ fn test_cli_all_subcommands_present() {
     // Current CLI structure - top-level groups
     assert!(subcommands.contains(&"init"));
     assert!(subcommands.contains(&"index"));
-    assert!(subcommands.contains(&"query"));
+    assert!(subcommands.contains(&"search"));
     assert!(subcommands.contains(&"analyze"));
     assert!(subcommands.contains(&"diagnose"));
     assert!(subcommands.contains(&"view"));
