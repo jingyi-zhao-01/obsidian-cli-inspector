@@ -27,7 +27,7 @@ build_pkgbuild() {
         "sha256sums=(\"${sha256}\")" \
         '' \
         'build() {' \
-        '  cd "${srcdir}/${repo_name}-${tag}"' \
+        "  cd \"\${srcdir}/${repo_name}-${tag}\"" \
         '' \
         '  # Prevent CI or user environment from injecting static Rust flags' \
         '  unset RUSTFLAGS' \
@@ -41,7 +41,7 @@ build_pkgbuild() {
         '}' \
         '' \
         'package() {' \
-        '  cd "${srcdir}/${repo_name}-${tag}"' \
+        "  cd \"\${srcdir}/${repo_name}-${tag}\"" \
         '  install -Dm755 target/release/${pkgname} "${pkgdir}/usr/bin/${pkgname}"' \
         '}'
 }
