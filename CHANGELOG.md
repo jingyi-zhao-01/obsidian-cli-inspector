@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/jingyi-zhao-01/obsidian-cli-inspector/compare/obsidian-cli-inspector-v1.0.0...obsidian-cli-inspector-v1.0.1) (2026-03-08)
+
+
+### Bug Fixes
+
+* fix AUR build issue ([e3ee179](https://github.com/jingyi-zhao-01/obsidian-cli-inspector/commit/e3ee1793fd80bb0feacab839839e4c9166997c44))
+
 ## [1.0.0](https://github.com/jingyi-zhao-01/obsidian-cli-inspector/compare/obsidian-cli-inspector-v0.2.2...obsidian-cli-inspector-v1.0.0) (2026-03-08)
 
 
