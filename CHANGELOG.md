@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/jingyi-zhao-01/obsidian-cli-inspector/compare/obsidian-cli-inspector-v1.0.1...obsidian-cli-inspector-v1.0.2) (2026-03-08)
+
+
+### Bug Fixes
+
+* **aur:** use tag-based source dir ([#87](https://github.com/jingyi-zhao-01/obsidian-cli-inspector/issues/87)) ([435e253](https://github.com/jingyi-zhao-01/obsidian-cli-inspector/commit/435e253368799fe31ea5c80b1eb2016c2e06500e))
+
 ## [1.0.1](https://github.com/jingyi-zhao-01/obsidian-cli-inspector/compare/obsidian-cli-inspector-v1.0.0...obsidian-cli-inspector-v1.0.1) (2026-03-08)
 
 
