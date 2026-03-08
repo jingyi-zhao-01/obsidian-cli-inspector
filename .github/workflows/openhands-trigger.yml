@@ -25,17 +25,27 @@ jobs:
       - name: Extract issue details
         id: issue
         run: |
-          ISSUE_NUMBER=${{ github.event.issue.number }}
-          ISSUE_TITLE="${{ github.event.issue.title }}"
-          ISSUE_BODY="${{ github.event.issue.body }}"
-          
-          # Sanitize title for branch name
-          BRANCH_NAME="openhands/issue-${ISSUE_NUMBER}-$(echo '$ISSUE_TITLE' | tr '[:upper:]' '[:lower:]' | tr -cd '[:alnum:]-' | cut -c1-40)"
-          
-          echo "issue_number=$ISSUE_NUMBER" >> $GITHUB_OUTPUT
-          echo "issue_title=$ISSUE_TITLE" >> $GITHUB_OUTPUT
-          echo "issue_body=$ISSUE_BODY" >> $GITHUB_OUTPUT
-          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+          ISSUE_NUMBER=$(jq -r '.issue.number' "$GITHUB_EVENT_PATH")
+          ISSUE_TITLE=$(jq -r '.issue.title' "$GITHUB_EVENT_PATH")
+          ISSUE_BODY=$(jq -r '.issue.body // ""' "$GITHUB_EVENT_PATH")
+
+          SAFE_TITLE=$(echo "$ISSUE_TITLE" | tr '[:upper:]' '[:lower:]' | tr -cd '[:alnum:]-' | cut -c1-40)
+          if [ -n "$SAFE_TITLE" ]; then
+            BRANCH_NAME="openhands/issue-${ISSUE_NUMBER}-${SAFE_TITLE}"
+          else
+            BRANCH_NAME="openhands/issue-${ISSUE_NUMBER}"
+          fi
+
+          {
+            echo "issue_number=$ISSUE_NUMBER"
+            echo "issue_title<<EOF"
+            echo "$ISSUE_TITLE"
+            echo "EOF"
+            echo "issue_body<<EOF"
+            echo "$ISSUE_BODY"
+            echo "EOF"
+            echo "branch_name=$BRANCH_NAME"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Configure git
         run: |
