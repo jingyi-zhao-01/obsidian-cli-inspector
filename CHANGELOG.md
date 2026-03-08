@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/jingyi-zhao-01/obsidian-cli-inspector/compare/obsidian-cli-inspector-v1.0.2...obsidian-cli-inspector-v1.0.3) (2026-03-08)
+
+
+### Bug Fixes
+
+* **aur:** embed tag dir in pkgbuild ([#89](https://github.com/jingyi-zhao-01/obsidian-cli-inspector/issues/89)) ([7f21624](https://github.com/jingyi-zhao-01/obsidian-cli-inspector/commit/7f21624ce859f7fe3ca89c315e3318500d836e0d))
+
 ## [1.0.2](https://github.com/jingyi-zhao-01/obsidian-cli-inspector/compare/obsidian-cli-inspector-v1.0.1...obsidian-cli-inspector-v1.0.2) (2026-03-08)
 
 
