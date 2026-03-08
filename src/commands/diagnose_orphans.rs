@@ -22,6 +22,14 @@ pub fn diagnose_orphans(
     let db = Database::open(&db_path)
         .with_context(|| format!("Failed to open database: {}", db_path.display()))?;
 
+    // Check if database has been indexed
+    let stats = db.get_stats().context("Failed to get database stats")?;
+    if stats.note_count == 0 {
+        anyhow::bail!(
+            "Database is empty. Run 'obsidian-cli-inspector index' to index your vault first"
+        );
+    }
+
     let orphans = db
         .conn()
         .execute_query(|conn| query::get_orphans(conn, exclude_templates, exclude_daily))
