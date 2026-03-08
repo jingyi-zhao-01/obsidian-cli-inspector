@@ -1,7 +1,7 @@
 use anyhow::{Context, Result};
 use embed_anything::config::TextEmbedConfig;
-use embed_anything::embeddings::embed::EmbedderBuilder;
 use embed_anything::embed_query;
+use embed_anything::embeddings::embed::EmbedderBuilder;
 use std::sync::{Arc, OnceLock};
 use tokio::runtime::Runtime;
 

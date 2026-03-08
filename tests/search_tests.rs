@@ -7,7 +7,6 @@ fn semantic_tests_enabled() -> bool {
     std::env::var("OBS_CLI_RUN_SEMANTIC_TESTS").is_ok()
 }
 
-
 #[test]
 fn test_search_vault() -> Result<()> {
     let (_vault_dir, _db_dir, config) = common::setup_test_config()?;

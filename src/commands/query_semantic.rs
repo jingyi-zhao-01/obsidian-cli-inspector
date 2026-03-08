@@ -126,7 +126,6 @@ mod tests {
         std::env::var("OBS_CLI_RUN_SEMANTIC_TESTS").is_ok()
     }
 
-
     #[test]
     fn test_semantic_search_vault_works() {
         if !semantic_tests_enabled() {
