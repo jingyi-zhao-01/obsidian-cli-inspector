@@ -62,13 +62,13 @@ fn machine_contract_search() {
         "json",
         "--config",
         &config_path,
-        "query",
         "search",
+        "notes",
         "productivity",
     ];
 
     let output = run_command_json(&args).expect("Failed to run search command");
-    validate_schema(&output, "query.search");
+    validate_schema(&output, "search.notes");
 
     assert_eq!(output["params"]["query"], "productivity");
     assert_eq!(output["params"]["limit"], 20);
@@ -89,13 +89,13 @@ fn machine_contract_backlinks() {
         "json",
         "--config",
         &config_path,
-        "query",
+        "search",
         "backlinks",
         "Home",
     ];
 
     let output = run_command_json(&args).expect("Failed to run backlinks command");
-    validate_schema(&output, "query.backlinks");
+    validate_schema(&output, "search.backlinks");
 
     assert_eq!(output["params"]["note"], "Home");
     insta::assert_json_snapshot!("machine_contract_backlinks", normalize_for_snapshot(output));
@@ -112,13 +112,13 @@ fn machine_contract_links() {
         "json",
         "--config",
         &config_path,
-        "query",
+        "search",
         "links",
         "Home",
     ];
 
     let output = run_command_json(&args).expect("Failed to run links command");
-    validate_schema(&output, "query.links");
+    validate_schema(&output, "search.links");
 
     assert_eq!(output["params"]["note"], "Home");
     insta::assert_json_snapshot!("machine_contract_links", normalize_for_snapshot(output));
@@ -135,12 +135,12 @@ fn machine_contract_unresolved() {
         "json",
         "--config",
         &config_path,
-        "query",
+        "search",
         "unresolved",
     ];
 
     let output = run_command_json(&args).expect("Failed to run unresolved command");
-    validate_schema(&output, "query.unresolved");
+    validate_schema(&output, "search.unresolved");
 
     assert!(output["params"]
         .as_object()
@@ -163,12 +163,12 @@ fn machine_contract_tags() {
         "json",
         "--config",
         &config_path,
-        "query",
+        "search",
         "tags",
     ];
 
     let output = run_command_json(&args).expect("Failed to run tags command");
-    validate_schema(&output, "query.tags");
+    validate_schema(&output, "search.tags");
 
     assert!(output["params"]["tag"].is_null() || output["params"]["tag"].is_string());
     insta::assert_json_snapshot!("machine_contract_tags", normalize_for_snapshot(output));
@@ -185,13 +185,13 @@ fn machine_contract_tags_list() {
         "json",
         "--config",
         &config_path,
-        "query",
+        "search",
         "tags",
         "--list",
     ];
 
     let output = run_command_json(&args).expect("Failed to run tags --list command");
-    validate_schema(&output, "query.tags");
+    validate_schema(&output, "search.tags");
 
     assert_eq!(output["params"]["list"], true);
     insta::assert_json_snapshot!("machine_contract_tags_list", normalize_for_snapshot(output));

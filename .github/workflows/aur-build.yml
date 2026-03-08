@@ -72,12 +72,14 @@ jobs:
           set -euo pipefail
           docker run --rm \
             -v "${GITHUB_WORKSPACE}:/work" \
+            -v "${GITHUB_WORKSPACE}/.git:/work/.git:ro" \
             -w /work/aur \
             archlinux:latest bash -lc '
               set -euo pipefail
               pacman -Sy --noconfirm --needed base-devel git >/dev/null
               useradd -m builder
-              chown -R builder:builder /work
+              find /work -not -path "*/.git*" -exec chown builder:builder {} \;
+              git config --global --add safe.directory /work
               su builder -s /bin/bash -c "cd /work/aur && makepkg --printsrcinfo > .SRCINFO"
             '
 

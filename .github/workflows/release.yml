@@ -60,14 +60,64 @@ jobs:
   aur-build:
     name: Build AUR Package
     needs: [release, crate-publish]
-    if: ${{ needs.release.outputs.release_created == 'true' && github.ref == 'refs/heads/master' }}
+    if: ${{ needs.release.outputs.release_created == 'true' && github.ref == 'refs/heads/master' && !contains(github.event.pull_request.labels.*.name, 'autorelease:pending') }}
     uses: ./.github/workflows/aur-build.yml
     with:
       ref: ${{ needs.release.outputs.tag_name }}
       version: ${{ needs.release.outputs.tag_name }}
 
-  aur-publish:
-    name: Publish to AUR
+  aur-unstable-publish:
+    name: Publish Unstable to AUR (-git)
+    if: ${{ github.ref == 'refs/heads/master' && github.event_name == 'push' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+
+      - name: Generate PKGBUILD for git variant
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd aur
+          chmod +x generate-pkgbuild-git.sh
+          make -f Makefile.git all
+
+      - name: Verify artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f aur/PKGBUILD || (echo "PKGBUILD missing" && exit 1)
+          test -f aur/.SRCINFO || (echo ".SRCINFO missing" && exit 1)
+
+      - name: PKGBUILD syntax check
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker run --rm             -v "${GITHUB_WORKSPACE}:/work"             -w /work/aur             archlinux:latest bash -lc '
+              set -euo pipefail
+              pacman -Sy --noconfirm --needed base-devel cargo git >/dev/null
+              useradd -m builder
+              chown -R builder:builder /work
+              su builder -s /bin/bash -c "cd /work/aur && makepkg --check"
+            '
+
+      - name: Publish to AUR (-git)
+        uses: KSXGitHub/github-actions-deploy-aur@v2.3.0
+        with:
+          pkgname: obsidian-cli-inspector-git
+          pkgbuild: ./aur/PKGBUILD
+          commit_username: ${{ secrets.AUR_USERNAME }}
+          commit_email: ${{ secrets.AUR_EMAIL }}
+          ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
+          commit_message: "Update unstable git version from ${{ github.sha }}"
+          ssh_keyscan_types: rsa,ecdsa,ed25519
+
+  aur-stable-publish:
+    name: AUR stable publish
     needs: [release, aur-build]
     if: ${{ needs.release.outputs.release_created == 'true' && github.ref == 'refs/heads/master' }}
     runs-on: ubuntu-latest

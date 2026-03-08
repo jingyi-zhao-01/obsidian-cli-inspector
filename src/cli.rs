@@ -5,7 +5,7 @@ const LONG_ABOUT: &str = r#"
 Obsidian CLI Inspector - A local-first, read-only CLI/TUI for Obsidian vaults
 
 ABOUT:
-  This tool helps you inspect, query, and navigate your Obsidian vault from the terminal.
+    This tool helps you inspect, search, and navigate your Obsidian vault from the terminal.
   All data is stored locally in a SQLite database for fast, offline access.
 
 USE CASES:
@@ -21,7 +21,7 @@ USE CASES:
 WORKFLOW:
   1. Run 'init init' to set up the database
   2. Run 'index index' to scan and parse your vault
-  3. Use query commands (search, backlinks, tags, etc.)
+  3. Use search commands (notes, backlinks, tags, etc.)
   4. Re-run 'index index' periodically to catch changes
 
 CLI STRUCTURE:
@@ -30,7 +30,7 @@ CLI STRUCTURE:
   Groups:
     init     - Database initialization
     index    - Vault indexing (scan, status)
-    query    - Search and retrieval (search, backlinks, links, tags, unresolved)
+    search   - Search and retrieval (notes, backlinks, links, tags, unresolved)
     graph    - Graph operations (neighbors, paths, centrality, components)
     analyze  - Content analysis (bloat, related, similar, quality)
     diagnose - Diagnostics (orphans, broken-links, conflicts)
@@ -42,13 +42,13 @@ EXAMPLES:
   obsidian-cli-inspector index index
 
   # Search for notes containing 'rust'
-  obsidian-cli-inspector query search rust --limit 10
+  obsidian-cli-inspector search notes rust --limit 10
 
   # Find all notes linking to 'Project Ideas'
-  obsidian-cli-inspector query backlinks "Project Ideas"
+  obsidian-cli-inspector search backlinks "Project Ideas"
 
   # List all notes tagged with 'work'
-  obsidian-cli-inspector query tags work
+  obsidian-cli-inspector search tags work
 
   # Find large notes that might need splitting
   obsidian-cli-inspector analyze bloat --threshold 100000
@@ -61,10 +61,14 @@ CONFIG:
   Specify vault path and database location there.
 "#;
 
+const HELP_TEMPLATE: &str =
+    "{about-with-newline}Version: {version}\n\nUsage: {usage}\n\n{all-args}{after-help}";
+
 #[derive(Parser)]
 #[command(name = "obsidian-cli-inspector")]
 #[command(author, version)]
-#[command(about = "Local-first CLI/TUI for indexing and querying Obsidian vaults")]
+#[command(help_template = HELP_TEMPLATE)]
+#[command(about = "Local-first CLI/TUI for indexing and gain insight in Obsidian vaults")]
 #[command(long_about = LONG_ABOUT)]
 pub struct Cli {
     /// Path to config file
@@ -92,7 +96,7 @@ pub enum Commands {
 
     /// Search and retrieval commands
     #[command(subcommand)]
-    Query(QueryCommands),
+    Search(SearchCommands),
 
     // /// Graph operations commands
     // #[command(subcommand)]
@@ -153,12 +157,12 @@ pub enum IndexCommands {
 }
 
 // ============================================================================
-// QUERY Commands
+// SEARCH Commands
 // ============================================================================
 #[derive(Subcommand)]
-pub enum QueryCommands {
+pub enum SearchCommands {
     /// Search notes using full-text search
-    Search {
+    Notes {
         /// Search query
         query: String,
 

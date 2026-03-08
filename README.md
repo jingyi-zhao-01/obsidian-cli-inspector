@@ -6,7 +6,8 @@
 
 [![GitHub](https://img.shields.io/badge/GitHub-obsidian--cli-black?logo=github)](https://github.com/jingyi-zhao-01/obsidian-cli)
 [![Crates.io](https://img.shields.io/crates/v/obsidian-cli-inspector.svg)](https://crates.io/crates/obsidian-cli-inspector)
-[![AUR version](https://img.shields.io/aur/version/obsidian-cli-inspector?logo=arch-linux)](https://aur.archlinux.org/packages/obsidian-cli-inspector)
+[![AUR stable version](https://img.shields.io/aur/version/obsidian-cli-inspector?logo=arch-linux)](https://aur.archlinux.org/packages/obsidian-cli-inspector)
+[![AUR unstable version](https://img.shields.io/aur/version/obsidian-cli-inspector-git?logo=arch-linux)](https://aur.archlinux.org/packages/obsidian-cli-inspector-git)
 [![AUR maintainer](https://img.shields.io/aur/maintainer/obsidian-cli-inspector?logo=arch-linux)](https://aur.archlinux.org/packages/obsidian-cli-inspector)
 [![codecov](https://codecov.io/gh/jingyi-zhao-01/obsidian-cli-inspector/branch/master/graph/badge.svg?token=4C0B7CEC8C)](https://codecov.io/gh/jingyi-zhao-01/obsidian-cli-inspector)
 
@@ -64,9 +65,9 @@ obsidian-cli-inspector index index
 3) Explore your notes:
 
 ```bash
-obsidian-cli-inspector query search "your query"
-obsidian-cli-inspector query backlinks "Note Name"
-obsidian-cli-inspector query tags productivity
+obsidian-cli-inspector search notes "your query"
+obsidian-cli-inspector search backlinks "Note Name"
+obsidian-cli-inspector search tags productivity
 obsidian-cli-inspector view stats
 ```
 
@@ -83,7 +84,7 @@ obsidian-cli-inspector index index --force
 Use plain search text as the final argument. Example:
 
 ```bash
-obsidian-cli-inspector query search "Notes"
+obsidian-cli-inspector search notes "Notes"
 ```
 
 ## Common commands
@@ -93,12 +94,12 @@ obsidian-cli-inspector query search "Notes"
 obsidian-cli-inspector init init [--force]
 obsidian-cli-inspector index index [--dry-run] [--force] [--verbose]
 
-# Query
-obsidian-cli-inspector query search "query" [--limit 20]
-obsidian-cli-inspector query backlinks "Note Name"
-obsidian-cli-inspector query links "Note Name"
-obsidian-cli-inspector query unresolved
-obsidian-cli-inspector query tags [tag-name] [--list]
+# Search
+obsidian-cli-inspector search notes "query" [--limit 20]
+obsidian-cli-inspector search backlinks "Note Name"
+obsidian-cli-inspector search links "Note Name"
+obsidian-cli-inspector search unresolved
+obsidian-cli-inspector search tags [tag-name] [--list]
 
 # Analyze
 obsidian-cli-inspector analyze related "Note Name" [--limit 10]

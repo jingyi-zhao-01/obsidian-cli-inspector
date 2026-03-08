@@ -1,0 +1,91 @@
+.PHONY: all validate generate-pkgbuild-git generate-srcinfo-git \
+        syntax-check build-test clean help
+
+PKGNAME = obsidian-cli-inspector
+REPO_OWNER = jingyi-zhao-01
+REPO_NAME = obsidian-cli-inspector
+
+# ============================================================
+# Help
+# ============================================================
+
+help:
+	@echo "AUR Git targets:"
+	@echo "  make all"
+	@echo "  make syntax-check"
+	@echo "  make build-test"
+	@echo "  make clean"
+
+# ============================================================
+# Entry Point
+# ============================================================
+
+all: generate-pkgbuild-git generate-srcinfo-git
+	@echo "✓ Generated PKGBUILD and .SRCINFO for git version"
+
+
+# ============================================================
+# Step 1: Generate PKGBUILD for git
+# ============================================================
+
+generate-pkgbuild-git:
+	@echo "Generating PKGBUILD for -git variant..."
+	@./generate-pkgbuild-git.sh $(PKGNAME) $(REPO_OWNER) $(REPO_NAME) > PKGBUILD
+
+# ============================================================
+# Step 2: Generate .SRCINFO
+# ============================================================
+
+generate-srcinfo-git:
+	@echo "Generating .SRCINFO..."
+	@if command -v makepkg >/dev/null 2>&1; then \
+	  makepkg --printsrcinfo > .SRCINFO; \
+	elif command -v docker >/dev/null 2>&1; then \
+	  docker run --rm -v "$$(pwd)":/pkg -v "$$(pwd)/../.git":/pkg/.git:ro -w /pkg archlinux:latest bash -lc "\
+	    pacman -Sy --noconfirm --needed base-devel cargo git >/dev/null && \
+	    useradd -m builder && \
+	    find /pkg -not -path '*/.git*' -exec chown builder:builder {} \; && \
+	    git config --global --add safe.directory /pkg && \
+	    git config --global --add safe.directory /pkg/.git && \
+	    su builder -s /bin/bash -c 'git config --global --add safe.directory /pkg && git config --global --add safe.directory /pkg/.git && cd /pkg && makepkg --printsrcinfo'\
+	  " > .SRCINFO; \
+	else \
+	  echo "ERROR: makepkg not found and Docker unavailable."; \
+	  exit 127; \
+	fi
+
+# ============================================================
+# Syntax Check (Arch container)
+# ============================================================
+
+syntax-check:
+	@if [ ! -f PKGBUILD ]; then echo "ERROR: PKGBUILD not found"; exit 1; fi
+	@echo "Validating PKGBUILD syntax..."
+	@docker run --rm -v "$$(pwd)":/pkg archlinux:latest bash -c "\
+	  pacman -Syu --noconfirm base-devel cargo git >/dev/null && \
+	  cd /pkg && makepkg --check \
+	"
+	@echo "✓ PKGBUILD syntax is valid"
+
+# ============================================================
+# Build Test (Arch container)
+# ============================================================
+
+build-test:
+	@if [ ! -f PKGBUILD ]; then echo "ERROR: PKGBUILD not found"; exit 1; fi
+	@echo "Testing PKGBUILD build..."
+	@docker run --rm -v "$$(pwd)":/pkg archlinux:latest bash -c "\
+	  pacman -Syu --noconfirm base-devel cargo git >/dev/null && \
+	  useradd -m builder && \
+	  chown -R builder:builder /pkg && \
+	  su builder -s /bin/bash -c 'cd /pkg && makepkg -sf --noconfirm --cleanbuild --clean'\
+	"
+	@echo "✓ Build test passed"
+
+# ============================================================
+# Clean
+# ============================================================
+
+clean:
+	@rm -f PKGBUILD .SRCINFO
+	@echo "✓ Cleaned up generated files"

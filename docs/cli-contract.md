@@ -16,7 +16,7 @@ obsidian-cli-inspector <group> <function> [args...]
 |-------|-------------|
 | `init` | Database initialization |
 | `index` | Vault indexing |
-| `query` | Search and retrieval |
+| `search` | Search and retrieval |
 | `analyze` | Content analysis |
 | `diagnose` | Diagnostics |
 | `view` | Display commands |
@@ -49,7 +49,7 @@ obsidian-cli-inspector index index [--dry-run] [--force] [--verbose]
 | `--force`, `-f` | Force full re-index (ignores change detection) |
 | `--verbose`, `-v` | Show verbose output |
 
-### query
+### search
 
 Search and retrieval commands.
 
@@ -57,19 +57,19 @@ Search and retrieval commands.
 
 ```bash
 # Search notes using full-text search
-obsidian-cli-inspector query search <query> [--limit <n>]
+obsidian-cli-inspector search notes <query> [--limit <n>]
 
 # List backlinks to a note
-obsidian-cli-inspector query backlinks <note>
+obsidian-cli-inspector search backlinks <note>
 
 # List forward links from a note
-obsidian-cli-inspector query links <note>
+obsidian-cli-inspector search links <note>
 
 # List all unresolved links in the vault
-obsidian-cli-inspector query unresolved
+obsidian-cli-inspector search unresolved
 
 # List notes by tag
-obsidian-cli-inspector query tags [<tag>] [--list]
+obsidian-cli-inspector search tags [<tag>] [--list]
 ```
 
 | Option | Description |
@@ -143,10 +143,10 @@ obsidian-cli-inspector init init
 obsidian-cli-inspector index index
 
 # Search for notes
-obsidian-cli-inspector query search rust --limit 10
-obsidian-cli-inspector query backlinks "Project Ideas"
-obsidian-cli-inspector query tags work
-obsidian-cli-inspector query tags --list
+obsidian-cli-inspector search notes rust --limit 10
+obsidian-cli-inspector search backlinks "Project Ideas"
+obsidian-cli-inspector search tags work
+obsidian-cli-inspector search tags --list
 
 # Analyze content
 obsidian-cli-inspector analyze bloat --threshold 50000
