@@ -260,6 +260,23 @@ fn main() -> Result<()> {
                 Ok(()),
             )
         }
+        Commands::Analyze(AnalyzeCommands::MermaidLinks { path }) => {
+            let config = load_config(cli.config)?;
+            if let Some(ref log) = logger {
+                let _ = log.log_section(
+                    "analyze.mermaid-links",
+                    "Starting Mermaid Links Command",
+                );
+            }
+            let path_value = path.clone();
+            (
+                CommandMetadata {
+                    name: "analyze.mermaid-links".to_string(),
+                    params: serde_json::json!({"path": path_value}),
+                },
+                update_mermaid_links(&config, &path, logger.as_ref()),
+            )
+        }
 
         // ============================================================================
         // DIAGNOSE Commands
