@@ -8,6 +8,7 @@ pub mod query_tags;
 pub mod query_unresolved;
 
 pub mod analyze_bloat;
+pub mod analyze_mermaid_links;
 pub mod analyze_related;
 
 pub mod diagnose_broken_links;
@@ -28,6 +29,7 @@ pub use query_tags::list_notes_by_tag;
 pub use query_unresolved::list_unresolved_links;
 
 pub use analyze_bloat::show_bloat;
+pub use analyze_mermaid_links::update_mermaid_links;
 pub use analyze_related::analyze_related;
 
 pub use diagnose_broken_links::diagnose_broken_links_cmd;

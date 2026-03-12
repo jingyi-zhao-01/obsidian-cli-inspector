@@ -248,6 +248,12 @@ pub enum AnalyzeCommands {
         #[arg(short, long, default_value = "10")]
         limit: usize,
     },
+
+    /// Normalize Mermaid internal link sections in a note
+    MermaidLinks {
+        /// File path relative to vault (or absolute)
+        path: String,
+    },
     // /// Find similar notes based on content
     // Similar {
     //     /// Note path or title
