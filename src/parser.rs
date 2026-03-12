@@ -1,9 +1,11 @@
 use std::collections::HashMap;
 
 mod markdown;
+mod mermaid;
 mod wikilink;
 
 pub use markdown::{build_markdown_link, extract_markdown_links};
+pub use mermaid::extract_mermaid_links;
 pub use wikilink::{extract_wikilinks, parse_wikilink};
 
 #[derive(Debug, Clone)]
@@ -29,6 +31,7 @@ pub struct Link {
 pub enum LinkType {
     Wiki,
     Markdown,
+    Mermaid,
 }
 
 impl LinkType {
@@ -36,6 +39,7 @@ impl LinkType {
         match self {
             LinkType::Wiki => "wikilink",
             LinkType::Markdown => "markdown",
+            LinkType::Mermaid => "mermaid",
         }
     }
 }
@@ -149,6 +153,7 @@ impl MarkdownParser {
     fn extract_links(content: &str) -> Vec<Link> {
         let mut links = extract_wikilinks(content);
         links.extend(extract_markdown_links(content));
+        links.extend(extract_mermaid_links(content));
         links
     }
 }
@@ -204,6 +209,7 @@ mod tests {
     fn test_link_type_as_str() {
         assert_eq!(LinkType::Wiki.as_str(), "wikilink");
         assert_eq!(LinkType::Markdown.as_str(), "markdown");
+        assert_eq!(LinkType::Mermaid.as_str(), "mermaid");
     }
 
     #[test]
