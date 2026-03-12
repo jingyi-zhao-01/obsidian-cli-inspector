@@ -3,6 +3,10 @@ mod common;
 use anyhow::Result;
 use obsidian_cli_inspector::commands::*;
 
+fn semantic_tests_enabled() -> bool {
+    std::env::var("OBS_CLI_RUN_SEMANTIC_TESTS").is_ok()
+}
+
 #[test]
 fn test_search_vault() -> Result<()> {
     let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
@@ -74,6 +78,39 @@ fn test_search_various_terms() -> Result<()> {
     search_vault(&config, "vault", 10, None)?;
     search_vault(&config, "strategies", 10, None)?;
     search_vault(&config, "work", 10, None)?;
+
+    Ok(())
+}
+
+#[test]
+fn test_semantic_search_vault() -> Result<()> {
+    if !semantic_tests_enabled() {
+        return Ok(());
+    }
+
+    let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
+
+    initialize_database(&config, false, None)?;
+    index_vault(&config, false, false, false, None)?;
+
+    semantic_search_vault(&config, "productive work", 10, None)?;
+    semantic_search_vault(&config, "learning strategies", 10, None)?;
+
+    Ok(())
+}
+
+#[test]
+fn test_semantic_search_empty_query() -> Result<()> {
+    if !semantic_tests_enabled() {
+        return Ok(());
+    }
+
+    let (_vault_dir, _db_dir, config) = common::setup_test_config()?;
+
+    initialize_database(&config, false, None)?;
+    index_vault(&config, false, false, false, None)?;
+
+    semantic_search_vault(&config, "", 10, None)?;
 
     Ok(())
 }

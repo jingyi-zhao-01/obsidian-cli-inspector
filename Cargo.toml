@@ -17,6 +17,8 @@ anyhow = "1.0"
 thiserror = "2.0"
 dirs = "5.0"
 chrono = "0.4"
+embed_anything = "0.6.7"
+tokio = { version = "1.40", features = ["rt-multi-thread"] }
 
 [dev-dependencies]
 tempfile = "3.10"

@@ -66,6 +66,7 @@ obsidian-cli-inspector index index
 
 ```bash
 obsidian-cli-inspector search notes "your query"
+obsidian-cli-inspector search query "semantic query"
 obsidian-cli-inspector search backlinks "Note Name"
 obsidian-cli-inspector search tags productivity
 obsidian-cli-inspector view stats
@@ -96,6 +97,7 @@ obsidian-cli-inspector index index [--dry-run] [--force] [--verbose]
 
 # Search
 obsidian-cli-inspector search notes "query" [--limit 20]
+obsidian-cli-inspector search query "semantic query" [--limit 20]
 obsidian-cli-inspector search backlinks "Note Name"
 obsidian-cli-inspector search links "Note Name"
 obsidian-cli-inspector search unresolved
@@ -116,6 +118,8 @@ obsidian-cli-inspector diagnose broken-links
 # Interactive
 obsidian-cli-inspector tui
 ```
+
+> Semantic search relies on the `embed_anything` model `jinaai/jina-embeddings-v2-small-en` and will download the model from Hugging Face on first use.
 
 ## CLI Contract
 

@@ -80,6 +80,33 @@ fn machine_contract_search() {
 
 #[test]
 #[ignore]
+fn machine_contract_semantic() {
+    bootstrap_test_db();
+
+    let config_path = get_test_config_path().to_string_lossy().to_string();
+    let args = vec![
+        "--output",
+        "json",
+        "--config",
+        &config_path,
+        "search",
+        "query",
+        "how to improve productivity",
+    ];
+
+    let output = run_command_json(&args).expect("Failed to run semantic command");
+    validate_schema(&output, "search.query");
+
+    assert_eq!(output["params"]["query"], "how to improve productivity");
+    assert_eq!(output["params"]["limit"], 20);
+    assert!(output["result"]["total"].is_number());
+    assert!(output["result"]["items"].is_array());
+
+    insta::assert_json_snapshot!("machine_contract_semantic", normalize_for_snapshot(output));
+}
+
+#[test]
+#[ignore]
 fn machine_contract_backlinks() {
     bootstrap_test_db();
 
