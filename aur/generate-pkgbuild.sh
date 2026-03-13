@@ -2,14 +2,15 @@
 set -euo pipefail
 
 # Generate PKGBUILD for AUR package
-# Usage: generate-pkgbuild.sh <pkgname> <version> <sha256> <repo_owner> <repo_name>
+# Usage: generate-pkgbuild.sh <pkgname> <version> <tag> <sha256> <repo_owner> <repo_name>
 
 build_pkgbuild() {
     local pkgname="$1"
     local version="$2"
-    local sha256="$3"
-    local repo_owner="$4"
-    local repo_name="$5"
+    local tag="$3"
+    local sha256="$4"
+    local repo_owner="$5"
+    local repo_name="$6"
 
     printf '%s\n' \
         "pkgname=${pkgname}" \
@@ -22,11 +23,11 @@ build_pkgbuild() {
         "depends=('sqlite')" \
         "makedepends=('cargo' 'gcc' 'pkgconf')" \
         "options=('!lto' '!debug')" \
-        "source=(\"\${pkgname}-\${pkgver}.tar.gz::https://github.com/${repo_owner}/${repo_name}/archive/refs/tags/v\${pkgver}.tar.gz\")" \
+        "source=(\"\${pkgname}-\${pkgver}.tar.gz::https://github.com/${repo_owner}/${repo_name}/archive/refs/tags/${tag}.tar.gz\")" \
         "sha256sums=(\"${sha256}\")" \
         '' \
         'build() {' \
-        '  cd "${srcdir}/${pkgname}-${pkgver}"' \
+        "  cd \"\${srcdir}/${repo_name}-${tag}\"" \
         '' \
         '  # Prevent CI or user environment from injecting static Rust flags' \
         '  unset RUSTFLAGS' \
@@ -40,14 +41,14 @@ build_pkgbuild() {
         '}' \
         '' \
         'package() {' \
-        '  cd "${srcdir}/${pkgname}-${pkgver}"' \
+        "  cd \"\${srcdir}/${repo_name}-${tag}\"" \
         '  install -Dm755 target/release/${pkgname} "${pkgdir}/usr/bin/${pkgname}"' \
         '}'
 }
 
 # Main execution
-if [[ $# -ne 5 ]]; then
-    echo "Usage: $0 <pkgname> <version> <sha256> <repo_owner> <repo_name>" >&2
+if [[ $# -ne 6 ]]; then
+    echo "Usage: $0 <pkgname> <version> <tag> <sha256> <repo_owner> <repo_name>" >&2
     exit 1
 fi
 

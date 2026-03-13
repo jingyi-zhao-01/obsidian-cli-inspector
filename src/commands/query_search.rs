@@ -22,6 +22,14 @@ pub fn search_vault(
     let db = Database::open(&db_path)
         .with_context(|| format!("Failed to open database: {}", db_path.display()))?;
 
+    // Check if database has been indexed
+    let stats = db.get_stats().context("Failed to get database stats")?;
+    if stats.note_count == 0 {
+        anyhow::bail!(
+            "Database is empty. Run 'obsidian-cli-inspector index' to index your vault first"
+        );
+    }
+
     if query_str.is_empty() {
         if let Some(log) = logger {
             let _ = log.print_and_log("search", "Search query cannot be empty");

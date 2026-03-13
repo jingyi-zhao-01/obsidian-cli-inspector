@@ -1,4 +1,5 @@
 use crate::{config::Config, db::Database, query};
+use anyhow::{Context, Result};
 use serde_json::Value;
 
 pub struct ResultDataBuilder;
@@ -12,29 +13,39 @@ impl ResultDataBuilder {
         serde_json::json!({ "total": items.len(), "items": items })
     }
 
-    pub fn build_query_result_data(config: &Config, command: &str, params: &Value) -> Value {
+    pub fn build_query_result_data(
+        config: &Config,
+        command: &str,
+        params: &Value,
+    ) -> Result<Value> {
         let db_path = config.database_path();
         if !db_path.exists() {
-            return Self::empty_query_result();
+            anyhow::bail!(
+                "Database not found at: {}\nRun 'obsidian-cli-inspector index' to create and index the database first",
+                db_path.display()
+            );
         }
 
-        let db = match Database::open(&db_path) {
-            Ok(db) => db,
-            Err(_) => return Self::empty_query_result(),
-        };
+        let db = Database::open(&db_path)
+            .with_context(|| format!("Failed to open database at: {}", db_path.display()))?;
+
+        // Check if database has been indexed
+        let stats = db.get_stats().context("Failed to get database stats")?;
+        if stats.note_count == 0 {
+            anyhow::bail!(
+                "Database is empty. Run 'obsidian-cli-inspector index' to index your vault first"
+            );
+        }
 
         match command {
             "search.notes" => {
                 let query = params.get("query").and_then(|v| v.as_str()).unwrap_or("");
                 let limit = params.get("limit").and_then(|v| v.as_u64()).unwrap_or(20) as usize;
 
-                let results = match db
+                let results = db
                     .conn()
                     .execute_query(|conn| query::search_chunks(conn, query, limit))
-                {
-                    Ok(results) => results,
-                    Err(_) => return Self::empty_query_result(),
-                };
+                    .context("Failed to execute search query")?;
 
                 let items = results
                     .iter()
@@ -51,18 +62,15 @@ impl ResultDataBuilder {
                     })
                     .collect();
 
-                Self::query_result(items)
+                Ok(Self::query_result(items))
             }
             "search.backlinks" => {
                 let note = params.get("note").and_then(|v| v.as_str()).unwrap_or("");
 
-                let results = match db
+                let results = db
                     .conn()
                     .execute_query(|conn| query::get_backlinks(conn, note))
-                {
-                    Ok(results) => results,
-                    Err(_) => return Self::empty_query_result(),
-                };
+                    .context("Failed to get backlinks")?;
 
                 let items = results
                     .iter()
@@ -79,18 +87,15 @@ impl ResultDataBuilder {
                     })
                     .collect();
 
-                Self::query_result(items)
+                Ok(Self::query_result(items))
             }
             "search.links" => {
                 let note = params.get("note").and_then(|v| v.as_str()).unwrap_or("");
 
-                let results = match db
+                let results = db
                     .conn()
                     .execute_query(|conn| query::get_forward_links(conn, note))
-                {
-                    Ok(results) => results,
-                    Err(_) => return Self::empty_query_result(),
-                };
+                    .context("Failed to get forward links")?;
 
                 let items = results
                     .iter()
@@ -107,13 +112,13 @@ impl ResultDataBuilder {
                     })
                     .collect();
 
-                Self::query_result(items)
+                Ok(Self::query_result(items))
             }
             "search.unresolved" => {
-                let results = match db.conn().execute_query(query::get_unresolved_links) {
-                    Ok(results) => results,
-                    Err(_) => return Self::empty_query_result(),
-                };
+                let results = db
+                    .conn()
+                    .execute_query(query::get_unresolved_links)
+                    .context("Failed to get unresolved links")?;
 
                 let items = results
                     .iter()
@@ -130,7 +135,7 @@ impl ResultDataBuilder {
                     })
                     .collect();
 
-                Self::query_result(items)
+                Ok(Self::query_result(items))
             }
             "search.tags" => {
                 let list_all = params
@@ -140,25 +145,22 @@ impl ResultDataBuilder {
                 let tag = params.get("tag").and_then(|v| v.as_str());
 
                 if list_all || tag.is_none() {
-                    let tags = match db.conn().execute_query(query::list_tags) {
-                        Ok(tags) => tags,
-                        Err(_) => return Self::empty_query_result(),
-                    };
+                    let tags = db
+                        .conn()
+                        .execute_query(query::list_tags)
+                        .context("Failed to list tags")?;
 
                     let items = tags
                         .iter()
                         .map(|tag_name| serde_json::json!({ "tag": tag_name }))
                         .collect();
 
-                    Self::query_result(items)
+                    Ok(Self::query_result(items))
                 } else if let Some(tag_name) = tag {
-                    let results = match db
+                    let results = db
                         .conn()
                         .execute_query(|conn| query::get_notes_by_tag(conn, tag_name))
-                    {
-                        Ok(results) => results,
-                        Err(_) => return Self::empty_query_result(),
-                    };
+                        .context("Failed to get notes by tag")?;
 
                     let items = results
                         .iter()
@@ -172,12 +174,12 @@ impl ResultDataBuilder {
                         })
                         .collect();
 
-                    Self::query_result(items)
+                    Ok(Self::query_result(items))
                 } else {
-                    Self::empty_query_result()
+                    Ok(Self::empty_query_result())
                 }
             }
-            _ => Self::empty_query_result(),
+            _ => Ok(Self::empty_query_result()),
         }
     }
 
@@ -247,7 +249,15 @@ mod tests {
 
         let params = serde_json::json!({});
         let result = ResultDataBuilder::build_query_result_data(&config, "search.notes", &params);
-        assert_eq!(result.get("total").unwrap(), 0);
+        assert!(
+            result.is_err(),
+            "Should return error when database doesn't exist"
+        );
+        let err_msg = result.unwrap_err().to_string();
+        assert!(
+            err_msg.contains("Database not found"),
+            "Error should mention database not found"
+        );
     }
 
     #[test]
@@ -266,7 +276,11 @@ mod tests {
         let params = serde_json::json!({});
         let result =
             ResultDataBuilder::build_query_result_data(&config, "unknown.command", &params);
-        assert_eq!(result.get("total").unwrap(), 0);
+        // Should still error because database doesn't exist
+        assert!(
+            result.is_err(),
+            "Should return error when database doesn't exist"
+        );
     }
 
     #[test]

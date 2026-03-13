@@ -106,7 +106,7 @@ jobs:
             '
 
       - name: Publish to AUR (-git)
-        uses: KSXGitHub/github-actions-deploy-aur@v2.3.0
+        uses: KSXGitHub/github-actions-deploy-aur@v4.1.1
         with:
           pkgname: obsidian-cli-inspector-git
           pkgbuild: ./aur/PKGBUILD
@@ -142,7 +142,7 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Publish to AUR
-        uses: KSXGitHub/github-actions-deploy-aur@v2.3.0
+        uses: KSXGitHub/github-actions-deploy-aur@v4.1.1
         with:
           pkgname: obsidian-cli-inspector
           pkgbuild: ./aur/PKGBUILD

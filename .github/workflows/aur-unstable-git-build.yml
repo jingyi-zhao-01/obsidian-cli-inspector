@@ -90,7 +90,7 @@ jobs:
       # ----------------------------------------------------------------
       - name: Publish to AUR (-git)
         if: ${{ inputs.publish == true }}
-        uses: KSXGitHub/github-actions-deploy-aur@v2.3.0
+        uses: KSXGitHub/github-actions-deploy-aur@v4.1.1
         with:
           pkgname: obsidian-cli-inspector-git
           pkgbuild: ./aur/PKGBUILD
