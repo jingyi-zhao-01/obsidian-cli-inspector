@@ -65,7 +65,7 @@ Non-search commands may use command-specific result objects (for example, `view.
 
 ## Error Behavior (Current)
 
-Two error paths exist:
+Three error paths exist:
 
 1. Argument parsing errors (for example, missing required args)
    - Exit code: `2`
@@ -82,6 +82,14 @@ Two error paths exist:
     "message": "..."
   }
 }
+```
+
+3. Database prerequisite errors (for query, view, diagnose, and analyze commands)
+   - Exit code: `1`
+   - Common error messages:
+     - `"Database not found at: {path}\nRun 'obsidian-cli-inspector index' to create and index the database first"`
+     - `"Database is empty. Run 'obsidian-cli-inspector index' to index your vault first"`
+   - These errors appear in both text mode (stderr) and JSON mode (within error object)
 ```
 
 ## Non-Goals in Current Contract

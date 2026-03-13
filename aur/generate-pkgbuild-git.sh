@@ -25,7 +25,7 @@ build_pkgbuild_git() {
         '' \
         'pkgver() {' \
         '  cd "${srcdir}/${pkgname%-git}"' \
-        '  git describe --long --tags | sed "s/^v//;s/-/.r/;s/-/.g/"' \
+        '  git describe --long --tags --always | sed -E "s/^v//; s/-([0-9]+)-g/.r\\1.g/; s/-/./g; s/[^0-9A-Za-z.]/./g"' \
         '}' \
         '' \
         'build() {' \
