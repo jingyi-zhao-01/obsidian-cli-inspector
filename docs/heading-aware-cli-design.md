@@ -6,17 +6,17 @@ Owner: OpenHands
 
 ## Summary
 
-Agent feedback shows repetitive manual steps when editing Obsidian notes:
+Agent feedback shows repetitive manual steps when inspecting Obsidian notes:
 
-- Navigating to headings manually to extract or rewrite sections.
+- Navigating to headings manually to extract or compare sections.
 - Re-checking link targets (especially heading anchors) for correctness.
 - Lack of section-scoped diffs and context extraction tools.
 
-This design proposes a phased plan to add heading-aware read/edit workflows to `obsidian-cli-inspector` while reusing existing indexing, chunking, and link parsing. The plan explicitly distinguishes what can be adapted from current functionality versus foundational new work.
+This design proposes a phased plan to add heading-aware read/inspect/analyze workflows to `obsidian-cli-inspector` while reusing existing indexing, chunking, and link parsing. The plan explicitly distinguishes what can be adapted from current functionality versus foundational new work.
 
 ## Goals
 
-- Provide CLI commands to list, read, diff, and replace sections by heading name.
+- Provide CLI commands to list, read, and diff sections by heading name.
 - Resolve Obsidian heading anchors deterministically (matching Obsidian’s normalization rules).
 - Validate heading/block links against vault content.
 - Offer a task-scoped context extractor for agent workflows.
@@ -49,7 +49,7 @@ The current implementation already contains several primitives that can be reuse
    - Search results include `heading_path` fields, useful for section context.
 
 5. **Read-only operational posture**
-   - The CLI is currently read-only, so adding safe, opt-in write paths can be layered without destabilizing existing read flows.
+   - The CLI is currently read-only, so planned enhancements stay in the read/inspect/analyze domain.
 
 ## Foundational New Work Required
 
@@ -59,7 +59,6 @@ The following capabilities do not exist today and require new foundational work:
 - **Heading registry per note** (explicit table for headings and anchors, beyond chunk-level paths).
 - **Block reference indexing** (capture `^block-id` markers in notes).
 - **Frontmatter alias extraction** (Obsidian aliases are not stored in current index).
-- **Safe write pipeline** (file locking, atomic write, backups, and dry-run support).
 - **Section diff tooling** (section-scoped comparison across notes/files).
 - **Context extractor** (task-scoped section extraction across multiple notes).
 
@@ -73,11 +72,6 @@ These commands are additive and can coexist with existing CLI groups.
 - `obsidian-cli-inspector note get-section <note> --heading "<text>" [--include-children] [--format json]`
 - `obsidian-cli-inspector note resolve-anchor <note> --heading "<text>"`
 - `obsidian-cli-inspector diagnose link-targets [--include-blocks]`
-
-### Edit tools (opt-in)
-
-- `obsidian-cli-inspector note replace-section <note> --heading "<text>" --content-file <path> [--dry-run] [--backup]`
-- `obsidian-cli-inspector note append-section <note> --heading "<text>" --content-file <path> [--dry-run]`
 
 ### Diff + context
 
@@ -141,22 +135,7 @@ These commands are additive and can coexist with existing CLI groups.
 - Deterministic JSON outputs for section retrieval and link validation.
 - Clear error codes for missing headings or ambiguous matches.
 
-### Phase 3 — Safe Write Pipeline + Section Editing (4–6 days)
-
-**Adaptations**
-- Use same section extraction routines to locate replacement ranges.
-- Leverage config paths for backup storage.
-
-**New work**
-- File locking strategy (OS-specific) + atomic writes.
-- Dry-run diffs and backup naming scheme.
-- `replace-section` and `append-section` commands.
-
-**Deliverables**
-- Opt-in write mode with backups and dry runs.
-- Tests on temp vault fixtures to ensure no corruption.
-
-### Phase 4 — Diff + Context Extraction (3–4 days)
+### Phase 3 — Diff + Context Extraction (3–4 days)
 
 **Adaptations**
 - Reuse section extraction from Phase 2 and diff crate for comparisons.
@@ -171,18 +150,17 @@ These commands are additive and can coexist with existing CLI groups.
 ## Risks & Mitigations
 
 - **Anchor normalization mismatches**: Mitigate with extensive test vectors and real-world fixtures.
-- **Write-safety concerns**: Default to read-only, add `--write`/`--dry-run` gates and backups.
 - **Schema migrations**: Versioned migrations with explicit fallback instructions in docs.
 
 ## Open Questions
 
-- Should section editing be allowed in JSON-mode only, or both JSON and text?
-- Where to store backups by default (same directory vs config path)?
-- Should ambiguous heading matches prefer shortest path or require explicit disambiguation?
+- Should `note get-section` return the heading line or just section body text?
+- Should ambiguous heading matches require full heading paths or use numbered anchors?
+- Should context extraction return raw markdown or normalized plain text?
 
 ## Success Metrics
 
 - Agent can retrieve a section by heading in a single command without manual scanning.
 - Heading link validation reliably flags missing anchors and block refs.
-- Replacing a section produces deterministic diffs and preserves file integrity.
+- Section diffs render deterministically for automation workflows.
 - JSON outputs remain stable for automation.
