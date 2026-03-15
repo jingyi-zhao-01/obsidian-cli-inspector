@@ -4,6 +4,10 @@ Status: Draft
 Date: 2026-03-15
 Owner: OpenHands
 
+## Related Issues
+
+- Issue [#95: Add heading-aware section read/diff/replace commands](https://github.com/jingyi-zhao-01/obsidian-cli-inspector/issues/95) - Provides user-facing requirements and example commands
+
 ## Summary
 
 Agent feedback shows repetitive manual steps when inspecting Obsidian notes:
@@ -60,6 +64,7 @@ The following capabilities do not exist today and require new foundational work:
 - **Block reference indexing** (capture `^block-id` markers in notes).
 - **Frontmatter alias extraction** (Obsidian aliases are not stored in current index).
 - **Section diff tooling** (section-scoped comparison across notes/files).
+- **Section replace tooling** (replace section content while preserving heading and surrounding structure).
 - **Context extractor** (task-scoped section extraction across multiple notes).
 
 ## Proposed Command Surface (Draft)
@@ -76,7 +81,36 @@ These commands are additive and can coexist with existing CLI groups.
 ### Diff + context
 
 - `obsidian-cli-inspector note diff-section <note> --heading "<text>" --against <note|file>`
+- `obsidian-cli-inspector note replace-section <note> --heading "<text>" --content <text> [--content-file <path>]`
 - `obsidian-cli-inspector task extract-context --note <note> --headings "A|B|C" [--format json]`
+
+### Link resolution
+
+- `obsidian-cli-inspector links resolve --target "<wikilink>"`
+- `obsidian-cli-inspector links check --file <note>`
+
+### Alternative Command Structure (per Issue #95)
+
+Based on user feedback, an alternative command structure using subcommands and named arguments:
+
+```bash
+# Read a specific section by heading
+obsidian read file="design-a-log-aggregation-pipeline" heading="Current challenges and active solutions for processing"
+
+# Replace a specific section by heading
+obsidian section:replace file="design-a-log-aggregation-pipeline" heading="Current challenges and active solutions for processing" content-file=rewrite.md
+
+# Diff changes at the section level
+obsidian section:diff file="design-a-log-aggregation-pipeline" heading="Current challenges and active solutions for processing"
+
+# Resolve Obsidian heading links / aliases
+obsidian links:resolve target="[[design-a-log-aggregation-pipeline#Current challenges and active solutions for processing]]"
+
+# Inspect whether note / heading / alias targets actually exist
+obsidian links:check file="design-a-log-aggregation-pipeline"
+```
+
+**Design Decision Needed**: Choose between the flat command structure (first option) or the subcommand-based structure (second option) based on CLI framework capabilities and consistency with existing commands.
 
 ## Data Model Extensions
 
@@ -147,20 +181,43 @@ These commands are additive and can coexist with existing CLI groups.
 **Deliverables**
 - Section-scoped diffs and a context bundle response suitable for agents.
 
+### Phase 4 — Section Replacement (3–4 days)
+
+**Adaptations**
+- Reuse section extraction and heading detection from Phase 2.
+- Use existing file write operations (if any) as a pattern.
+
+**New work**
+- `section:replace` / `note replace-section` command.
+- Atomic write with backup/recovery mechanism.
+- `--dry-run` flag for preview before committing changes.
+
+**Deliverables**
+- In-place section replacement that preserves heading and surrounding structure.
+- Atomic writes with rollback capability.
+- `--diff` output showing exact changes before applying.
+
 ## Risks & Mitigations
 
 - **Anchor normalization mismatches**: Mitigate with extensive test vectors and real-world fixtures.
 - **Schema migrations**: Versioned migrations with explicit fallback instructions in docs.
+- **Section replacement data loss**: Implement atomic writes with automatic rollback on failure. Always create backup before modification.
+- **Concurrent modification conflicts**: Consider file locking or optimistic concurrency control for multi-process scenarios.
 
 ## Open Questions
 
 - Should `note get-section` return the heading line or just section body text?
 - Should ambiguous heading matches require full heading paths or use numbered anchors?
 - Should context extraction return raw markdown or normalized plain text?
+- Which command structure should we adopt: flat commands (`obsidian-cli-inspector note get-section`) or subcommand-based (`obsidian section:replace`)? Consider consistency with existing CLI patterns.
+- Should section replacement support atomic transactions for multiple section edits in a single operation?
+- Should we implement a `--dry-run` flag that shows diff output without applying changes?
+- Should the CLI support backup creation before section modifications?
 
 ## Success Metrics
 
 - Agent can retrieve a section by heading in a single command without manual scanning.
+- Agent can replace a section by heading with a single command and verify the change.
 - Heading link validation reliably flags missing anchors and block refs.
 - Section diffs render deterministically for automation workflows.
 - JSON outputs remain stable for automation.
